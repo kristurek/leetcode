@@ -1,9 +1,15 @@
 package com.kristurek.leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.kristurek.leetcode.common.ListNode;
 
@@ -225,6 +231,103 @@ public class Solution {
 			return 1000;
 		default:
 			throw new IllegalArgumentException("Unsupported char");
+		}
+	}
+
+	public String _14_longestCommonPrefix(String[] strs) {
+		if (strs == null || strs.length == 0)
+			return "";
+
+		String prefix = strs[0];
+		for (String str : strs) {
+			while (str.indexOf(prefix) != 0)
+				prefix = prefix.substring(0, prefix.length() - 1);
+		}
+
+		return prefix;
+	}
+
+	public List<List<Integer>> _15_threeSum(int[] nums) {
+		Set<List<Integer>> result = new HashSet<>();
+
+		Arrays.sort(nums);
+
+		for (int i = 0; i < nums.length; i++) {
+			int l = i + 1;
+			int r = nums.length - 1;
+			while (l < r) {
+				if (nums[i] + nums[l] + nums[r] < 0)
+					l++;
+				else if (nums[i] + nums[l] + nums[r] > 0)
+					r--;
+				else {
+					result.add(Arrays.asList(nums[i], nums[l], nums[r]));
+					l++;
+					r--;
+				}
+			}
+		}
+
+		return new ArrayList<>(result);
+	}
+
+	public int _16_threeSumClosest(int[] nums, int target) {
+		Arrays.sort(nums);
+		int min = Integer.MAX_VALUE;
+		int res = 0;
+		for (int i = 0; i < nums.length; i++) {
+			int l = i + 1;
+			int r = nums.length - 1;
+			while (l < r) {
+				int sum = nums[i] + nums[l] + nums[r];
+
+				if (sum < target)
+					l++;
+				else if (sum > target)
+					r--;
+				else {
+					return sum;
+				}
+
+				int diff = Math.abs(sum - target);
+				if (diff < min) {
+					min = diff;
+					res = sum;
+				}
+			}
+		}
+
+		return res;
+	}
+
+	public List<String> _17_letterCombinations(String digits) {
+		Map<Character, String> map = new HashMap<>();
+		map.put('1', "");
+		map.put('2', "abc");
+		map.put('3', "def");
+		map.put('4', "ghi");
+		map.put('5', "jkl");
+		map.put('6', "mno");
+		map.put('7', "pqrs");
+		map.put('8', "tuv");
+		map.put('9', "wxyz");
+
+		List<String> output = new LinkedList<String>();
+		if (digits.length() > 0) {
+			letterCombinations(output, digits, 0, "", map);
+		}
+		return output;
+	}
+
+	private void letterCombinations(List<String> output, String digits, int i, String current,
+			Map<Character, String> map) {
+		if (i == digits.length()) {
+			output.add(current);
+		} else {
+			String chars = map.get(digits.charAt(i));
+			for (char c : chars.toCharArray()) {
+				letterCombinations(output, digits, i + 1, current + c, map);
+			}
 		}
 	}
 }

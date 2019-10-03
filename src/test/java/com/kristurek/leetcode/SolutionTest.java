@@ -1,9 +1,15 @@
 package com.kristurek.leetcode;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -85,4 +91,46 @@ public class SolutionTest {
 		assertEquals(58, solution._13_romanToInt("LVIII"));
 		assertEquals(1994, solution._13_romanToInt("MCMXCIV"));
 	}
+
+	@Test
+	void _14_longestCommonPrefix() {
+		assertEquals("fl", solution._14_longestCommonPrefix(new String[] { "flower", "flow", "flight" }));
+		assertEquals("", solution._14_longestCommonPrefix(new String[] { "dog", "racecar", "car" }));
+	}
+
+	@Test
+	void _15_threeSum() {
+		List<List<Integer>> answer = solution._15_threeSum(new int[] { -1, 0, 1, 2, -1 });
+		List<List<Integer>> l = new ArrayList<>();
+		l.add(Arrays.asList(-1, -1, 2));
+		l.add(Arrays.asList(-1, 0, 1));
+
+		assertThat(answer, is(l));
+
+		answer = solution._15_threeSum(new int[] { 0, 0, 0, 0 });
+		l = new ArrayList<>();
+		l.add(Arrays.asList(0, 0, 0));
+
+		assertThat(answer, is(l));
+
+		answer = solution._15_threeSum(new int[] { -2, 0, 1, 1, 2 });
+		l = new ArrayList<>();
+		l.add(Arrays.asList(-2, 1, 1));
+		l.add(Arrays.asList(-2, 0, 2));
+
+		assertThat(answer, is(l));
+	}
+
+	@Test
+	void _16_threeSumClosest() {
+		assertEquals(0, solution._16_threeSumClosest(new int[] { -2, 0, 1, 1, 2 }, 0));
+		assertEquals(2, solution._16_threeSumClosest(new int[] { -1, 2, 1, -4 }, 1));
+	}
+
+	@Test
+	void _17_letterCombinations() {
+		assertEquals(Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"),
+				solution._17_letterCombinations("23"));
+	}
+
 }
