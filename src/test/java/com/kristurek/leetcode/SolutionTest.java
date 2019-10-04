@@ -133,4 +133,50 @@ public class SolutionTest {
 				solution._17_letterCombinations("23"));
 	}
 
+	@Test
+	void _19_removeNthFromEnd() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+
+		head = solution._19_removeNthFromEnd(head, 3);
+
+		assertEquals(2, head.val);
+		assertEquals(3, head.next.val);
+	}
+
+	@Test
+	void _20_isValid() {
+		assertTrue(solution._20_isValid("()"));
+		assertTrue(solution._20_isValid("()[]{}"));
+		assertFalse(solution._20_isValid("(]"));
+		assertFalse(solution._20_isValid("([)]"));
+		assertTrue(solution._20_isValid("{[]}"));
+	}
+
+	@Test
+	void _21_mergeTwoLists() {
+		ListNode head1 = new ListNode(1);
+		head1.next = new ListNode(2);
+		head1.next.next = new ListNode(4);
+
+		ListNode head2 = new ListNode(1);
+		head2.next = new ListNode(3);
+		head2.next.next = new ListNode(4);
+
+		ListNode head3 = solution._21_mergeTwoLists(head1, head2);
+
+		assertEquals(1, head3.val);
+		assertEquals(1, head3.next.val);
+		assertEquals(2, head3.next.next.val);
+		assertEquals(3, head3.next.next.next.val);
+		assertEquals(4, head3.next.next.next.next.val);
+		assertEquals(4, head3.next.next.next.next.next.val);
+	}
+
+	@Test
+	void _22_generateParenthesis() {
+		List<String> list = Arrays.asList("()()()", "()(())", "(())()", "(()())", "((()))");
+		assertThat(solution._22_generateParenthesis(3), is(list));
+	}
 }

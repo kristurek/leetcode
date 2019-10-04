@@ -2,6 +2,7 @@ package com.kristurek.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -329,5 +330,109 @@ public class Solution {
 				letterCombinations(output, digits, i + 1, current + c, map);
 			}
 		}
+	}
+
+	public ListNode _19_removeNthFromEnd(ListNode head, int n) {
+		ListNode current = head;
+		ListNode dummy = new ListNode(-1);
+		dummy.next = head;
+
+		int length = 0;
+
+		while (current != null) {
+			length++;
+			current = current.next;
+		}
+
+		length = length - n;
+		current = dummy;
+
+		while (length > 0) {
+			length--;
+			current = current.next;
+		}
+
+		current.next = current.next.next;
+
+		return dummy.next;
+	}
+
+	public boolean _20_isValid(String s) {
+		Deque<Character> queue = new LinkedList<>();
+
+		for (char c : s.toCharArray()) {
+			if (c == '(' || c == '{' || c == '[')
+				queue.addLast(c);
+			else if (c == ')' && queue.peekLast() == '(') {
+				queue.removeLast();
+			} else if (c == '}' && queue.peekLast() == '{') {
+				queue.removeLast();
+			} else if (c == ']' && queue.peekLast() == '[') {
+				queue.removeLast();
+			} else
+				return false;
+		}
+
+		return queue.isEmpty();
+	}
+
+	public ListNode _21_mergeTwoLists(ListNode l1, ListNode l2) {
+		ListNode current = new ListNode(-1);
+		ListNode head = current;
+
+		ListNode cl1 = l1;
+		ListNode cl2 = l2;
+
+		while (cl1 != null && cl2 != null) {
+			if (cl1.val < cl2.val) {
+				current.next = cl1;
+
+				cl1 = cl1.next;
+				current = current.next;
+			} else if (cl1.val > cl2.val) {
+				current.next = cl2;
+
+				cl2 = cl2.next;
+				current = current.next;
+			} else {
+				current.next = cl1;
+
+				cl1 = cl1.next;
+				current = current.next;
+
+				current.next = cl2;
+
+				cl2 = cl2.next;
+				current = current.next;
+			}
+		}
+
+		if (cl1 != null)
+			current.next = cl1;
+
+		if (cl2 != null)
+			current.next = cl2;
+
+		return head.next;
+	}
+
+	public List<String> _22_generateParenthesis(int n) {
+		List<String> result = new ArrayList<String>();
+
+		generateParenthesis(result, "", 0, n, n);
+
+		return result;
+	}
+
+	private void generateParenthesis(List<String> result, String tmp, int c, int l, int r) {
+		if (l == 0 && r == 0) {
+			result.add(tmp);
+			return;
+		}
+
+		if (r > 0 && c > 0)
+			generateParenthesis(result, tmp + ")", c - 1, l, r - 1);
+		if (l > 0)
+			generateParenthesis(result, tmp + "(", c + 1, l - 1, r);
 	}
 }
