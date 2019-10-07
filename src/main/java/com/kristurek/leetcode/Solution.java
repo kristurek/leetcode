@@ -435,4 +435,107 @@ public class Solution {
 		if (l > 0)
 			generateParenthesis(result, tmp + "(", c + 1, l - 1, r);
 	}
+
+	public ListNode _23_mergeKLists(ListNode[] lists) {
+		return _23_mergeKLists_divide(lists, 0, lists.length - 1);
+	}
+
+	private ListNode _23_mergeKLists_divide(ListNode[] ln, int l, int r) {
+		if (l == r)
+			return ln[l];
+		if (l < r) {
+			int m = l + (r - r) / 2;
+			ListNode l1 = _23_mergeKLists_divide(ln, l, m);
+			ListNode l2 = _23_mergeKLists_divide(ln, m + 1, r);
+			return _23_mergeKLists_merge(l1, l2);
+		} else
+			return null;
+	}
+
+	private ListNode _23_mergeKLists_merge(ListNode ln1, ListNode ln2) {
+		ListNode head = new ListNode(-1);
+		ListNode current = head;
+
+		while (ln1 != null && ln2 != null) {
+			if (ln1.val < ln2.val) {
+				current.next = ln1;
+
+				current = current.next;
+				ln1 = ln1.next;
+			} else if (ln1.val > ln2.val) {
+				current.next = ln2;
+
+				current = current.next;
+				ln2 = ln2.next;
+			} else {
+				current.next = ln1;
+
+				current = current.next;
+				ln1 = ln1.next;
+			}
+		}
+
+		if (ln1 != null)
+			current.next = ln1;
+		if (ln2 != null)
+			current.next = ln2;
+
+		return head.next;
+	}
+
+	public ListNode _24_swapPairs(ListNode head) {
+		ListNode newHead = new ListNode(-1);
+		ListNode newCurrent = newHead;
+
+		if (head == null)
+			return null;
+		if (head.next == null)
+			return head;
+
+		ListNode previous = head;
+		ListNode current = head.next;
+
+		while (previous != null && current != null) {
+			ListNode tmp = current.next;
+
+			newCurrent.next = current;
+			newCurrent = newCurrent.next;
+			newCurrent.next = previous;
+			newCurrent = newCurrent.next;
+
+			previous = tmp;
+			current = (tmp != null) ? tmp.next : null;
+		}
+
+		return newHead.next;
+	}
+
+	public int _26_removeDuplicates(int[] nums) {
+		if (nums.length == 0)
+			return 0;
+
+		int i = 1;
+		for (int j = 1; j < nums.length; j++) {
+			if (nums[j] != nums[j - 1])
+				nums[i++] = nums[j];
+		}
+
+		return i;
+	}
+
+	public int _27_removeElement(int[] nums, int val) {
+		if (nums.length == 0)
+			return 0;
+
+		int i = 0;
+		for (int j = 0; j < nums.length; j++) {
+			if (nums[j] != val) {
+				nums[i++] = nums[j];
+			}
+		}
+
+		return i;
+	}
+	
+	
 }

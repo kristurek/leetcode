@@ -179,4 +179,61 @@ public class SolutionTest {
 		List<String> list = Arrays.asList("()()()", "()(())", "(())()", "(()())", "((()))");
 		assertThat(solution._22_generateParenthesis(3), is(list));
 	}
+
+	@Test
+	void _23_mergeKLists() {
+		ListNode head1 = new ListNode(1);
+		head1.next = new ListNode(2);
+		head1.next.next = new ListNode(4);
+
+		ListNode head2 = new ListNode(1);
+		head2.next = new ListNode(3);
+		head2.next.next = new ListNode(4);
+
+		ListNode head3 = new ListNode(5);
+
+		ListNode head = solution._23_mergeKLists(new ListNode[] { head1, head2, head3 });
+
+		assertEquals(1, head.val);
+		assertEquals(1, head.next.val);
+		assertEquals(2, head.next.next.val);
+		assertEquals(3, head.next.next.next.val);
+		assertEquals(4, head.next.next.next.next.val);
+		assertEquals(4, head.next.next.next.next.next.val);
+		assertEquals(5, head.next.next.next.next.next.next.val);
+	}
+
+	@Test
+	void _24_swapPairs() {
+		ListNode head1 = new ListNode(1);
+		head1.next = new ListNode(2);
+		head1.next.next = new ListNode(3);
+		head1.next.next.next = new ListNode(4);
+
+		ListNode head = solution._24_swapPairs(head1);
+
+		assertEquals(2, head.val);
+		assertEquals(1, head.next.val);
+		assertEquals(4, head.next.next.val);
+		assertEquals(3, head.next.next.next.val);
+	}
+
+	@Test
+	void removeDuplicates() {
+		int[] arr = new int[] { 1, 1, 2 };
+
+		assertEquals(2, solution._26_removeDuplicates(arr));
+
+		assertEquals(1, arr[0]);
+		assertEquals(2, arr[1]);
+	}
+
+	@Test
+	void _27_removeElement() {
+		int[] arr = new int[] { 1, 1, 2 };
+
+		assertEquals(1, solution._27_removeElement(arr, 1));
+
+		assertEquals(2, arr[0]);
+	}
 }
