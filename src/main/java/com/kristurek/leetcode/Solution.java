@@ -536,6 +536,558 @@ public class Solution {
 
 		return i;
 	}
-	
-	
+
+	public int _28_strStr(String haystack, String needle) {
+		if (haystack == null || needle == null)
+			throw new IllegalArgumentException("No null value allowed");
+		if (needle.length() == 0)
+			return 0;
+
+		int j = 0;
+		for (int i = 0; i < haystack.length(); i++) {
+			if (haystack.charAt(i) == needle.charAt(j))
+				j++;
+			else {
+				if (j != 0)
+					i = i - j;
+				j = 0;
+			}
+
+			if (j == needle.length())
+				return i - needle.length() + 1;
+		}
+
+		return -1;
+	}
+
+	public int _33_search(int[] nums, int target) {
+		if (nums == null || nums.length == 0)
+			return -1;
+
+		int l = 0;
+		int r = nums.length - 1;
+
+		while (l < r) {
+			int m = l + (r - l) / 2;
+			if (nums[m] > nums[r]) {
+				l = m + 1;
+			} else {
+				r = m;
+			}
+		}
+
+		int s = l;
+		l = 0;
+		r = nums.length - 1;
+		if (target >= nums[s] && target <= nums[r])
+			l = s;
+		else
+			r = s;
+
+		while (l <= r) {
+			int m = l + (r - l) / 2;
+			if (nums[m] == target)
+				return m;
+			else if (nums[m] > target)
+				r = m - 1;
+			else
+				l = m + 1;
+		}
+
+		return -1;
+	}
+
+	public int[] _34_searchRange(int[] nums, int target) {
+		int l = _34_searchRange(nums, target, true);
+		int r = _34_searchRange(nums, target, false);
+		return new int[] { l, r };
+	}
+
+	private int _34_searchRange(int[] nums, int target, boolean left) {
+		int l = 0;
+		int r = nums.length - 1;
+
+		while (l <= r) {
+			int m = l + (r - l) / 2;
+			if (target > nums[m])
+				l = m + 1;
+			else if (target < nums[m])
+				r = m - 1;
+			else {
+				if (left) {
+					if (m == 0 || nums[m - 1] != target)
+						return m;
+					else
+						r = m - 1;
+				} else {
+					if (m >= nums.length - 1 || nums[m + 1] != target)
+						return m;
+					else
+						l = m + 1;
+				}
+			}
+		}
+
+		return -1;
+	}
+
+	public int _35_searchInsert(int[] nums, int target) {
+		int l = 0;
+		int r = nums.length - 1;
+
+		while (l <= r) {
+			int m = l + (r - l) / 2;
+			if (target > nums[m])
+				l = m + 1;
+			else if (target < nums[m])
+				r = m - 1;
+			else
+				return m;
+		}
+		return l;
+	}
+
+	public boolean _36_isValidSudoku(char[][] board) {
+		Set<String> set = new HashSet<>();
+
+		for (int row = 0; row < board.length; row++) {
+			for (int col = 0; col < board[row].length; col++) {
+				char val = board[row][col];
+				if (val != '.') {
+					int cube = (row / 3 * 3) + (col / 3);
+					if (set.contains("r" + row + val) || set.contains("c" + col + val)
+							|| set.contains("b" + cube + val))
+						return false;
+					else {
+						set.add("r" + row + val);
+						set.add("c" + col + val);
+						set.add("b" + cube + val);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public List<List<Integer>> _78_subsets(int[] nums) {
+		List<List<Integer>> results = new ArrayList<>();
+
+		_78_subsets_backtracking(results, new ArrayList<Integer>(), 0, nums);
+
+		return results;
+	}
+
+	private void _78_subsets_backtracking(List<List<Integer>> results, List<Integer> tmpResult, int from, int[] nums) {
+		results.add(new ArrayList<>(tmpResult));
+
+		for (int i = from; i < nums.length; i++) {
+			tmpResult.add(nums[i]);
+			_78_subsets_backtracking(results, tmpResult, i + 1, nums);
+			tmpResult.remove(tmpResult.size() - 1);
+		}
+	}
+
+	public List<List<Integer>> _90_subsetsWithDup(int[] nums) {
+		List<List<Integer>> results = new ArrayList<>();
+
+		Arrays.sort(nums);
+
+		_90_subsetsWithDup_backtracking(results, new ArrayList<Integer>(), 0, nums);
+
+		return results;
+	}
+
+	private void _90_subsetsWithDup_backtracking(List<List<Integer>> results, List<Integer> tmpResult, int from,
+			int[] nums) {
+		results.add(new ArrayList<>(tmpResult));
+
+		for (int i = from; i < nums.length; i++) {
+			if (i > from && nums[i] == nums[i - 1])
+				continue;
+
+			tmpResult.add(nums[i]);
+			_90_subsetsWithDup_backtracking(results, tmpResult, i + 1, nums);
+			tmpResult.remove(tmpResult.size() - 1);
+		}
+	}
+
+	public List<List<Integer>> _46_permute(int[] nums) {
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		_46_permute_backtracking(results, new ArrayList<>(), nums);
+
+		return results;
+	}
+
+	private void _46_permute_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums) {
+		if (tmpList.size() == nums.length)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = 0; i < nums.length; i++) {
+				if (tmpList.contains(nums[i]))
+					continue;
+
+				tmpList.add(nums[i]);
+				_46_permute_backtracking(results, tmpList, nums);
+				tmpList.remove(tmpList.size() - 1);
+			}
+		}
+	}
+
+	public List<List<Integer>> _47_permuteUnique(int[] nums) {
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		Arrays.sort(nums);
+
+		_47_permuteUnique_backtracking(results, new ArrayList<>(), nums, new boolean[nums.length]);
+
+		return results;
+	}
+
+	private void _47_permuteUnique_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
+			boolean[] used) {
+		if (tmpList.size() == nums.length)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = 0; i < nums.length; i++) {
+				if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
+					continue;
+
+				tmpList.add(nums[i]);
+				used[i] = true;
+				_47_permuteUnique_backtracking(results, tmpList, nums, used);
+				tmpList.remove(tmpList.size() - 1);
+				used[i] = false;
+			}
+		}
+	}
+
+	public List<List<Integer>> _39_combinationSum(int[] candidates, int target) {
+
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		_39_combinationSum_backtracking(results, new ArrayList<>(), candidates, target, 0);
+
+		return results;
+	}
+
+	private void _39_combinationSum_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
+			int remained, int from) {
+		if (remained < 0)
+			return;
+		else if (remained == 0)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = from; i < nums.length; i++) {
+				tmpList.add(nums[i]);
+				_39_combinationSum_backtracking(results, tmpList, nums, remained - nums[i], i);
+				tmpList.remove(tmpList.size() - 1);
+			}
+		}
+	}
+
+	public List<List<Integer>> _40_combinationSum2(int[] candidates, int target) {
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		Arrays.sort(candidates);
+
+		_40_combinationSum2_backtracking(results, new ArrayList<>(), candidates, target, 0);
+
+		return results;
+	}
+
+	private void _40_combinationSum2_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
+			int remained, int from) {
+		if (remained < 0)
+			return;
+		else if (remained == 0)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = from; i < nums.length; i++) {
+				if (i > from && nums[i] == nums[i - 1])
+					continue;
+
+				tmpList.add(nums[i]);
+				_40_combinationSum2_backtracking(results, tmpList, nums, remained - nums[i], i + 1);
+				tmpList.remove(tmpList.size() - 1);
+			}
+		}
+	}
+
+	public List<List<String>> _131_partition(String s) {
+		List<List<String>> list = new ArrayList<>();
+		_131_partition_backtracking(list, new ArrayList<>(), s, 0);
+		return list;
+	}
+
+	private void _131_partition_backtracking(List<List<String>> list, List<String> tempList, String s, int start) {
+		if (start == s.length())
+			list.add(new ArrayList<>(tempList));
+		else {
+			for (int i = start; i < s.length(); i++) {
+				if (_131_partition_isPalindrome(s, start, i)) {
+					tempList.add(s.substring(start, i + 1));
+					_131_partition_backtracking(list, tempList, s, i + 1);
+					tempList.remove(tempList.size() - 1);
+				}
+			}
+		}
+	}
+
+	private boolean _131_partition_isPalindrome(String s, int low, int high) {
+		while (low < high)
+			if (s.charAt(low++) != s.charAt(high--))
+				return false;
+		return true;
+	}
+
+	public int _41_firstMissingPositive(int[] nums) {
+		int start = 0;
+		int end = nums.length - 1;
+		while (start <= end) {
+			int index = nums[start] - 1;
+			if (index == start)
+				start++;
+			else if (index < 0 || index > end || nums[start] == nums[index])
+				nums[start] = nums[end--];
+			else {
+				nums[start] = nums[index];
+				nums[index] = index + 1;
+			}
+		}
+		return start + 1;
+	}
+
+	public int _42_trap(int[] height) {
+		int left = 0;
+		int right = height.length - 1;
+		int leftMax = 0;
+		int rightMax = 0;
+		int count = 0;
+
+		while (left < right) {
+
+			if (height[left] < height[right]) {
+				if (height[left] >= leftMax)
+					leftMax = height[left];
+				else
+					count += (leftMax - height[left]);
+				++left;
+			} else {
+				if (height[right] >= rightMax)
+					rightMax = height[right];
+				else
+					count += (rightMax - height[right]);
+				--right;
+			}
+		}
+		return count;
+	}
+
+	public String _43_multiply(String num1, String num2) {
+
+		int[] muls = new int[num1.length() + num2.length()];
+
+		for (int i = num1.length() - 1; i >= 0; i--) {
+			for (int j = num2.length() - 1; j >= 0; j--) {
+				int val1 = Integer.parseInt(Character.toString(num1.charAt(i)));
+				int val2 = Integer.parseInt(Character.toString(num2.charAt(j)));
+
+				int index = num1.length() + num2.length() - i - j - 2;
+				muls[index] += val1 * val2;
+				muls[index + 1] += muls[index] / 10;
+				muls[index] %= 10;
+			}
+		}
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = muls.length - 1; i > 0; i--) {
+			if (stringBuilder.length() == 0 && muls[i] == 0)
+				continue;
+			stringBuilder.append(muls[i]);
+		}
+		stringBuilder.append(muls[0]);
+		return stringBuilder.toString();
+	}
+
+	public boolean _44_isMatch(String str, String pattern) {
+		int s = 0, p = 0, starMatch = 0, starId = -1;
+		while (s < str.length()) {
+			if (p < pattern.length() && str.charAt(s) == pattern.charAt(p)) {
+				s++;
+				p++;
+			} else if (p < pattern.length() && (pattern.charAt(p) == '?') || str.charAt(s) == pattern.charAt(p)) {
+				s++;
+				p++;
+			} else if (p < pattern.length() && pattern.charAt(p) == '*') {
+				starId = p;
+				starMatch = s;
+				p++;
+			}
+			// last pattern pointer was *, advancing string pointer
+			else if (starId != -1) {
+				p = starId + 1;
+				starMatch++;
+				s = starMatch;
+			}
+			// current pattern pointer is not star, last patter pointer was not *
+			// characters do not match
+			else
+				return false;
+		}
+
+		// check for remaining characters in pattern
+		while (p < pattern.length() && pattern.charAt(p) == '*')
+			p++;
+
+		return p == pattern.length();
+	}
+
+	public int _45_jump(int[] nums) { // Misunderstanding - modify question
+		List<Integer> results = new ArrayList<>();
+
+		_45_jump_backtracking(results, new ArrayList<Integer>(), 0, nums);
+
+		return results.size();
+	}
+
+	private void _45_jump_backtracking(List<Integer> result, List<Integer> tmpResult, int from, int[] nums) {
+		if (_45_jump_sum(tmpResult) == nums.length) {
+
+			if (result.isEmpty())
+				result.addAll(new ArrayList<>(tmpResult));
+			else {
+				if (tmpResult.size() > 0 && tmpResult.size() < result.size()) {
+					result.clear();
+					result.addAll(new ArrayList<>(tmpResult));
+				}
+			}
+		}
+
+		for (int i = from; i < nums.length; i++) {
+			tmpResult.add(nums[i]);
+			_45_jump_backtracking(result, tmpResult, i + 1, nums);
+			tmpResult.remove(tmpResult.size() - 1);
+		}
+	}
+
+	private int _45_jump_sum(List<Integer> results) {
+		if (results.isEmpty())
+			return -1;
+
+		int sum = 0;
+		for (Integer val : results)
+			sum += val;
+		return (sum + 1);
+	}
+
+	public void _48_rotate(int[][] matrix) {// ccw
+		int n = matrix.length;
+
+		// NOTE: i and j from 0 to n/2 is a quadrant
+		for (int i = 0; i < n / 2; i++) {
+			// NOTE : here + 1 is added to make it work when n is odd
+			for (int j = 0; j < (n + 1) / 2; j++) {
+				int r_i = (n - 1) - i;
+				int r_j = (n - 1) - j;
+
+				// corners a, b, c, d
+				_48_rotate_rotate90(i, j, r_j, i, r_i, r_j, j, r_i, matrix);
+			}
+		}
+	}
+
+	private void _48_rotate_rotate90(int ai, int aj, int bi, int bj, int ci, int cj, int di, int dj, int[][] matrix) {
+		_48_rotate_swap(ai, aj, bi, bj, matrix);
+		_48_rotate_swap(bi, bj, ci, cj, matrix);
+		_48_rotate_swap(ci, cj, di, dj, matrix);
+	}
+
+	private void _48_rotate_swap(int ai, int aj, int bi, int bj, int[][] matrix) {
+		int tmp = matrix[ai][aj];
+		matrix[ai][aj] = matrix[bi][bj];
+		matrix[bi][bj] = tmp;
+	}
+
+	public double _50_myPow(double x, int n) {
+		if (x == 0) {
+			return 0;
+		}
+		if (n == 0) {
+			return 1;
+		}
+
+		int nSign = n < 0 ? -1 : 1;
+		n = Math.abs(n);
+
+		double result = _50_myPow(x, n / 2);
+
+		if (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE)
+			return 0;
+
+		result *= result;
+		if (n % 2 != 0) {
+			result *= x;
+		}
+
+		return nSign < 0 ? 1 / result : result;
+	}
+
+	public int _53_maxSubArray(int[] nums) {
+		int sum = 0;
+		int max = Integer.MIN_VALUE;
+
+		for (int i = 0; i < nums.length; i++) {
+			if (sum < 0)
+				sum = nums[i];
+			else
+				sum += nums[i];
+
+			if (sum > max)
+				max = sum;
+		}
+
+		return max;
+	}
+
+	public List<Integer> _54_spiralOrder(int[][] matrix) {
+		List<Integer> res = new ArrayList<>();
+
+		if (matrix.length == 0) {
+			return res;
+		}
+
+		int rowBegin = 0;
+		int rowEnd = matrix.length - 1;
+		int colBegin = 0;
+		int colEnd = matrix[0].length - 1;
+
+		while (rowBegin <= rowEnd && colBegin <= colEnd) {
+			for (int j = colBegin; j <= colEnd; j++) {
+				res.add(matrix[rowBegin][j]);
+			}
+			rowBegin++;
+
+			for (int j = rowBegin; j <= rowEnd; j++) {
+				res.add(matrix[j][colEnd]);
+			}
+			colEnd--;
+
+//			if (rowBegin <= rowEnd) {
+				for (int j = colEnd; j >= colBegin; j--) {
+					res.add(matrix[rowEnd][j]);
+				}
+	//		}
+			rowEnd--;
+
+		//	if (colBegin <= colEnd) {
+				for (int j = rowEnd; j >= rowBegin; j--) {
+					res.add(matrix[j][colBegin]);
+				}
+			//}
+			colBegin++;
+		}
+
+		return res;
+	}
 }

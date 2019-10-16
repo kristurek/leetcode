@@ -236,4 +236,159 @@ public class SolutionTest {
 
 		assertEquals(2, arr[0]);
 	}
+
+	@Test
+	void _28_strStr() {
+		assertEquals(2, solution._28_strStr("hello", "ll"));
+		assertEquals(-1, solution._28_strStr("aaaaa", "bba"));
+	}
+
+	@Test
+	void _33_search() {
+		assertEquals(4, solution._33_search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 0));
+		assertEquals(-1, solution._33_search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 3));
+	}
+
+	@Test
+	void _34_searchRange() {
+		assertArrayEquals(new int[] { 3, 4 }, solution._34_searchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 8));
+		assertArrayEquals(new int[] { -1, -1 }, solution._34_searchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 6));
+	}
+
+	@Test
+	void _35_searchInsert() {
+		assertEquals(2, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 5));
+		assertEquals(1, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 2));
+		assertEquals(4, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 7));
+		assertEquals(0, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 0));
+	}
+
+	@Test
+	void _78_subsets() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList());
+		answer.add(Arrays.asList(1));
+		answer.add(Arrays.asList(1, 2));
+		answer.add(Arrays.asList(1, 2, 3));
+		answer.add(Arrays.asList(1, 3));
+		answer.add(Arrays.asList(2));
+		answer.add(Arrays.asList(2, 3));
+		answer.add(Arrays.asList(3));
+
+		assertThat(solution._78_subsets(new int[] { 1, 2, 3 }), is(answer));
+	}
+
+	@Test
+	void _90_subsetsWithDup() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList());
+		answer.add(Arrays.asList(1));
+		answer.add(Arrays.asList(1, 2));
+		answer.add(Arrays.asList(1, 2, 2));
+		answer.add(Arrays.asList(2));
+		answer.add(Arrays.asList(2, 2));
+
+		assertThat(solution._90_subsetsWithDup(new int[] { 2, 1, 2 }), is(answer));
+	}
+
+	@Test
+	void _46_permute() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList(1, 2));
+		answer.add(Arrays.asList(2, 1));
+
+		assertThat(solution._46_permute(new int[] { 1, 2 }), is(answer));
+	}
+
+	@Test
+	void _47_permuteUnique() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList(1, 1, 2));
+		answer.add(Arrays.asList(1, 2, 1));
+		answer.add(Arrays.asList(2, 1, 1));
+
+		assertThat(solution._47_permuteUnique(new int[] { 1, 2, 1 }), is(answer));
+	}
+
+	@Test
+	void _39_combinationSum() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList(2, 2, 3));
+		answer.add(Arrays.asList(7));
+
+		assertThat(solution._39_combinationSum(new int[] { 2, 3, 6, 7 }, 7), is(answer));
+	}
+
+	@Test
+	void _40_combinationSum2() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList(7));
+
+		assertThat(solution._40_combinationSum2(new int[] { 2, 3, 6, 7 }, 7), is(answer));
+	}
+
+	@Test
+	void _131_partition() {
+		List<List<String>> answer = new ArrayList<>();
+		answer.add(Arrays.asList("a", "a", "b"));
+		answer.add(Arrays.asList("aa", "b"));
+
+		assertThat(solution._131_partition("aab"), is(answer));
+	}
+
+	@Test
+	void _41_firstMissingPositive() {
+		assertEquals(1, solution._41_firstMissingPositive(new int[] { 3, 7, 8, 9 }));
+		assertEquals(2, solution._41_firstMissingPositive(new int[] { 1, 3, 7, 8, 9 }));
+		assertEquals(4, solution._41_firstMissingPositive(new int[] { 1, 2, 3, 7, 8, 9 }));
+		assertEquals(2, solution._41_firstMissingPositive(new int[] { -1, 1, 3, 4 }));
+		assertEquals(1, solution._41_firstMissingPositive(new int[] {}));
+		assertEquals(1, solution._41_firstMissingPositive(new int[] { 0 }));
+	}
+
+	@Test
+	void _42_trap() {
+		assertEquals(6, solution._42_trap(new int[] { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }));
+	}
+
+	@Test
+	void _43_multiply() {
+		assertEquals("56088", solution._43_multiply("123", "456"));
+	}
+
+	@Test
+	void _44_isMatch() {
+		assertTrue(solution._44_isMatch("adceb", "a*b"));
+	}
+
+	@Test
+	void _45_jump() {
+		assertEquals(1, solution._45_jump(new int[] { 2, 3, 1, 1, 4 }));
+	}
+
+	@Test
+	void _48_rotate() {
+		int[][] matrix = new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+		solution._48_rotate(matrix);
+
+		assertArrayEquals(new int[][] { { 7, 4, 1 }, { 8, 5, 2 }, { 9, 6, 3 } }, matrix);
+	}
+
+	@Test
+	void _50_myPow() {
+		assertEquals(8, solution._50_myPow(2, 3));
+		assertEquals(0, solution._50_myPow(2, -2147483648));
+	}
+
+	@Test
+	void _53_maxSubArray() {
+		assertEquals(6, solution._53_maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
+	}
+
+	@Test
+	void _54_spiralOrder() {
+		assertThat(solution._54_spiralOrder(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }),
+				is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
+	}
+
 }
