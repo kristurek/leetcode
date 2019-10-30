@@ -53,20 +53,20 @@ public class DfsTraversalTree {
 		Deque<TreeNode> s1 = new LinkedList<>();
 		Deque<TreeNode> s2 = new LinkedList<>();
 
-		s1.push(root);
+		s1.addFirst(root);
 
 		while (!s1.isEmpty()) {
-			TreeNode temp = s1.pop();
-			s2.push(temp);
+			TreeNode temp = s1.removeFirst();
+			s2.addFirst(temp);
 
 			if (temp.left != null)
-				s1.push(temp.left);
+				s1.addFirst(temp.left);
 			if (temp.right != null)
-				s1.push(temp.right);
+				s1.addFirst(temp.right);
 		}
 
 		while (!s2.isEmpty()) {
-			TreeNode temp = s2.pop();
+			TreeNode temp = s2.removeFirst();
 			values.add(temp.val);
 		}
 

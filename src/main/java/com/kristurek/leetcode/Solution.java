@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.kristurek.leetcode.common.ListNode;
 
@@ -1073,21 +1075,183 @@ public class Solution {
 			}
 			colEnd--;
 
-//			if (rowBegin <= rowEnd) {
+			if (rowBegin <= rowEnd) {
 				for (int j = colEnd; j >= colBegin; j--) {
 					res.add(matrix[rowEnd][j]);
 				}
-	//		}
+			}
 			rowEnd--;
 
-		//	if (colBegin <= colEnd) {
+			if (colBegin <= colEnd) {
 				for (int j = rowEnd; j >= rowBegin; j--) {
 					res.add(matrix[j][colBegin]);
 				}
-			//}
+			}
 			colBegin++;
 		}
 
 		return res;
+	}
+
+	public int _58_lengthOfLastWord(String s) {
+		if (s == null || s.isEmpty())
+			return 0;
+
+		String[] ss = s.split(" ");
+
+		return ss[ss.length - 1].length();
+	}
+
+	public String _60_getPermutation(int n, int k) {
+		int[] nums = IntStream.range(1, n + 1).toArray();
+		List<List<Integer>> results = new ArrayList<>();
+
+		_60_getPermutation_Backtracking(results, new ArrayList<>(), nums);
+
+		return results.get(k - 1).stream().map(p -> String.valueOf(p)).collect(Collectors.joining());
+	}
+
+	private void _60_getPermutation_Backtracking(List<List<Integer>> results, List<Integer> tmp, int[] nums) {
+		if (tmp.size() == nums.length) {
+			results.add(new ArrayList<>(tmp));
+		} else {
+			for (int i = 0; i < nums.length; i++) {
+				if (tmp.contains(nums[i]))
+					continue;
+
+				tmp.add(nums[i]);
+				_60_getPermutation_Backtracking(results, tmp, nums);
+				tmp.remove(tmp.size() - 1);
+			}
+		}
+	}
+
+	public ListNode _61_rotateRight(ListNode head, int k) {
+		if (head == null || k == 0)
+			return head;
+
+		ListNode current = head;
+		int length = 1;
+
+		while (current.next != null) {
+			length++;
+			current = current.next;
+		}
+
+		current.next = head;
+
+		k = k % length;
+		for (int i = 0; i < length - k; i++)
+			current = current.next;
+
+		ListNode newH = current.next;
+		current.next = null;
+
+		return newH;
+	}
+
+	public int[] _66_plusOne(int[] digits) {
+		int carry = 0;
+
+		for (int i = digits.length - 1; i >= 0; i--) {
+			if (digits[i] == 9) {
+				carry++;
+				digits[i] = 0;
+				break;
+			} else {
+				digits[i] = digits[i] + 1;
+				break;
+			}
+		}
+
+		if (carry != 0) {
+			int[] nDigits = new int[digits.length + 1];
+			nDigits[0] = 1;
+			return nDigits;
+		}
+
+		return digits;
+	}
+
+	public String _67_addBinary(String a, String b) {
+		int i = a.length() - 1;
+		int j = b.length() - 1;
+		int carry = 0;
+		int sum = 0;
+
+		StringBuilder sb = new StringBuilder();
+
+		while (i >= 0 || j >= 0) {
+			sum = carry;
+
+			if (i >= 0)
+				sum += Integer.parseInt(Character.toString(a.charAt(i--)));
+			if (j >= 0)
+				sum += Integer.valueOf(Character.toString(b.charAt(j--)));
+
+//			if (sum == 0) {
+//				sb.append('0');
+//				carry = 0;
+//			} else if (sum == 1) {
+//				sb.append('1');
+//				carry = 0;
+//			} else if (sum == 2) {
+//				sb.append('0');
+//				carry = 1;
+//			} else {
+//				sb.append('1');
+//				carry = 1;
+//			}
+			sb.append(sum % 2);
+			carry = sum / 2;
+		}
+
+		if (carry != 0)
+			sb.append('1');
+
+		return sb.reverse().toString();
+	}
+
+	public int _69_mySqrt(int x) {
+		if (x == 0)
+			return 0;
+
+		int l = 1;
+		int r = x;
+		int ans = -1;
+
+		while (l <= r) {
+			int mid = (l + r) / 2;
+
+			if (mid * mid < x) {
+				l = mid + 1;
+				ans = mid;
+			} else if (mid * mid > x)
+				r = mid - 1;
+			else
+				return mid;
+		}
+		return ans;
+	}
+
+	public int _70_climbStairs(int n) {
+		if (n == 0)
+			return 0;
+		if (n == 1)
+			return 1;
+		if (n == 2)
+			return 2;
+
+		int first = 1; // one combination
+		int second = 2;// two combination
+
+		for (int i = 3; i <= n; i++) {
+			int third = first + second;
+
+			first = second;
+			second = third;
+		}
+
+		return second;
 	}
 }

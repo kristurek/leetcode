@@ -5,11 +5,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
@@ -391,4 +393,71 @@ public class SolutionTest {
 				is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
 	}
 
+	@Test
+	void _58_lengthOfLastWord() {
+		assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
+	}
+
+	@Test
+	void _60_getPermutation() {
+		assertEquals("213", solution._60_getPermutation(3, 3));
+	}
+
+	@Test
+	void _61_rotateRight() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+
+		head = solution._61_rotateRight(head, 2);
+
+		assertEquals(3, head.val);
+		assertEquals(4, head.next.val);
+		assertEquals(1, head.next.next.val);
+		assertEquals(2, head.next.next.next.val);
+		assertNull(head.next.next.next.next);
+	}
+
+	@Test
+	void _61_rotateRight2() {
+		ListNode head = new ListNode(0);
+		head.next = new ListNode(1);
+		head.next.next = new ListNode(2);
+
+		head = solution._61_rotateRight(head, 4);
+
+		assertEquals(2, head.val);
+		assertEquals(0, head.next.val);
+		assertEquals(1, head.next.next.val);
+		assertNull(head.next.next.next);
+	}
+
+	@Test
+	void _66_plusOne() {
+		assertArrayEquals(IntStream.of(1, 0, 0, 0).toArray(), solution._66_plusOne(IntStream.of(9, 9, 9).toArray()));
+		assertArrayEquals(IntStream.of(9, 9, 1).toArray(), solution._66_plusOne(IntStream.of(9, 9, 0).toArray()));
+	}
+
+	@Test
+	void _67_addBinary() {
+		assertEquals("100", solution._67_addBinary("1", "11"));
+	}
+
+	@Test
+	void _69_mySqrt() {
+		assertEquals(2, solution._69_mySqrt(8));
+		assertEquals(2, solution._69_mySqrt(4));
+		assertEquals(4, solution._69_mySqrt(16));
+	}
+
+	@Test
+	void _70_climbStairs() {
+		assertEquals(0, solution._70_climbStairs(0));
+		assertEquals(1, solution._70_climbStairs(1));
+		assertEquals(2, solution._70_climbStairs(2));
+		assertEquals(3, solution._70_climbStairs(3));
+		assertEquals(5, solution._70_climbStairs(4));
+		assertEquals(8, solution._70_climbStairs(5));
+	}
 }

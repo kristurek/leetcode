@@ -32,3 +32,6 @@ build
 
 /bin/
 
+/src/main/java/com/kristurek/leetcode/temp/*.*
+/src/test/java/com/kristurek/leetcode/temp/*.*
+
