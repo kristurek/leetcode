@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution {
 
@@ -1254,4 +1255,342 @@ public class Solution {
 
 		return second;
 	}
+
+	public String _71_simplifyPath(String path) {
+		Deque<String> stack = new LinkedList<>();
+		Set<String> skip = new HashSet<>(Arrays.asList("..", ".", ""));
+
+		for (String dir : path.split("/")) {
+			if (dir.equals("..") && !stack.isEmpty())
+				stack.pop();
+			else if (skip.contains(dir))
+				;
+			else
+				stack.push(dir);
+		}
+
+		String res = "";
+		for (String dir : stack)
+			res = "/" + dir + res;
+
+		return res.isEmpty() ? "/" : res;
+	}
+
+	public boolean _74_searchMatrix(int[][] matrix, int target) {
+		if (matrix.length == 0 || matrix[0].length == 0)
+			return false;
+
+		int rLength = matrix.length;
+		int cLength = matrix[0].length;
+
+		int l = 0;
+		int r = cLength * rLength - 1;
+
+		while (l <= r) {
+			int mid = l + (r - l) / 2;// 1,2,3,4, ->5<- ,6,7,8,9 --- 5value->4index --- 4/3=1 4%3=1 [i][j]=[1][1]=5
+
+			int midValue = matrix[mid / cLength][mid % cLength];
+			if (midValue < target)
+				l = mid + 1;
+			else if (midValue > target)
+				r = mid - 1;
+			else
+				return true;
+		}
+
+		return false;
+	}
+
+	public void _75_sortColors(int[] nums) {
+		if (nums == null || nums.length <= 1)
+			return;
+		_75_sortColorsQuickSort(nums, 0, nums.length - 1);
+	}
+
+	private void _75_sortColorsQuickSort(int[] nums, int left, int right) {
+		int i = left;
+		int j = right;
+		int pivot = left;// + (right - left) / 2;
+
+		while (i <= j) {
+			while (nums[i] < nums[pivot])
+				i++;
+			while (nums[j] > nums[pivot])
+				j--;
+
+			if (i <= j) {
+				int tmp = nums[i];
+				nums[i] = nums[j];
+				nums[j] = tmp;
+
+				i++;
+				j--;
+			}
+		}
+
+		if (j > left)
+			_75_sortColorsQuickSort(nums, left, j);
+		if (i < right)
+			_75_sortColorsQuickSort(nums, i, right);
+	}
+
+	public List<List<Integer>> _77_combine(int n, int k) {
+		int[] nums = IntStream.range(1, n + 1).toArray();
+
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		_77_combine_backtracking(results, new ArrayList<Integer>(), k, nums, 0);
+
+		return results;
+	}
+
+	private void _77_combine_backtracking(List<List<Integer>> results, ArrayList<Integer> tmp, int k, int[] nums,
+			int from) {
+		if (tmp.size() == k)
+			results.add(new ArrayList<>(tmp));
+		else {
+			for (int i = from; i < nums.length; i++) {
+				if (tmp.contains(nums[i]))
+					continue;
+
+				tmp.add(nums[i]);
+				_77_combine_backtracking(results, tmp, k, nums, i);
+				tmp.remove(tmp.size() - 1);
+			}
+		}
+	}
+
+	public int _80_removeDuplicates(int[] nums) {
+		int j = 1;
+		int count = 1;
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i - 1] == nums[i])
+				count++;
+			else
+				count = 1;
+
+			if (count <= 2) {
+				nums[j++] = nums[i];
+			}
+		}
+		return j;
+	}
+
+	public boolean _81_search(int[] nums, int target) {
+		if (nums == null || nums.length == 0)
+			return false;
+
+		int l = 0, r = nums.length - 1;
+		while (l <= r) {
+			int mid = l + (r - l) / 2;
+			if (nums[mid] == target)
+				return true;
+			if (nums[mid] == nums[r])
+				r--;
+			else if (nums[mid] < nums[r]) {
+				if (target > nums[mid] && target <= nums[r])
+					l = mid + 1;
+				else
+					r = mid - 1;
+			} else {
+				if (target >= nums[l] && target < nums[mid])
+					r = mid - 1;
+				else
+					l = mid + 1;
+			}
+		}
+		return false;
+	}
+
+	public ListNode _82_deleteDuplicates(ListNode head) {
+		ListNode dummy = new ListNode(0);
+		ListNode fast = head;
+		ListNode slow = dummy;
+
+		slow.next = fast;
+		while (fast != null) {
+			while (fast.next != null && fast.val == fast.next.val) {
+				fast = fast.next; // while loop to find the last node of the dups.
+			}
+			if (slow.next != fast) { // duplicates detected.
+				slow.next = fast.next; // remove the dups.
+				fast = slow.next; // reposition the fast pointer.
+			} else { // no dup, move down both pointer.
+				slow = slow.next;
+				fast = fast.next;
+			}
+
+		}
+		return dummy.next;
+	}
+
+	public ListNode _83_deleteDuplicates(ListNode head) {
+		ListNode current = head;
+		while (current != null && current.next != null) {
+			if (current.val == current.next.val)
+				current.next = current.next.next;
+			else
+				current = current.next;
+		}
+
+		return head;
+	}
+
+	public ListNode _86_partition(ListNode head, int x) {
+		ListNode beforeHead = new ListNode(-1);
+		ListNode before = beforeHead;
+		ListNode afterHead = new ListNode(-1);
+		ListNode after = afterHead;
+
+		while (head != null) {
+			if (head.val < x) {
+				before.next = head;
+				before = before.next;
+			} else {
+				after.next = head;
+				after = after.next;
+			}
+
+			head = head.next;
+		}
+
+		after.next = null;
+		before.next = afterHead.next;
+		return beforeHead.next;
+	}
+
+	public void _88_merge(int[] nums1, int m, int[] nums2, int n) {
+		int i = m - 1;
+		int j = n - 1;
+		int k = m + n - 1;
+
+		while (k >= 0) {
+			if (i >= 0 && j < 0)
+				nums1[k--] = nums1[i--];
+			else if (i < 0 && j >= 0)
+				nums1[k--] = nums2[j--];
+			else {
+				if (nums1[i] > nums2[j])
+					nums1[k--] = nums1[i--];
+				else if (nums1[i] < nums2[j])
+					nums1[k--] = nums2[j--];
+				else {
+					nums1[k--] = nums1[i--];
+					nums1[k--] = nums2[j--];
+				}
+			}
+		}
+	}
+
+	public ListNode _92_reverseBetween(ListNode head, int m, int n) {
+		ListNode dummy = new ListNode(0);
+		dummy.next = head;
+
+		ListNode tail = dummy;
+		ListNode previousTail = null;
+		for (int i = 0; i < m; i++) {
+			previousTail = tail;
+			tail = tail.next;
+		}
+
+		ListNode current = tail;
+		ListNode previous = previousTail;
+		ListNode tmp;
+
+		for (int i = m; i <= n; i++) {
+			tmp = current.next;
+			current.next = previous;
+			previous = current;
+			current = tmp;
+		}
+
+		previousTail.next = previous;
+		tail.next = current;
+
+		return dummy.next;
+	}
+
+	public List<Integer> _94_inorderTraversal(TreeNode root) {
+		List<Integer> results = new ArrayList<Integer>();
+		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+
+		TreeNode current = root;
+
+		while (!queue.isEmpty() || current != null) {
+			if (current != null) {
+				queue.addLast(current);
+				current = current.left;
+			} else {
+				current = queue.removeLast();
+				results.add(current.val);
+				current = current.right;
+			}
+		}
+
+		return results;
+	}
+
+	public boolean _98_isValidBST(TreeNode root) {
+		List<Integer> results = new ArrayList<Integer>();
+		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+
+		TreeNode current = root;
+		TreeNode previous = null;
+
+		while (!queue.isEmpty() || current != null) {
+			if (current != null) {
+				queue.addLast(current);
+				current = current.left;
+			} else {
+				current = queue.removeLast();
+
+				if (previous != null && current.val <= previous.val)
+					return false;
+				previous = current;
+
+				results.add(current.val);
+				current = current.right;
+			}
+		}
+
+		return true;
+	}
+
+	public boolean _100_isSameTree(TreeNode p, TreeNode q) {
+		Deque<TreeNode> queue1 = new LinkedList<>();
+		Deque<TreeNode> queue2 = new LinkedList<>();
+
+		queue1.addLast(p);
+		queue2.addLast(q);
+
+		while (!queue1.isEmpty() && !queue2.isEmpty()) {
+			TreeNode tn1 = queue1.removeFirst();
+			TreeNode tn2 = queue2.removeFirst();
+
+			if (tn1.left != null && tn2.left == null)
+				return false;
+			if (tn1.left == null && tn2.left != null)
+				return false;
+			if (tn1.right != null && tn2.right == null)
+				return false;
+			if (tn1.right == null && tn2.right != null)
+				return false;
+			if (tn1.val != tn2.val)
+				return false;
+			
+			
+			if (tn1.left != null)
+				queue1.addLast(tn1.left);
+			if (tn1.right != null)
+				queue1.addLast(tn1.right);
+
+			if (tn2.left != null)
+				queue2.addLast(tn2.left);
+			if (tn2.right != null)
+				queue2.addLast(tn2.right);
+		}
+
+		return queue1.isEmpty() && queue2.isEmpty();
+	}
+
 }

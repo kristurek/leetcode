@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.TreeNode;
 
 public class SolutionTest {
 
@@ -459,5 +460,213 @@ public class SolutionTest {
 		assertEquals(3, solution._70_climbStairs(3));
 		assertEquals(5, solution._70_climbStairs(4));
 		assertEquals(8, solution._70_climbStairs(5));
+	}
+
+	@Test
+	void _71_simplifyPath() {
+		assertEquals("/home", solution._71_simplifyPath("/home/"));
+		assertEquals("/", solution._71_simplifyPath("/../"));
+		assertEquals("/home/foo", solution._71_simplifyPath("/home//foo/"));
+		assertEquals("/c", solution._71_simplifyPath("/a/./b/../../c/"));
+		assertEquals("/c", solution._71_simplifyPath("/a/../../b/../c//.//"));
+		assertEquals("/a/b/c", solution._71_simplifyPath("/a//b////c/d//././/.."));
+	}
+
+	@Test
+	void _74_searchMatrix() {
+		assertTrue(solution._74_searchMatrix(
+				new int[][] { new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 7, 8, 9 } }, 7));
+	}
+
+	@Test
+	void _75_sortColors() {
+		int[] nums = new int[] { 2, 0, 2, 1, 1, 0 };
+
+		solution._75_sortColors(nums);
+
+		assertArrayEquals(new int[] { 0, 0, 1, 1, 2, 2 }, nums);
+	}
+
+	@Test
+	void _75_sortColors2() {
+		int[] nums = new int[] { 2, 0, 1 };
+
+		solution._75_sortColors(nums);
+
+		assertArrayEquals(new int[] { 0, 1, 2 }, nums);
+	}
+
+	@Test
+	void _75_sortColors3() {
+		int[] nums = new int[] { 1, 2, 0, 0 };
+
+		solution._75_sortColors(nums);
+
+		// System.out.println(Arrays.toString(nums));
+
+		assertArrayEquals(new int[] { 0, 0, 1, 2 }, nums);
+	}
+
+	@Test
+	void _77_combine() {
+		List<List<Integer>> answer = new ArrayList<>();
+		answer.add(Arrays.asList(1, 2));
+		answer.add(Arrays.asList(1, 3));
+		answer.add(Arrays.asList(1, 4));
+		answer.add(Arrays.asList(2, 3));
+		answer.add(Arrays.asList(2, 4));
+		answer.add(Arrays.asList(3, 4));
+
+		assertThat(solution._77_combine(4, 2), is(answer));
+	}
+
+	@Test
+	void _80_removeDuplicates() {
+		int[] nums = { 1, 1, 1, 2, 2, 3 };
+		int length = solution._80_removeDuplicates(nums);
+
+		assertEquals(5, length);
+		assertEquals(1, nums[0]);
+		assertEquals(1, nums[1]);
+		assertEquals(2, nums[2]);
+		assertEquals(2, nums[3]);
+		assertEquals(3, nums[4]);
+	}
+
+	@Test
+	void _81_search() {
+		assertTrue(solution._81_search(new int[] { 2, 5, 6, 0, 0, 1, 2 }, 0));
+		assertFalse(solution._81_search(new int[] { 2, 5, 6, 0, 0, 1, 2 }, 3));
+		assertTrue(solution._81_search(new int[] { 1, 1, 3, 1 }, 3));
+		assertTrue(solution._81_search(new int[] { 3, 1, 1 }, 3));
+	}
+
+	@Test
+	void _82_deleteDuplicates() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(1);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+
+		head = solution._82_deleteDuplicates(head);
+
+		assertEquals(3, head.val);
+		assertEquals(4, head.next.val);
+		assertNull(head.next.next);
+
+	}
+
+	@Test
+	void _83_deleteDuplicates() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(1);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+
+		head = solution._83_deleteDuplicates(head);
+
+		assertEquals(1, head.val);
+		assertEquals(3, head.next.val);
+		assertEquals(4, head.next.next.val);
+		assertNull(head.next.next.next);
+
+	}
+
+	@Test
+	void _86_partition() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(4);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(2);
+		head.next.next.next.next = new ListNode(5);
+		head.next.next.next.next.next = new ListNode(2);
+
+		head = solution._86_partition(head, 3);
+
+		assertEquals(1, head.val);
+		assertEquals(2, head.next.val);
+		assertEquals(2, head.next.next.val);
+		assertEquals(4, head.next.next.next.val);
+		assertEquals(3, head.next.next.next.next.val);
+		assertEquals(5, head.next.next.next.next.next.val);
+		assertNull(head.next.next.next.next.next.next);
+	}
+
+	@Test
+	void _88_merge() {
+		int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
+		int[] nums2 = new int[] { 2, 5, 6 };
+		int[] nums3 = new int[] { 1, 2, 2, 3, 5, 6 };
+
+		solution._88_merge(nums1, 3, nums2, 3);
+
+		assertArrayEquals(nums3, nums1);
+	}
+
+	@Test
+	void _92_reverseBetween() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = new ListNode(5);
+		head.next.next.next.next.next = new ListNode(6);
+
+		head = solution._92_reverseBetween(head, 1, 6);
+
+		assertEquals(6, head.val);
+		assertEquals(5, head.next.val);
+		assertEquals(4, head.next.next.val);
+		assertEquals(3, head.next.next.next.val);
+		assertEquals(2, head.next.next.next.next.val);
+		assertEquals(1, head.next.next.next.next.next.val);
+		assertNull(head.next.next.next.next.next.next);
+	}
+
+	@Test
+	void _94_inorderTraversal() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		List<Integer> values = solution._94_inorderTraversal(root);
+
+		assertThat(values, is(Arrays.asList(4, 2, 5, 1, 6, 3, 7)));
+	}
+
+	@Test
+	void _98_isValidBST() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		assertFalse(solution._98_isValidBST(root));
+	}
+
+	@Test
+	void _100_isSameTree() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		assertTrue(solution._100_isSameTree(root, root));
 	}
 }

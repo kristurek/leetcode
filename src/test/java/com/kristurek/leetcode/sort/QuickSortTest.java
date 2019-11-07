@@ -43,6 +43,14 @@ public class QuickSortTest {
 	}
 
 	@Test
+	void quickSort1_5() {
+		int[] arr = { 4, 2, 7, 5, 9, 1, 3, 6, 8 };
+		QuickSort.sort2(arr);
+
+		assertArrayEquals(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, arr);
+	}
+
+	@Test
 	void quickSort2() {
 		int[] arr = new int[] { 9, 7, 1, 2, 8, 6, 4, 3, 5, 10 };
 

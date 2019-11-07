@@ -35,11 +35,11 @@ public class QuickSort {
 				j--;
 			}
 		}
-		if (i < right)// i++, i++, i++ so must be < right
-			quickSort1(arr, left, i);
 
-		if (j > left)// j--,j--,j-- so must be > left
-			quickSort1(arr, j, right);
+		if (j > left)
+			quickSort1(arr, left, j);
+		if (i < right)
+			quickSort1(arr, i, right);
 	}
 
 	private static void quickSort2(int[] arr, int left, int right) {
