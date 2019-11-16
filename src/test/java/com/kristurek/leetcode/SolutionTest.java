@@ -10,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
 import com.kristurek.leetcode.common.ListNode;
-import com.kristurek.leetcode.common.TreeNode;
 
 public class SolutionTest {
 
@@ -267,79 +267,6 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _78_subsets() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList());
-		answer.add(Arrays.asList(1));
-		answer.add(Arrays.asList(1, 2));
-		answer.add(Arrays.asList(1, 2, 3));
-		answer.add(Arrays.asList(1, 3));
-		answer.add(Arrays.asList(2));
-		answer.add(Arrays.asList(2, 3));
-		answer.add(Arrays.asList(3));
-
-		assertThat(solution._78_subsets(new int[] { 1, 2, 3 }), is(answer));
-	}
-
-	@Test
-	void _90_subsetsWithDup() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList());
-		answer.add(Arrays.asList(1));
-		answer.add(Arrays.asList(1, 2));
-		answer.add(Arrays.asList(1, 2, 2));
-		answer.add(Arrays.asList(2));
-		answer.add(Arrays.asList(2, 2));
-
-		assertThat(solution._90_subsetsWithDup(new int[] { 2, 1, 2 }), is(answer));
-	}
-
-	@Test
-	void _46_permute() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList(1, 2));
-		answer.add(Arrays.asList(2, 1));
-
-		assertThat(solution._46_permute(new int[] { 1, 2 }), is(answer));
-	}
-
-	@Test
-	void _47_permuteUnique() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList(1, 1, 2));
-		answer.add(Arrays.asList(1, 2, 1));
-		answer.add(Arrays.asList(2, 1, 1));
-
-		assertThat(solution._47_permuteUnique(new int[] { 1, 2, 1 }), is(answer));
-	}
-
-	@Test
-	void _39_combinationSum() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList(2, 2, 3));
-		answer.add(Arrays.asList(7));
-
-		assertThat(solution._39_combinationSum(new int[] { 2, 3, 6, 7 }, 7), is(answer));
-	}
-
-	@Test
-	void _40_combinationSum2() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList(7));
-
-		assertThat(solution._40_combinationSum2(new int[] { 2, 3, 6, 7 }, 7), is(answer));
-	}
-
-	@Test
-	void _131_partition() {
-		List<List<String>> answer = new ArrayList<>();
-		answer.add(Arrays.asList("a", "a", "b"));
-		answer.add(Arrays.asList("aa", "b"));
-
-		assertThat(solution._131_partition("aab"), is(answer));
-	}
-
-	@Test
 	void _41_firstMissingPositive() {
 		assertEquals(1, solution._41_firstMissingPositive(new int[] { 3, 7, 8, 9 }));
 		assertEquals(2, solution._41_firstMissingPositive(new int[] { 1, 3, 7, 8, 9 }));
@@ -397,11 +324,6 @@ public class SolutionTest {
 	@Test
 	void _58_lengthOfLastWord() {
 		assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
-	}
-
-	@Test
-	void _60_getPermutation() {
-		assertEquals("213", solution._60_getPermutation(3, 3));
 	}
 
 	@Test
@@ -508,19 +430,6 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _77_combine() {
-		List<List<Integer>> answer = new ArrayList<>();
-		answer.add(Arrays.asList(1, 2));
-		answer.add(Arrays.asList(1, 3));
-		answer.add(Arrays.asList(1, 4));
-		answer.add(Arrays.asList(2, 3));
-		answer.add(Arrays.asList(2, 4));
-		answer.add(Arrays.asList(3, 4));
-
-		assertThat(solution._77_combine(4, 2), is(answer));
-	}
-
-	@Test
 	void _80_removeDuplicates() {
 		int[] nums = { 1, 1, 1, 2, 2, 3 };
 		int length = solution._80_removeDuplicates(nums);
@@ -624,49 +533,72 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _94_inorderTraversal() {
-		TreeNode root = new TreeNode(1);
+	void _118_generate() {
+		List<List<Integer>> results = solution._118_generate(5);
+		List<List<Integer>> allRows = new LinkedList<>();
+		allRows.add(Arrays.asList(1));
+		allRows.add(Arrays.asList(1, 1));
+		allRows.add(Arrays.asList(1, 2, 1));
+		allRows.add(Arrays.asList(1, 3, 3, 1));
+		allRows.add(Arrays.asList(1, 4, 6, 4, 1));
 
-		root.left = new TreeNode(2);
-		root.right = new TreeNode(3);
-
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(6);
-		root.right.right = new TreeNode(7);
-
-		List<Integer> values = solution._94_inorderTraversal(root);
-
-		assertThat(values, is(Arrays.asList(4, 2, 5, 1, 6, 3, 7)));
+		assertThat(results, is(allRows));
 	}
 
 	@Test
-	void _98_isValidBST() {
-		TreeNode root = new TreeNode(1);
+	void _119_getRow() {
+		List<Integer> results = solution._119_getRow(4);
 
-		root.left = new TreeNode(2);
-		root.right = new TreeNode(3);
-
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(6);
-		root.right.right = new TreeNode(7);
-
-		assertFalse(solution._98_isValidBST(root));
+		assertThat(results, is(Arrays.asList(1, 4, 6, 4, 1)));
 	}
 
 	@Test
-	void _100_isSameTree() {
-		TreeNode root = new TreeNode(1);
+	void _125_isPalindrome() {
+		assertTrue(solution._125_isPalindrome("A man, a plan, a canal: Panama"));
+		assertFalse(solution._125_isPalindrome("race a car"));
+	}
 
-		root.left = new TreeNode(2);
-		root.right = new TreeNode(3);
+	@Test
+	void _121_maxProfit() {
+		assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
+		assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
+	}
 
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(6);
-		root.right.right = new TreeNode(7);
+	@Test
+	void _122_maxProfit() {
+		assertEquals(7, solution._122_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
+		assertEquals(0, solution._122_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
+	}
 
-		assertTrue(solution._100_isSameTree(root, root));
+	@Test
+	void _136_singleNumber() {
+		assertEquals(1, solution._136_singleNumber(new int[] { 3, 5, 1, 2, 3, 5, 2 }));
+	}
+
+	@Test
+	void _137_singleNumber() {
+		assertEquals(1, solution._137_singleNumber(new int[] { 3, 5, 3, 5, 3, 1, 2, 3, 5, 2 }));
+	}
+
+	@Test
+	void _141_hasCycle() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = head.next;
+
+		assertTrue(solution._141_hasCycle(head));
+	}
+
+	@Test
+	void _142_detectCycle() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = head.next;
+
+		assertEquals(head.next, solution._142_detectCycle(head));
 	}
 }

@@ -9,10 +9,6 @@ public class QuickSort {
 		quickSort1(arr, 0, arr.length - 1);
 	}
 
-	public static void sort2(int[] arr) {
-		quickSort2(arr, 0, arr.length - 1);
-	}
-
 	private static void quickSort1(int[] arr, int left, int right) {
 		int i = left;
 		int j = right;
@@ -40,6 +36,10 @@ public class QuickSort {
 			quickSort1(arr, left, j);
 		if (i < right)
 			quickSort1(arr, i, right);
+	}
+
+	public static void sort2(int[] arr) {
+		quickSort2(arr, 0, arr.length - 1);
 	}
 
 	private static void quickSort2(int[] arr, int left, int right) {

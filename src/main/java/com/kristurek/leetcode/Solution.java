@@ -11,11 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.kristurek.leetcode.common.ListNode;
-import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution {
 
@@ -673,178 +670,6 @@ public class Solution {
 		return true;
 	}
 
-	public List<List<Integer>> _78_subsets(int[] nums) {
-		List<List<Integer>> results = new ArrayList<>();
-
-		_78_subsets_backtracking(results, new ArrayList<Integer>(), 0, nums);
-
-		return results;
-	}
-
-	private void _78_subsets_backtracking(List<List<Integer>> results, List<Integer> tmpResult, int from, int[] nums) {
-		results.add(new ArrayList<>(tmpResult));
-
-		for (int i = from; i < nums.length; i++) {
-			tmpResult.add(nums[i]);
-			_78_subsets_backtracking(results, tmpResult, i + 1, nums);
-			tmpResult.remove(tmpResult.size() - 1);
-		}
-	}
-
-	public List<List<Integer>> _90_subsetsWithDup(int[] nums) {
-		List<List<Integer>> results = new ArrayList<>();
-
-		Arrays.sort(nums);
-
-		_90_subsetsWithDup_backtracking(results, new ArrayList<Integer>(), 0, nums);
-
-		return results;
-	}
-
-	private void _90_subsetsWithDup_backtracking(List<List<Integer>> results, List<Integer> tmpResult, int from,
-			int[] nums) {
-		results.add(new ArrayList<>(tmpResult));
-
-		for (int i = from; i < nums.length; i++) {
-			if (i > from && nums[i] == nums[i - 1])
-				continue;
-
-			tmpResult.add(nums[i]);
-			_90_subsetsWithDup_backtracking(results, tmpResult, i + 1, nums);
-			tmpResult.remove(tmpResult.size() - 1);
-		}
-	}
-
-	public List<List<Integer>> _46_permute(int[] nums) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		_46_permute_backtracking(results, new ArrayList<>(), nums);
-
-		return results;
-	}
-
-	private void _46_permute_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums) {
-		if (tmpList.size() == nums.length)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = 0; i < nums.length; i++) {
-				if (tmpList.contains(nums[i]))
-					continue;
-
-				tmpList.add(nums[i]);
-				_46_permute_backtracking(results, tmpList, nums);
-				tmpList.remove(tmpList.size() - 1);
-			}
-		}
-	}
-
-	public List<List<Integer>> _47_permuteUnique(int[] nums) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		Arrays.sort(nums);
-
-		_47_permuteUnique_backtracking(results, new ArrayList<>(), nums, new boolean[nums.length]);
-
-		return results;
-	}
-
-	private void _47_permuteUnique_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
-			boolean[] used) {
-		if (tmpList.size() == nums.length)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = 0; i < nums.length; i++) {
-				if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
-					continue;
-
-				tmpList.add(nums[i]);
-				used[i] = true;
-				_47_permuteUnique_backtracking(results, tmpList, nums, used);
-				tmpList.remove(tmpList.size() - 1);
-				used[i] = false;
-			}
-		}
-	}
-
-	public List<List<Integer>> _39_combinationSum(int[] candidates, int target) {
-
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		_39_combinationSum_backtracking(results, new ArrayList<>(), candidates, target, 0);
-
-		return results;
-	}
-
-	private void _39_combinationSum_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
-			int remained, int from) {
-		if (remained < 0)
-			return;
-		else if (remained == 0)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = from; i < nums.length; i++) {
-				tmpList.add(nums[i]);
-				_39_combinationSum_backtracking(results, tmpList, nums, remained - nums[i], i);
-				tmpList.remove(tmpList.size() - 1);
-			}
-		}
-	}
-
-	public List<List<Integer>> _40_combinationSum2(int[] candidates, int target) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		Arrays.sort(candidates);
-
-		_40_combinationSum2_backtracking(results, new ArrayList<>(), candidates, target, 0);
-
-		return results;
-	}
-
-	private void _40_combinationSum2_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
-			int remained, int from) {
-		if (remained < 0)
-			return;
-		else if (remained == 0)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = from; i < nums.length; i++) {
-				if (i > from && nums[i] == nums[i - 1])
-					continue;
-
-				tmpList.add(nums[i]);
-				_40_combinationSum2_backtracking(results, tmpList, nums, remained - nums[i], i + 1);
-				tmpList.remove(tmpList.size() - 1);
-			}
-		}
-	}
-
-	public List<List<String>> _131_partition(String s) {
-		List<List<String>> list = new ArrayList<>();
-		_131_partition_backtracking(list, new ArrayList<>(), s, 0);
-		return list;
-	}
-
-	private void _131_partition_backtracking(List<List<String>> list, List<String> tempList, String s, int start) {
-		if (start == s.length())
-			list.add(new ArrayList<>(tempList));
-		else {
-			for (int i = start; i < s.length(); i++) {
-				if (_131_partition_isPalindrome(s, start, i)) {
-					tempList.add(s.substring(start, i + 1));
-					_131_partition_backtracking(list, tempList, s, i + 1);
-					tempList.remove(tempList.size() - 1);
-				}
-			}
-		}
-	}
-
-	private boolean _131_partition_isPalindrome(String s, int low, int high) {
-		while (low < high)
-			if (s.charAt(low++) != s.charAt(high--))
-				return false;
-		return true;
-	}
-
 	public int _41_firstMissingPositive(int[] nums) {
 		int start = 0;
 		int end = nums.length - 1;
@@ -1013,27 +838,18 @@ public class Solution {
 	}
 
 	public double _50_myPow(double x, int n) {
-		if (x == 0) {
-			return 0;
-		}
-		if (n == 0) {
+		double temp = x;
+		if (n == 0)
 			return 1;
+		temp = _50_myPow(x, n / 2);
+		if (n % 2 == 0)
+			return temp * temp;
+		else {
+			if (n > 0)
+				return x * temp * temp;
+			else
+				return (temp * temp) / x;
 		}
-
-		int nSign = n < 0 ? -1 : 1;
-		n = Math.abs(n);
-
-		double result = _50_myPow(x, n / 2);
-
-		if (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE)
-			return 0;
-
-		result *= result;
-		if (n % 2 != 0) {
-			result *= x;
-		}
-
-		return nSign < 0 ? 1 / result : result;
 	}
 
 	public int _53_maxSubArray(int[] nums) {
@@ -1103,30 +919,6 @@ public class Solution {
 		return ss[ss.length - 1].length();
 	}
 
-	public String _60_getPermutation(int n, int k) {
-		int[] nums = IntStream.range(1, n + 1).toArray();
-		List<List<Integer>> results = new ArrayList<>();
-
-		_60_getPermutation_Backtracking(results, new ArrayList<>(), nums);
-
-		return results.get(k - 1).stream().map(p -> String.valueOf(p)).collect(Collectors.joining());
-	}
-
-	private void _60_getPermutation_Backtracking(List<List<Integer>> results, List<Integer> tmp, int[] nums) {
-		if (tmp.size() == nums.length) {
-			results.add(new ArrayList<>(tmp));
-		} else {
-			for (int i = 0; i < nums.length; i++) {
-				if (tmp.contains(nums[i]))
-					continue;
-
-				tmp.add(nums[i]);
-				_60_getPermutation_Backtracking(results, tmp, nums);
-				tmp.remove(tmp.size() - 1);
-			}
-		}
-	}
-
 	public ListNode _61_rotateRight(ListNode head, int k) {
 		if (head == null || k == 0)
 			return head;
@@ -1154,6 +946,7 @@ public class Solution {
 	public int[] _66_plusOne(int[] digits) {
 		int carry = 0;
 
+		//fix this - loop no need
 		for (int i = digits.length - 1; i >= 0; i--) {
 			if (digits[i] == 9) {
 				carry++;
@@ -1161,7 +954,7 @@ public class Solution {
 				break;
 			} else {
 				digits[i] = digits[i] + 1;
-				break;
+				break;//just return digits in this place;
 			}
 		}
 
@@ -1334,32 +1127,6 @@ public class Solution {
 			_75_sortColorsQuickSort(nums, i, right);
 	}
 
-	public List<List<Integer>> _77_combine(int n, int k) {
-		int[] nums = IntStream.range(1, n + 1).toArray();
-
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		_77_combine_backtracking(results, new ArrayList<Integer>(), k, nums, 0);
-
-		return results;
-	}
-
-	private void _77_combine_backtracking(List<List<Integer>> results, ArrayList<Integer> tmp, int k, int[] nums,
-			int from) {
-		if (tmp.size() == k)
-			results.add(new ArrayList<>(tmp));
-		else {
-			for (int i = from; i < nums.length; i++) {
-				if (tmp.contains(nums[i]))
-					continue;
-
-				tmp.add(nums[i]);
-				_77_combine_backtracking(results, tmp, k, nums, i);
-				tmp.remove(tmp.size() - 1);
-			}
-		}
-	}
-
 	public int _80_removeDuplicates(int[] nums) {
 		int j = 1;
 		int count = 1;
@@ -1510,87 +1277,145 @@ public class Solution {
 		return dummy.next;
 	}
 
-	public List<Integer> _94_inorderTraversal(TreeNode root) {
-		List<Integer> results = new ArrayList<Integer>();
-		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+	public List<List<Integer>> _118_generate(int numRows) {
+		List<List<Integer>> allRows = new LinkedList<>();
+		if (numRows == 0)
+			return allRows;
 
-		TreeNode current = root;
+		allRows.add(Arrays.asList(1));
+		if (numRows == 1)
+			return allRows;
 
-		while (!queue.isEmpty() || current != null) {
-			if (current != null) {
-				queue.addLast(current);
-				current = current.left;
-			} else {
-				current = queue.removeLast();
-				results.add(current.val);
-				current = current.right;
+		for (int i = 1; i < numRows; i++) {
+			List<Integer> row = new LinkedList<>();
+			row.add(1);
+			for (int j = 1; j < i; j++) {
+				row.add(allRows.get(i - 1).get(j - 1) + allRows.get(i - 1).get(j));
+			}
+			row.add(1);
+
+			allRows.add(row);
+		}
+
+		return allRows;
+	}
+
+	public List<Integer> _119_getRow(int rowIndex) {
+		List<Integer> row = new ArrayList<Integer>(rowIndex + 1);
+		for (int i = 0; i <= rowIndex; i++)
+			row.add(1);
+
+		for (int i = 2; i <= rowIndex; i++) {
+			row.set(rowIndex - i, 1);
+			for (int j = rowIndex + 1 - i; j < rowIndex; j++)
+				row.set(j, row.get(j) + row.get(j + 1));
+		}
+
+		return row;
+	}
+
+	public boolean _125_isPalindrome(String s) {
+		if (s == null)
+			return false;
+		if (s.isBlank())
+			return true;
+
+		s = s.replaceAll("[^A-Za-z0-9]", "");
+
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = s.length() - 1; i >= 0; i--)
+			sb.append(s.charAt(i));
+
+		return sb.toString().equalsIgnoreCase(s);
+	}
+
+	public int _121_maxProfit(int[] prices) {
+		if (prices == null || prices.length == 0)
+			return 0;
+
+		int min = prices[0];// buy stock by min value
+		int max = 0;// max profit -> buy min value sell max value
+
+		for (int i = 1; i < prices.length; i++) {
+			if (prices[i] < min)
+				min = prices[i];
+			else {
+				if (prices[i] - min > max)
+					max = prices[i] - min;
 			}
 		}
 
-		return results;
+		return max;
 	}
 
-	public boolean _98_isValidBST(TreeNode root) {
-		List<Integer> results = new ArrayList<Integer>();
-		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+	public int _122_maxProfit(int[] prices) {
+		int maxprofit = 0;
+		for (int i = 1; i < prices.length; i++) {
+			if (prices[i] > prices[i - 1]) // if we can buy[i-1] and sell[i] with some profit?
+				maxprofit += prices[i] - prices[i - 1];
+		}
+		return maxprofit;
+	}
 
-		TreeNode current = root;
-		TreeNode previous = null;
+	public int _136_singleNumber(int[] nums) {
+		Set<Integer> set = new HashSet<>();
 
-		while (!queue.isEmpty() || current != null) {
-			if (current != null) {
-				queue.addLast(current);
-				current = current.left;
-			} else {
-				current = queue.removeLast();
+		for (int i = 0; i < nums.length; i++) {
+			if (!set.contains(nums[i]))
+				set.add(nums[i]);
+			else
+				set.remove(nums[i]);
+		}
 
-				if (previous != null && current.val <= previous.val)
-					return false;
-				previous = current;
+		return set.stream().findFirst().get();
+	}
 
-				results.add(current.val);
-				current = current.right;
+	public int _137_singleNumber(int[] nums) {
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int i = 0; i < nums.length; i++) {
+			if (!map.containsKey(nums[i]))
+				map.put(nums[i], 1);
+			else {
+				if ((map.get(nums[i]) + 1) == 3)
+					map.remove(nums[i]);
+				else {
+					map.put(nums[i], map.get(nums[i]) + 1);
+				}
 			}
 		}
 
-		return true;
+		return map.entrySet().stream().findFirst().get().getKey();
 	}
 
-	public boolean _100_isSameTree(TreeNode p, TreeNode q) {
-		Deque<TreeNode> queue1 = new LinkedList<>();
-		Deque<TreeNode> queue2 = new LinkedList<>();
+	public boolean _141_hasCycle(ListNode head) {
+		Set<ListNode> set = new HashSet<>();
 
-		queue1.addLast(p);
-		queue2.addLast(q);
+		while (head != null) {
+			if (!set.contains(head))
+				set.add(head);
+			else
+				return true;
 
-		while (!queue1.isEmpty() && !queue2.isEmpty()) {
-			TreeNode tn1 = queue1.removeFirst();
-			TreeNode tn2 = queue2.removeFirst();
-
-			if (tn1.left != null && tn2.left == null)
-				return false;
-			if (tn1.left == null && tn2.left != null)
-				return false;
-			if (tn1.right != null && tn2.right == null)
-				return false;
-			if (tn1.right == null && tn2.right != null)
-				return false;
-			if (tn1.val != tn2.val)
-				return false;
-			
-			
-			if (tn1.left != null)
-				queue1.addLast(tn1.left);
-			if (tn1.right != null)
-				queue1.addLast(tn1.right);
-
-			if (tn2.left != null)
-				queue2.addLast(tn2.left);
-			if (tn2.right != null)
-				queue2.addLast(tn2.right);
+			head = head.next;
 		}
 
-		return queue1.isEmpty() && queue2.isEmpty();
+		return false;
 	}
 
+	public ListNode _142_detectCycle(ListNode head) {
+		Set<ListNode> set = new HashSet<>();
+
+		while (head != null) {
+			if (!set.contains(head))
+				set.add(head);
+			else
+				return head;
+
+			head = head.next;
+		}
+
+		return null;
+	}
 }
