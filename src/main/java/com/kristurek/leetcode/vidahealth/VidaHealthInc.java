@@ -3,6 +3,45 @@ package com.kristurek.leetcode.vidahealth;
 import java.util.HashSet;
 
 public class VidaHealthInc {
+
+	public static void main(String[] args) {
+		// 0 - water, 1 - land
+		int[][]  matrix= {
+					{0,1,0,0},
+					{1,1,0,0},
+					{0,1,0,0},
+					{0,0,0,1},
+					{0,0,1,1},
+					{0,0,1,1},
+					{0,0,1,1},
+				};
+		System.out.println("Max area = " + findMaxArea(matrix));
+	}
+	
+	public static int findMaxArea(int[][] matrix) {
+		int gMaxArea = Integer.MIN_VALUE;
+
+		for (int i = 0; i < matrix.length; i++)
+			for (int j = 0; j < matrix[0].length; j++) {
+				int lMaxArea = maxArea(matrix, i, j);
+				if (lMaxArea > gMaxArea)
+					gMaxArea = lMaxArea;
+			}
+
+		return gMaxArea;
+	}
+
+	private static int maxArea(int[][] matrix, int i, int j) {
+		if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && matrix[i][j] == 1) {
+			matrix[i][j] = 0;
+
+			return 1 + maxArea(matrix, i + 1, j) + maxArea(matrix, i - 1, j) + maxArea(matrix, i, j + 1)
+					+ maxArea(matrix, i, j - 1);
+
+		} else
+			return 0;
+	}
+
 	public static int solution(int[] A, int[] B, int M, int X, int Y) {
 		HashSet<Integer> floors = new HashSet<Integer>();
 
