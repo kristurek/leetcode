@@ -946,7 +946,7 @@ public class Solution {
 	public int[] _66_plusOne(int[] digits) {
 		int carry = 0;
 
-		//fix this - loop no need
+		// fix this - loop no need
 		for (int i = digits.length - 1; i >= 0; i--) {
 			if (digits[i] == 9) {
 				carry++;
@@ -954,7 +954,7 @@ public class Solution {
 				break;
 			} else {
 				digits[i] = digits[i] + 1;
-				break;//just return digits in this place;
+				break;// just return digits in this place;
 			}
 		}
 
@@ -1417,5 +1417,67 @@ public class Solution {
 		}
 
 		return null;
+	}
+
+	public int[] _167_twoSum(int[] numbers, int target) {
+		Map<Integer, Integer> map = new HashMap<>();// Map.Entry<Value, Index>
+
+		for (int i = 0; i < numbers.length; i++) {
+			int searchNumber = target - numbers[i];
+			if (map.containsKey(searchNumber))
+				return new int[] { map.get(searchNumber), i + 1 };
+			else
+				map.put(numbers[i], i + 1);
+		}
+
+		throw new IllegalArgumentException("No found");
+	}
+
+	public String _168_convertToTitle(int n) {
+		StringBuilder result = new StringBuilder();
+
+		while (n-- > 0) { // n-- ---> if n=1 then n-- 'A'(65) + 0%26(0)=='A'(65)
+			result.append((char) ('A' + (n % 26))); // 65 + (n % 26)
+			n /= 26;
+		}
+
+		return result.reverse().toString();
+	}
+
+	public int _169_majorityElement(int[] nums) {
+		Map<Integer, Integer> map = new HashMap<>(); // Map.Entry<Num,Count>
+		Map.Entry<Integer, Integer> majorElement = null;
+
+		for (int num : nums)
+			if (map.containsKey(num))
+				map.put(num, map.get(num) + 1);
+			else
+				map.put(num, 1);
+
+		for (Map.Entry<Integer, Integer> entry : map.entrySet())
+			if (majorElement == null || entry.getValue() > majorElement.getValue())
+				majorElement = entry;
+
+		return majorElement.getKey();
+	}
+
+	public int _171_titleToNumber(String s) {
+		int num = 0;
+
+		for (int i = 0; i < s.length(); i++)
+			num = num * 26 + s.charAt(i) - 64; // 64 below 'A' 65
+
+		return num;
+	}
+
+	public int _172_trailingZeroes(int n) {
+		int count = 0;
+
+		while (n > 0) {
+			n = n / 5;
+			count += n;
+		}
+
+		return count;
 	}
 }

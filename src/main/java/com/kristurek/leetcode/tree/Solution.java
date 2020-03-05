@@ -297,10 +297,8 @@ public class Solution {
 
 		Deque<Integer> sumOfPaths = new LinkedList<Integer>();
 		Deque<TreeNode> queue = new LinkedList<TreeNode>();
-		Deque<TreeNode> queue2 = new LinkedList<TreeNode>();
-
+		
 		queue.addLast(root);
-		queue2.addLast(root);
 		sumOfPaths.push(root.val);
 
 		while (!queue.isEmpty()) {

@@ -601,4 +601,41 @@ public class SolutionTest {
 
 		assertEquals(head.next, solution._142_detectCycle(head));
 	}
+
+	@Test
+	void _167_twoSum() {
+		assertArrayEquals(new int[] { 1, 2 }, solution._167_twoSum(new int[] { 2, 7, 11, 15 }, 9));
+	}
+
+	@Test
+	void _168_convertToTitle() {
+		assertEquals("A", solution._168_convertToTitle(1));
+		assertEquals("Z", solution._168_convertToTitle(26));
+		assertEquals("AA", solution._168_convertToTitle(27));
+		assertEquals("AMJ", solution._168_convertToTitle(1024));
+	}
+
+	@Test
+	void _169_majorityElement() {
+		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 2, 3).toArray()));
+		assertEquals(2, solution._169_majorityElement(IntStream.of(2, 2, 1, 1, 1, 2, 2).toArray()));
+		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 3, 4).toArray()));
+	}
+
+	@Test
+	void _171_titleToNumber() {
+		assertEquals(1, solution._171_titleToNumber("A"));
+		assertEquals(26, solution._171_titleToNumber("Z"));
+		assertEquals(27, solution._171_titleToNumber("AA"));
+		assertEquals(1024, solution._171_titleToNumber("AMJ"));
+	}
+
+	@Test
+	void _172_trailingZeroes() {
+		assertEquals(0, solution._172_trailingZeroes(0));
+		assertEquals(0, solution._172_trailingZeroes(4));
+		assertEquals(1, solution._172_trailingZeroes(5));
+		assertEquals(2, solution._172_trailingZeroes(10));
+		assertEquals(7, solution._172_trailingZeroes(30));
+	}
 }
