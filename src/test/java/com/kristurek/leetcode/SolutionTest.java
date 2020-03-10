@@ -638,4 +638,32 @@ public class SolutionTest {
 		assertEquals(2, solution._172_trailingZeroes(10));
 		assertEquals(7, solution._172_trailingZeroes(30));
 	}
+
+	@Test
+	void _189_rotate() {
+		int[] nums = IntStream.of(1, 2, 3, 4, 5, 6, 7).toArray();
+		solution._189_rotate(nums, 3);
+
+		assertArrayEquals(IntStream.of(5, 6, 7, 1, 2, 3, 4).toArray(), nums);
+	}
+
+	@Test
+	void _198_rob() {
+		assertEquals(4, solution._198_rob(IntStream.of(1, 2, 3, 1).toArray()));
+		assertEquals(12, solution._198_rob(IntStream.of(2, 7, 9, 3, 1).toArray()));
+	}
+
+	@Test
+	void _203_removeElements() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(1);
+
+		head = solution._203_removeElements(head, 1);
+
+		assertEquals(head.val, 2);
+		assertEquals(head.next.val, 3);
+		assertNull(head.next.next);
+	}
 }

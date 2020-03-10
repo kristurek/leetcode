@@ -1480,4 +1480,56 @@ public class Solution {
 
 		return count;
 	}
+
+	public void _189_rotate(int[] nums, int k) {
+		if (nums == null || nums.length < 2)
+			return;
+
+		k = k % nums.length; // example - k=7 and nums.length=3 then k=1
+
+		_189_rotate_reverse(nums, 0, nums.length - 1);
+		_189_rotate_reverse(nums, 0, k - 1);
+		_189_rotate_reverse(nums, k, nums.length - 1);
+	}
+
+	private void _189_rotate_reverse(int[] nums, int begin, int end) {
+		while (begin < end) {
+			int tmp = nums[begin];
+			nums[begin] = nums[end];
+			nums[end] = tmp;
+
+			begin++;
+			end--;
+		}
+	}
+
+	public int _198_rob(int[] nums) {
+		if (nums.length == 0)
+			return 0;
+
+		int oneDayAgo = 0; // in first iteration dummy value
+		int twoDayAgo = 0; // in first iteration dummy value
+
+		for (int num : nums) {
+			int tmp = oneDayAgo;
+			oneDayAgo = Math.max(twoDayAgo + num, oneDayAgo);
+			twoDayAgo = tmp;
+		}
+		return oneDayAgo;
+	}
+
+	public ListNode _203_removeElements(ListNode head, int val) {
+		ListNode dummy = new ListNode(-1);
+		dummy.next = head;
+		ListNode current = dummy;
+
+		while (current.next != null) {
+			if (current.next.val == val)
+				current.next = current.next.next;
+			else
+				current = current.next;
+		}
+
+		return dummy.next;
+	}
 }
