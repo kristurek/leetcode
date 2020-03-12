@@ -1532,4 +1532,94 @@ public class Solution {
 
 		return dummy.next;
 	}
+
+	public boolean _205_isIsomorphic(String s, String t) {
+		Map<Character, Character> map = new HashMap<>();
+
+		for (int i = 0; i < s.length(); i++)
+			if (map.containsKey(s.charAt(i)))
+				if (map.get(s.charAt(i)) == t.charAt(i))
+					continue;
+				else
+					return false;
+			else if (!map.containsValue(t.charAt(i)))
+				map.put(s.charAt(i), t.charAt(i));
+			else
+				return false;
+
+		return true;
+	}
+
+	public boolean _217_containsDuplicate(int[] nums) {
+		if (nums == null)
+			return false;
+
+		Set<Integer> set = new HashSet<>();
+
+		for (int num : nums)
+			if (set.contains(num))
+				return true;
+			else
+				set.add(num);
+
+		return false;
+	}
+
+	public boolean _219_containsNearbyDuplicate(int[] nums, int k) {
+		if (nums == null)
+			return false;
+
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int i = 0; i < nums.length; i++)
+			if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k)
+				return true;
+			else
+				map.put(nums[i], i);
+
+		return false;
+	}
+
+	public boolean _231_isPowerOfTwo(int n) {
+		if (n <= 0)
+			return false;
+
+		while (n % 2 == 0)
+			n /= 2;
+
+		return n == 1;
+	}
+
+	public boolean _234_isPalindrome(ListNode head) {
+		ListNode fast = head, slow = head;
+		while (fast != null && fast.next != null) {
+			fast = fast.next.next;
+			slow = slow.next;
+		}
+		if (fast != null) { // odd nodes
+			slow = slow.next;
+		}
+		slow = reverse(slow);
+		fast = head;
+
+		while (slow != null) {
+			if (fast.val != slow.val) {
+				return false;
+			}
+			fast = fast.next;
+			slow = slow.next;
+		}
+		return true;
+	}
+
+	private ListNode reverse(ListNode head) {
+		ListNode prev = null;
+		while (head != null) {
+			ListNode next = head.next;
+			head.next = prev;
+			prev = head;
+			head = next;
+		}
+		return prev;
+	}
 }

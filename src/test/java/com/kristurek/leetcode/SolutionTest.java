@@ -1,7 +1,7 @@
 package com.kristurek.leetcode;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -665,5 +665,49 @@ public class SolutionTest {
 		assertEquals(head.val, 2);
 		assertEquals(head.next.val, 3);
 		assertNull(head.next.next);
+	}
+
+	@Test
+	void _205_isIsomorphic() {
+		assertTrue(solution._205_isIsomorphic("egg", "add"));
+		assertFalse(solution._205_isIsomorphic("foo", "bar"));
+		assertTrue(solution._205_isIsomorphic("paper", "title"));
+		assertFalse(solution._205_isIsomorphic("ab", "aa"));
+	}
+
+	@Test
+	void _217_containsDuplicate() {
+		assertFalse(solution._217_containsDuplicate(null));
+		assertFalse(solution._217_containsDuplicate(new int[] {}));
+		assertTrue(solution._217_containsDuplicate(new int[] { 1, 2, 3, 1 }));
+		assertFalse(solution._217_containsDuplicate(new int[] { 1, 2, 3, 4 }));
+		assertTrue(solution._217_containsDuplicate(new int[] { 1, 1, 1, 3, 3, 4, 3, 2, 4, 2 }));
+	}
+
+	@Test
+	void _219_containsNearbyDuplicate() {
+		assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1 }, 3));
+		assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 0, 1, 1 }, 1));
+		assertFalse(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1, 2, 3 }, 2));
+	}
+
+	@Test
+	void _231_isPowerOfTwo() {
+		assertTrue(solution._231_isPowerOfTwo(1));
+		assertTrue(solution._231_isPowerOfTwo(16));
+		assertFalse(solution._231_isPowerOfTwo(218));
+	}
+
+	@Test
+	void _234_isPalindrome() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		assertFalse(solution._234_isPalindrome(head));
+
+		head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(2);
+		head.next.next.next = new ListNode(1);
+		assertTrue(solution._234_isPalindrome(head));
 	}
 }

@@ -6,7 +6,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution {
@@ -246,7 +245,6 @@ public class Solution {
 		return results;
 	}
 
-
 	public boolean _110_isBalanced(TreeNode root) {
 		if (root == null)
 			return true;
@@ -297,7 +295,7 @@ public class Solution {
 
 		Deque<Integer> sumOfPaths = new LinkedList<Integer>();
 		Deque<TreeNode> queue = new LinkedList<TreeNode>();
-		
+
 		queue.addLast(root);
 		sumOfPaths.push(root.val);
 
@@ -357,6 +355,29 @@ public class Solution {
 //		}
 //
 		return new ArrayList<Integer>();
+	}
+
+	public TreeNode _226_invertTree(TreeNode root) {
+		if (root == null)
+			return null;
+
+		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.add(root);
+
+		while (!queue.isEmpty()) {
+			TreeNode tn = queue.remove();
+
+			TreeNode tmp = tn.left;
+			tn.left = tn.right;
+			tn.right = tmp;
+
+			if (tn.left != null)
+				queue.add(tn.left);
+			if (tn.right != null)
+				queue.add(tn.right);
+		}
+
+		return root;
 	}
 
 }
