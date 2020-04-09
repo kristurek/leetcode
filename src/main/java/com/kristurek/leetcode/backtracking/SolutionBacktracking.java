@@ -33,7 +33,7 @@ public class SolutionBacktracking {
 			}
 		}
 	}
-	
+
 	public List<List<Integer>> _78_subsets(int[] nums) {
 		List<List<Integer>> results = new ArrayList<>();
 
@@ -73,57 +73,6 @@ public class SolutionBacktracking {
 			tmpResult.add(nums[i]);
 			_90_subsetsWithDup_backtracking(results, tmpResult, i + 1, nums);
 			tmpResult.remove(tmpResult.size() - 1);
-		}
-	}
-
-	public List<List<Integer>> _46_permute(int[] nums) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		_46_permute_backtracking(results, new ArrayList<>(), nums);
-
-		return results;
-	}
-
-	private void _46_permute_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums) {
-		if (tmpList.size() == nums.length)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = 0; i < nums.length; i++) {
-				if (tmpList.contains(nums[i]))
-					continue;
-
-				tmpList.add(nums[i]);
-				_46_permute_backtracking(results, tmpList, nums);
-				tmpList.remove(tmpList.size() - 1);
-			}
-		}
-	}
-
-	public List<List<Integer>> _47_permuteUnique(int[] nums) {
-		List<List<Integer>> results = new ArrayList<List<Integer>>();
-
-		Arrays.sort(nums);
-
-		_47_permuteUnique_backtracking(results, new ArrayList<>(), nums, new boolean[nums.length]);
-
-		return results;
-	}
-
-	private void _47_permuteUnique_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
-			boolean[] used) {
-		if (tmpList.size() == nums.length)
-			results.add(new ArrayList<>(tmpList));
-		else {
-			for (int i = 0; i < nums.length; i++) {
-				if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
-					continue;
-
-				tmpList.add(nums[i]);
-				used[i] = true;
-				_47_permuteUnique_backtracking(results, tmpList, nums, used);
-				tmpList.remove(tmpList.size() - 1);
-				used[i] = false;
-			}
 		}
 	}
 
@@ -175,6 +124,57 @@ public class SolutionBacktracking {
 				tmpList.add(nums[i]);
 				_40_combinationSum2_backtracking(results, tmpList, nums, remained - nums[i], i + 1);
 				tmpList.remove(tmpList.size() - 1);
+			}
+		}
+	}
+
+	public List<List<Integer>> _46_permute(int[] nums) {
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		_46_permute_backtracking(results, new ArrayList<>(), nums);
+
+		return results;
+	}
+
+	private void _46_permute_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums) {
+		if (tmpList.size() == nums.length)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = 0; i < nums.length; i++) {
+				if (tmpList.contains(nums[i]))
+					continue;
+
+				tmpList.add(nums[i]);
+				_46_permute_backtracking(results, tmpList, nums);
+				tmpList.remove(tmpList.size() - 1);
+			}
+		}
+	}
+
+	public List<List<Integer>> _47_permuteUnique(int[] nums) {
+		List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+		Arrays.sort(nums);
+
+		_47_permuteUnique_backtracking(results, new ArrayList<>(), nums, new boolean[nums.length]);
+
+		return results;
+	}
+
+	private void _47_permuteUnique_backtracking(List<List<Integer>> results, List<Integer> tmpList, int[] nums,
+			boolean[] used) {
+		if (tmpList.size() == nums.length)
+			results.add(new ArrayList<>(tmpList));
+		else {
+			for (int i = 0; i < nums.length; i++) {
+				if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
+					continue;
+
+				tmpList.add(nums[i]);
+				used[i] = true;
+				_47_permuteUnique_backtracking(results, tmpList, nums, used);
+				tmpList.remove(tmpList.size() - 1);
+				used[i] = false;
 			}
 		}
 	}

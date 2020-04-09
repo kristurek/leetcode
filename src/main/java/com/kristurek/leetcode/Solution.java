@@ -10,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.Optional;
 import java.util.Set;
 
 import com.kristurek.leetcode.common.ListNode;
@@ -728,6 +730,7 @@ public class Solution {
 				muls[index] %= 10;
 			}
 		}
+
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = muls.length - 1; i > 0; i--) {
 			if (stringBuilder.length() == 0 && muls[i] == 0)
@@ -1622,4 +1625,225 @@ public class Solution {
 		}
 		return prev;
 	}
+
+	public boolean _202_isHappy(int n) {
+		Set<Integer> set = new HashSet<>();
+
+		while (!set.contains(n)) {
+			set.add(n);
+
+			int sumOfSquare = 0;
+			while (n > 0) {
+				int remain = n % 10;
+				sumOfSquare += remain * remain;
+
+				n = n / 10;
+			}
+
+			if (sumOfSquare == 1)
+				return true;
+
+			n = sumOfSquare;
+		}
+
+		return false;
+	}
+
+	public void _283_moveZeroes(int[] nums) {
+		if (nums == null || nums.length == 0)
+			return;
+
+		int slow = 0;
+		for (int num : nums)
+			if (num != 0)
+				nums[slow++] = num;
+
+		while (slow < nums.length)
+			nums[slow++] = 0;
+	}
+
+	public List<List<String>> _49_groupAnagrams(String[] strs) {
+		if (strs == null || strs.length == 0)
+			return new ArrayList<>();
+
+		Map<String, List<String>> map = new HashMap<>();
+		for (String str : strs) {
+			char[] charArray = str.toCharArray();
+
+			Arrays.sort(charArray);
+
+			String key = String.valueOf(charArray);
+			if (!map.containsKey(key))
+				map.put(key, new ArrayList<>());
+
+			map.get(key).add(str);
+		}
+
+		return new ArrayList<>(map.values());
+	}
+
+	public String _5_longestPalindrome(String s) { // Time Limit Exceeded
+		if (s == null || s.isEmpty() || s.length() == 1)
+			return s;
+
+		int iMax = 0;
+		int jMax = 0;
+		char[] chars = s.toCharArray();
+
+		for (int i = 0; i < chars.length; i++)
+			for (int j = i; j < chars.length; j++)
+				if (_5_longestPalindrome_isPalindrome(chars, i, j) && j - i >= jMax - iMax) {
+					iMax = i;
+					jMax = j + 1;
+				}
+
+		return String.valueOf(Arrays.copyOfRange(chars, iMax, jMax));
+	}
+
+	public boolean _844_backspaceCompare(String S, String T) {
+		return _844_backspaceCompare_build(S).equals(_844_backspaceCompare_build(T));
+	}
+
+	private String _844_backspaceCompare_build(String t) {
+		Deque<Character> stack = new LinkedList<>();
+
+		for (char character : t.toCharArray()) {
+			if (character != '#')
+				stack.push(character);
+			else if (!stack.isEmpty())
+				stack.pop();
+		}
+
+		return stack.stream().map(c -> String.valueOf(c)).collect(Collectors.joining());
+	}
+
+	private boolean _5_longestPalindrome_isPalindrome(char[] chars, int begin, int end) {
+		while (begin <= end)
+			if (chars[begin++] != chars[end--])
+				return false;
+
+		return true;
+	}
+
+	public int[] _1365_smallerNumbersThanCurrent(int[] nums) {
+		List<Integer> results = new ArrayList<>();
+
+		for (int i = 0; i < nums.length; i++) {
+			int count = 0;
+			for (int j = 0; j < nums.length; j++)
+				if (nums[j] < nums[i])
+					count++;
+
+			results.add(count);
+		}
+
+		return results.stream().mapToInt(Integer::intValue).toArray();
+	}
+
+	public String _1374_generateTheString(int n) {
+		return "b" + "ab".substring(n % 2, 1 + n % 2).repeat(n - 1);
+	}
+
+	public List<Integer> _1380_luckyNumbers(int[][] matrix) {
+
+		Set<Integer> minVal = new HashSet<>();
+		for (int[] row : matrix) {
+			int min = row[0];
+			for (int cell : row)
+				min = Math.min(min, cell);
+			minVal.add(min);
+		}
+
+		Set<Integer> maxVal = new HashSet<>();
+		for (int col = 0; col < matrix[0].length; col++) {
+			int max = matrix[0][col];
+			for (int row = 0; row < matrix.length; row++)
+				max = Math.max(max, matrix[row][col]);
+
+			maxVal.add(max);
+		}
+
+		// minVal.retainAll(maxVal);
+
+		return minVal.stream().filter(maxVal::contains).collect(Collectors.toList());
+	}
+
+	public int[] _1389_createTargetArray(int[] nums, int[] indexs) {
+		List<Integer> results = new ArrayList<>();
+
+		for (int i = 0; i < nums.length; i++)
+			results.add(indexs[i], nums[i]);
+
+		return results.stream().mapToInt(Integer::intValue).toArray();
+	}
+
+	public int _1399_countLargestGroup(int n) {
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int i = 1; i <= n; i++) {
+			int sumOfDigits = _1399_countLargestGroup_sumOfDigits(i);
+
+			map.put(sumOfDigits, map.getOrDefault(sumOfDigits, 0) + 1);
+		}
+
+		int maxSize = map.values().stream().max(Integer::compare).get();
+		int countMaxSize = (int) map.values().stream().filter(v -> v == maxSize).count();
+
+//		int maxSize = 0;
+//		for (int size : map.values())
+//			maxSize = size > maxSize ? size : maxSize;
+//
+//		int countMaxSize = 0;
+//		for (int size : map.values())
+//			countMaxSize = size == maxSize ? countMaxSize + 1 : countMaxSize;
+
+		return countMaxSize;
+	}
+
+	public int _1394_findLucky(int[] nums) {
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int num : nums)
+			map.put(num, map.getOrDefault(num, 0) + 1);
+
+		Optional<Integer> max = map.entrySet().stream().filter(e -> e.getKey() == e.getValue()).map(e -> e.getKey())
+				.max(Integer::compare);
+
+		return max.orElse(-1);
+	}
+
+	private int _1399_countLargestGroup_sumOfDigits(int number) {
+		int sum = 0;
+		while (number > 0) {
+			sum += number % 10;
+			number /= 10;
+		}
+
+		return sum;
+	}
+
+	public List<Integer> _1403_minSubsequence(int[] nums) {
+		if (nums == null)
+			return new ArrayList<>();
+
+		Arrays.sort(nums);
+
+		int sum = 0;
+		for (int num : nums)
+			sum += num;
+
+		List<Integer> results = new ArrayList<>();
+		int subSum = 0;
+		for (int i = nums.length - 1; i >= 0; i--) {
+			subSum += nums[i];
+			results.add(nums[i]);
+
+			if (subSum > sum - subSum)
+				return results;
+
+		}
+
+		return results;
+	}
+
 }

@@ -1,7 +1,9 @@
 package com.kristurek.leetcode;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +14,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
@@ -709,5 +713,116 @@ public class SolutionTest {
 		head.next.next = new ListNode(2);
 		head.next.next.next = new ListNode(1);
 		assertTrue(solution._234_isPalindrome(head));
+	}
+
+	@Test
+	void _202_isHappy() {
+		assertTrue(solution._202_isHappy(19));
+	}
+
+	@Test
+	void _283_moveZeroes() {
+		int[] nums = IntStream.of(0, 1, 0, 3, 12).toArray();
+		int[] answer = IntStream.of(1, 3, 12, 0, 0).toArray();
+		solution._283_moveZeroes(nums);
+
+		assertArrayEquals(answer, nums);
+	}
+
+	@Test
+	void _49_groupAnagrams() {
+		String[] input = Stream.of("eat", "tea", "tan", "ate", "nat", "bat").toArray(String[]::new);
+
+		List<String> l1 = Stream.of("eat", "tea", "ate").collect(Collectors.toList());
+		List<String> l2 = Stream.of("tan", "nat").collect(Collectors.toList());
+		List<String> l3 = Stream.of("bat").collect(Collectors.toList());
+
+		List<List<String>> expected = new ArrayList<>();
+		expected.add(l1);
+		expected.add(l2);
+		expected.add(l3);
+
+		assertThat(solution._49_groupAnagrams(input), containsInAnyOrder(expected.toArray()));
+	}
+
+	@Test
+	void _5_longestPalindrome() {
+		assertEquals("bab", solution._5_longestPalindrome("babad"));
+		assertEquals("bb", solution._5_longestPalindrome("cbbd"));
+		assertEquals("a", solution._5_longestPalindrome("a"));
+		assertEquals("a", solution._5_longestPalindrome("abc"));
+		assertEquals(
+				"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+				solution._5_longestPalindrome(
+						"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"));
+	}
+
+	@Test
+	void _844_backspaceCompare() {
+		assertTrue(solution._844_backspaceCompare("", ""));
+		assertTrue(solution._844_backspaceCompare("ab#c", "ad#c"));
+		assertTrue(solution._844_backspaceCompare("ab##", "c#d#"));
+		assertTrue(solution._844_backspaceCompare("a##c", "#a#c"));
+		assertFalse(solution._844_backspaceCompare("a#c", "b"));
+	}
+
+	@Test
+	void _1365_smallerNumbersThanCurrent() {
+		assertArrayEquals(IntStream.of(4, 0, 1, 1, 3).toArray(),
+				solution._1365_smallerNumbersThanCurrent(IntStream.of(8, 1, 2, 2, 3).toArray()));
+		assertArrayEquals(IntStream.of(2, 1, 0, 3).toArray(),
+				solution._1365_smallerNumbersThanCurrent(IntStream.of(6, 5, 4, 8).toArray()));
+		assertArrayEquals(IntStream.of(0, 0, 0, 0).toArray(),
+				solution._1365_smallerNumbersThanCurrent(IntStream.of(7, 7, 7, 7).toArray()));
+	}
+
+	@Test
+	void _1374_generateTheString() {
+		assertThat(solution._1374_generateTheString(4), is(equalTo("baaa")));
+		assertThat(solution._1374_generateTheString(2), is(equalTo("ba")));
+		assertThat(solution._1374_generateTheString(7), is(equalTo("bbbbbbb")));
+	}
+
+	@Test
+	void _1380_luckyNumbers() {
+		int[][] matrix = Stream.of(new int[] { 3, 7, 8 }, new int[] { 9, 11, 13 }, new int[] { 15, 16, 17 })
+				.toArray(int[][]::new);
+
+		assertThat(solution._1380_luckyNumbers(matrix), is(equalTo(Stream.of(15).collect(Collectors.toList()))));
+	}
+
+	@Test
+	void _1389_createTargetArray() {
+		assertArrayEquals(IntStream.of(0, 4, 1, 3, 2).toArray(), solution
+				._1389_createTargetArray(IntStream.of(0, 1, 2, 3, 4).toArray(), IntStream.of(0, 1, 2, 2, 1).toArray()));
+		assertArrayEquals(IntStream.of(0, 1, 2, 3, 4).toArray(), solution
+				._1389_createTargetArray(IntStream.of(1, 2, 3, 4, 0).toArray(), IntStream.of(0, 1, 2, 3, 0).toArray()));
+		assertArrayEquals(IntStream.of(1).toArray(),
+				solution._1389_createTargetArray(IntStream.of(1).toArray(), IntStream.of(0).toArray()));
+	}
+
+	@Test
+	void _1394_findLucky() {
+		assertThat(solution._1394_findLucky(IntStream.of(2, 2, 3, 4).toArray()), is(equalTo(2)));
+		assertThat(solution._1394_findLucky(IntStream.of(1, 2, 2, 3, 3, 3).toArray()), is(equalTo(3)));
+		assertThat(solution._1394_findLucky(IntStream.of(2, 2, 2, 3, 3).toArray()), is(equalTo(-1)));
+		assertThat(solution._1394_findLucky(IntStream.of(5).toArray()), is(equalTo(-1)));
+	}
+
+	@Test
+	void _1399_countLargestGroup() {
+		assertEquals(4, solution._1399_countLargestGroup(13));
+		assertEquals(2, solution._1399_countLargestGroup(2));
+		assertEquals(6, solution._1399_countLargestGroup(15));
+		assertEquals(5, solution._1399_countLargestGroup(24));
+	}
+
+	@Test
+	void _1403_minSubsequence() {
+		assertThat(solution._1403_minSubsequence(IntStream.of(4, 3, 10, 9, 8).toArray()),
+				is(Stream.of(10, 9).collect(Collectors.toList())));
+
+		assertThat(solution._1403_minSubsequence(IntStream.of(4, 4, 7, 6, 7).toArray()),
+				is(Stream.of(7, 7, 6).collect(Collectors.toList())));
 	}
 }
