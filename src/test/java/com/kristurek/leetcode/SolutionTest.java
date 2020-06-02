@@ -656,6 +656,12 @@ public class SolutionTest {
 		assertEquals(4, solution._198_rob(IntStream.of(1, 2, 3, 1).toArray()));
 		assertEquals(12, solution._198_rob(IntStream.of(2, 7, 9, 3, 1).toArray()));
 	}
+	
+	@Test
+	void _200_numIslands() {
+		assertEquals(1, solution._200_numIslands(new char[][] { { '1', '1', '1', '1', '0' }, { '1', '1', '0', '1', '0' }, { '1', '1', '0', '0', '0' }, { '0', '0', '0', '0', '0' } }));
+		assertEquals(3, solution._200_numIslands(new char[][] { { '1', '1', '0', '0', '0' }, { '1', '1', '0', '0', '0' }, { '0', '0', '1', '0', '0' }, { '0', '0', '0', '1', '1' } }));
+	}
 
 	@Test
 	void _203_removeElements() {
@@ -764,6 +770,23 @@ public class SolutionTest {
 		assertTrue(solution._844_backspaceCompare("ab##", "c#d#"));
 		assertTrue(solution._844_backspaceCompare("a##c", "#a#c"));
 		assertFalse(solution._844_backspaceCompare("a#c", "b"));
+	}
+
+	@Test
+	void _525_findMaxLength() {
+		assertThat(solution._525_findMaxLength(IntStream.of(0, 1).toArray()), is(equalTo(2)));
+		assertThat(solution._525_findMaxLength(IntStream.of(0, 1, 0).toArray()), is(equalTo(2)));
+	}
+
+	@Test
+	void _1046_lastStoneWeight() {
+		assertThat(solution._1046_lastStoneWeight(IntStream.of(2, 7, 4, 1, 8, 1).toArray()), is(equalTo(1)));
+	}
+
+	@Test
+	void _1360_daysBetweenDates() {
+		assertThat(solution._1360_daysBetweenDates("2019-06-29", "2019-06-30"), is(equalTo(1)));
+		assertThat(solution._1360_daysBetweenDates("2020-01-15", "2019-12-31"), is(equalTo(15)));
 	}
 
 	@Test

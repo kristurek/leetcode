@@ -10,9 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.kristurek.leetcode.common.ListNode;
 
@@ -1520,6 +1521,30 @@ public class Solution {
 		}
 		return oneDayAgo;
 	}
+	
+    public int _200_numIslands(char[][] matrix) {
+        int count = 0;
+
+		for (int i = 0; i < matrix.length; i++)
+			for (int j = 0; j < matrix[0].length; j++) {
+				if (matrix[i][j] == '1')
+					count++;
+				_200_numIslands_search_island(matrix, i, j);
+			}
+
+		return count;
+	}
+
+	private void _200_numIslands_search_island(char[][] matrix, int i, int j) {
+		if (i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length && matrix[i][j] == '1') {
+			matrix[i][j] = '0';
+
+			_200_numIslands_search_island(matrix, i + 1, j);
+			_200_numIslands_search_island(matrix, i - 1, j);
+			_200_numIslands_search_island(matrix, i, j + 1);
+			_200_numIslands_search_island(matrix, i, j - 1);
+		}
+	}
 
 	public ListNode _203_removeElements(ListNode head, int val) {
 		ListNode dummy = new ListNode(-1);
@@ -1700,6 +1725,14 @@ public class Solution {
 		return String.valueOf(Arrays.copyOfRange(chars, iMax, jMax));
 	}
 
+	private boolean _5_longestPalindrome_isPalindrome(char[] chars, int begin, int end) {
+		while (begin <= end)
+			if (chars[begin++] != chars[end--])
+				return false;
+
+		return true;
+	}
+
 	public boolean _844_backspaceCompare(String S, String T) {
 		return _844_backspaceCompare_build(S).equals(_844_backspaceCompare_build(T));
 	}
@@ -1717,12 +1750,59 @@ public class Solution {
 		return stack.stream().map(c -> String.valueOf(c)).collect(Collectors.joining());
 	}
 
-	private boolean _5_longestPalindrome_isPalindrome(char[] chars, int begin, int end) {
-		while (begin <= end)
-			if (chars[begin++] != chars[end--])
-				return false;
+	public int _525_findMaxLength(int[] nums) {
+		return -1;
+	}
 
-		return true;
+	public int _1046_lastStoneWeight(int[] stones) {
+		PriorityQueue<Integer> queue = new PriorityQueue<Integer>((v1, v2) -> v2 - v1);
+
+		for (int stone : stones)
+			queue.add(stone);
+
+		while (queue.size() >= 2) {
+			int val1 = queue.poll();
+			int val2 = queue.poll();
+			int val3 = Math.abs(val1 - val2);
+
+			if (val3 != 0)
+				queue.add(val3);
+		}
+
+		return queue.isEmpty() ? 0 : queue.element();
+	}
+
+	public int _1360_daysBetweenDates(String sDate1, String sDate2) {
+		int monthDays[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+		int[] date1 = _1360_daysBetweenDates_parse(sDate1);
+		int[] date2 = _1360_daysBetweenDates_parse(sDate2);
+
+		int daysDate1 = date1[0] * 365 + date1[2];
+		int daysDate2 = date2[0] * 365 + date2[2];
+
+		for (int i = 0; i < date1[1] - 1; i++)
+			daysDate1 += monthDays[i];
+
+		for (int i = 0; i < date2[1] - 1; i++)
+			daysDate2 += monthDays[i];
+
+		daysDate1 += _1360_daysBetweenDates_countLeapYear(date1[0], date1[1]);
+		daysDate2 += _1360_daysBetweenDates_countLeapYear(date2[0], date2[1]);
+
+		return Math.abs(daysDate2 - daysDate1);
+	}
+
+	public int _1360_daysBetweenDates_countLeapYear(int year, int month) {
+		if (month <= 2)
+			year--;
+
+		return year / 4 - year / 100 + year / 400;
+	}
+
+	private int[] _1360_daysBetweenDates_parse(String date) {
+		String[] sDate = date.split("-");
+		return new int[] { Integer.valueOf(sDate[0]), Integer.valueOf(sDate[1]), Integer.valueOf(sDate[2]) };
 	}
 
 	public int[] _1365_smallerNumbersThanCurrent(int[] nums) {

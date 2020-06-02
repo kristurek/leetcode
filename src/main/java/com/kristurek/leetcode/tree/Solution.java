@@ -1,10 +1,13 @@
 package com.kristurek.leetcode.tree;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.kristurek.leetcode.common.TreeNode;
 
@@ -378,6 +381,32 @@ public class Solution {
 		}
 
 		return root;
+	}
+
+	public int _543_diameterOfBinaryTree(TreeNode root) {
+		Map<TreeNode, Integer> map = new HashMap<>();
+		Deque<TreeNode> stack = new ArrayDeque<>();
+		int diameter = 0;
+
+		if (root != null)
+			stack.push(root);
+
+		while (!stack.isEmpty()) {
+			TreeNode node = stack.peek();
+
+			if (node.left != null && !map.containsKey(node.left)) {
+				stack.push(node.left);
+			} else if (node.right != null && !map.containsKey(node.right)) {
+				stack.push(node.right);
+			} else {
+				stack.pop();
+				int leftDepth = map.getOrDefault(node.left, 0);
+				int rightDepth = map.getOrDefault(node.right, 0);
+				map.put(node, 1 + Math.max(leftDepth, rightDepth));
+				diameter = Math.max(diameter, leftDepth + rightDepth);
+			}
+		}
+		return diameter;
 	}
 
 }
