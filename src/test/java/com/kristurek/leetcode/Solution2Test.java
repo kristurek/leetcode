@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution2Test {
 
@@ -121,4 +122,94 @@ public class Solution2Test {
 		assertEquals(2, solution._28_strStr("hello", "ll"));
 		assertEquals(-1, solution._28_strStr("aaaaa", "bba"));
 	}
+
+	@Test
+	void _35_searchInsert() {
+		assertEquals(2, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 5));
+		assertEquals(1, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 2));
+		assertEquals(4, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 7));
+		assertEquals(0, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 0));
+	}
+
+	@Test
+	void _53_maxSubArray() {
+		assertEquals(6, solution._53_maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
+	}
+
+	@Test
+	void _58_lengthOfLastWord() {
+		assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
+	}
+
+	@Test
+	void _66_plusOne() {
+		assertArrayEquals(IntStream.of(1, 0, 0, 0).toArray(), solution._66_plusOne(IntStream.of(9, 9, 9).toArray()));
+		assertArrayEquals(IntStream.of(9, 9, 1).toArray(), solution._66_plusOne(IntStream.of(9, 9, 0).toArray()));
+	}
+
+	@Test
+	void _67_addBinary() {
+		assertEquals("100", solution._67_addBinary("1", "11"));
+	}
+
+	@Test
+	void _69_mySqrt() {
+		assertEquals(2, solution._69_mySqrt(4));
+		assertEquals(4, solution._69_mySqrt(16));
+		assertEquals(2, solution._69_mySqrt(8));
+	}
+
+	@Test
+	void _70_climbStairs() {
+		assertEquals(0, solution._70_climbStairs(0));
+		assertEquals(1, solution._70_climbStairs(1));
+		assertEquals(2, solution._70_climbStairs(2));
+		assertEquals(3, solution._70_climbStairs(3));
+		assertEquals(5, solution._70_climbStairs(4));
+		assertEquals(8, solution._70_climbStairs(5));
+	}
+
+	@Test
+	void _83_deleteDuplicates() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(1);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = new ListNode(4);
+
+		head = solution._83_deleteDuplicates(head);
+
+		assertEquals(1, head.val);
+		assertEquals(3, head.next.val);
+		assertEquals(4, head.next.next.val);
+		assertNull(head.next.next.next);
+
+	}
+
+	@Test
+	void _88_merge() {
+		int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
+		int[] nums2 = new int[] { 2, 5, 6 };
+		int[] nums3 = new int[] { 1, 2, 2, 3, 5, 6 };
+
+		solution._88_merge(nums1, 3, nums2, 3);
+
+		assertArrayEquals(nums3, nums1);
+	}
+
+	@Test
+	void _100_isSameTree() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		assertTrue(solution._100_isSameTree(root, root));
+	}
+
 }

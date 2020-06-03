@@ -1,12 +1,15 @@
 package com.kristurek.leetcode;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution2 {
 
@@ -193,5 +196,209 @@ public class Solution2 {
 		}
 
 		return -1;
+	}
+
+	public int _35_searchInsert(int[] nums, int target) {
+		int l = 0;
+		int h = nums.length - 1;
+
+		while (l <= h) {
+			int m = l + (h - l) / 2;
+
+			if (nums[m] < target) {
+				l = m + 1;
+			} else if (nums[m] > target) {
+				h = m - 1;
+			} else
+				return m;
+		}
+
+		return l;
+	}
+
+	public int _53_maxSubArray(int[] nums) {
+		int sum = 0;
+		int max = Integer.MIN_VALUE;
+
+		for (int num : nums) {
+			if (sum < 0)
+				sum = num;
+			else
+				sum += num;
+
+			if (sum > max)
+				max = sum;
+		}
+
+		return max;
+	}
+
+	public int _58_lengthOfLastWord(String s) {
+		if (s == null || s.isBlank())
+			return 0;
+
+		String[] ss = s.split(" ");
+		return ss[ss.length - 1].length();
+	}
+
+	public int[] _66_plusOne(int[] digits) {
+		for (int i = digits.length - 1; i >= 0; i--) {
+			if (digits[i] == 9)
+				digits[i] = 0;
+			else {
+				digits[i] += 1;
+				return digits;
+			}
+		}
+
+		digits = new int[digits.length + 1];
+		digits[0] = 1;
+
+		return digits;
+	}
+
+	public String _67_addBinary(String a, String b) {
+		StringBuilder sb = new StringBuilder();
+		int i = a.length() - 1;
+		int j = b.length() - 1;
+		int carry = 0;
+
+		while (i >= 0 || j >= 0) {
+			int sum = carry;
+			if (i >= 0)
+				sum += Integer.parseInt(String.valueOf(a.charAt(i--)));
+
+			if (j >= 0)
+				sum += Integer.parseInt(String.valueOf(b.charAt(j--)));
+
+			sb.append(sum % 2);
+			carry = sum / 2;
+		}
+
+		if (carry != 0)
+			sb.append('1');
+
+		return sb.reverse().toString();
+	}
+
+	public int _69_mySqrt(int x) {
+		if (x == 0)
+			return 0;
+
+		int l = 0;
+		int h = x;
+		int answer = -1;
+
+		while (l <= h) {
+			int m = l + (h - l) / 2;
+
+			if (m * m < x) {
+				l = m + 1;
+				answer = m;
+			} else if (m * m > x)
+				h = m - 1;
+			else
+				return m;
+		}
+
+		return answer;
+	}
+
+	public int _70_climbStairs(int n) {
+		if (n == 0)
+			return 0;
+		if (n == 1)
+			return 1;
+		if (n == 2)
+			return 2;
+
+		int firstStep = 1;
+		int secondStep = 2;
+
+		for (int i = 3; i <= n; i++) {
+			int thirdStep = firstStep + secondStep;
+			firstStep = secondStep;
+			secondStep = thirdStep;
+		}
+
+		return secondStep;
+	}
+
+	public ListNode _83_deleteDuplicates(ListNode ln) {
+		ListNode current = ln;
+		ListNode head = current;
+
+		while (ln != null) {
+			if (ln.val == current.val)
+				ln = ln.next;
+			else {
+				current.next = ln;
+
+				current = current.next;
+				ln = ln.next;
+			}
+		}
+
+		current.next = null;
+
+		return head;
+	}
+
+	public void _88_merge(int[] nums1, int m, int[] nums2, int n) {
+		int k = m + n - 1;
+		int i = m - 1;
+		int j = n - 1;
+
+		while (i >= 0 || j >= 0) {
+			if (i >= 0 && j >= 0)
+				if (nums1[i] >= nums2[j])
+					nums1[k--] = nums1[i--];
+				else
+					nums1[k--] = nums2[j--];
+			else if (i >= 0)
+				nums1[k--] = nums1[i--];
+			else if (j >= 0)
+				nums1[k--] = nums2[j--];
+		}
+	}
+
+	public boolean _100_isSameTree(TreeNode p, TreeNode q) {
+		if (p == null && q == null)
+			return true;
+		if (p == null || q == null)
+			return false;
+
+		Deque<TreeNode> queue1 = new LinkedList<>();
+		Deque<TreeNode> queue2 = new LinkedList<>();
+
+		queue1.addLast(p);
+		queue2.addLast(q);
+
+		while (!queue1.isEmpty() && !queue2.isEmpty()) {
+			TreeNode tn1 = queue1.removeFirst();
+			TreeNode tn2 = queue2.removeFirst();
+
+			if (tn1.left != null && tn2.left == null)
+				return false;
+			if (tn1.left == null && tn2.left != null)
+				return false;
+			if (tn1.right != null && tn2.right == null)
+				return false;
+			if (tn1.right == null && tn2.right != null)
+				return false;
+			if (tn1.val != tn2.val)
+				return false;
+
+			if (tn1.left != null)
+				queue1.addLast(tn1.left);
+			if (tn1.right != null)
+				queue1.addLast(tn1.right);
+			if (tn2.left != null)
+				queue2.addLast(tn2.left);
+			if (tn2.right != null)
+				queue2.addLast(tn2.right);
+		}
+
+		return queue1.isEmpty() && queue2.isEmpty();
 	}
 }

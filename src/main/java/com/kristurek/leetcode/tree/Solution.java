@@ -60,6 +60,11 @@ public class Solution {
 	}
 
 	public boolean _100_isSameTree(TreeNode p, TreeNode q) {
+		if (p == null && q == null)
+			return true;
+		if (p == null || q == null)
+			return false;
+
 		Deque<TreeNode> queue1 = new LinkedList<>();
 		Deque<TreeNode> queue2 = new LinkedList<>();
 
