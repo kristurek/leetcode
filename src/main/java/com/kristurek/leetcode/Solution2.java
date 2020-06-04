@@ -1,11 +1,13 @@
 package com.kristurek.leetcode;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.kristurek.leetcode.common.ListNode;
@@ -368,8 +370,8 @@ public class Solution2 {
 		if (p == null || q == null)
 			return false;
 
-		Deque<TreeNode> queue1 = new LinkedList<>();
-		Deque<TreeNode> queue2 = new LinkedList<>();
+		Deque<TreeNode> queue1 = new ArrayDeque<>();
+		Deque<TreeNode> queue2 = new ArrayDeque<>();
 
 		queue1.addLast(p);
 		queue2.addLast(q);
@@ -400,5 +402,254 @@ public class Solution2 {
 		}
 
 		return queue1.isEmpty() && queue2.isEmpty();
+	}
+
+	public boolean _101_isSymmetric(TreeNode root) {
+		Deque<TreeNode> queue = new LinkedList<>();// LinkedList allow add null values, ArrayDeque doesn't
+
+		queue.addLast(root);
+		queue.addLast(root);
+
+		while (!queue.isEmpty()) {
+			TreeNode tn1 = queue.removeFirst();
+			TreeNode tn2 = queue.removeFirst();
+
+			if (tn1 == null && tn2 == null)
+				continue;
+			if (tn1 == null || tn2 == null)
+				return false;
+			if (tn1.val != tn2.val)
+				return false;
+
+			queue.addLast(tn1.left);
+			queue.addLast(tn2.right);
+			queue.addLast(tn1.right);
+			queue.addLast(tn2.left);
+		}
+
+		return true;
+	}
+
+	public int _104_maxDepth(TreeNode root) {
+		if (root == null)
+			return 0;
+
+		Deque<TreeNode> queue = new ArrayDeque<>();
+		int level = 0;
+		queue.add(root);
+
+		while (!queue.isEmpty()) {
+			level++;
+			int size = queue.size();
+
+			while (size-- > 0) {
+				TreeNode tn = queue.removeFirst();
+
+				if (tn.left != null)
+					queue.addLast(tn.left);
+				if (tn.right != null)
+					queue.addLast(tn.right);
+			}
+		}
+
+		return level;
+	}
+
+	public List<List<Integer>> _107_levelOrderBottom(TreeNode root) {
+		Deque<List<Integer>> values = new LinkedList<>();
+		Deque<TreeNode> queue = new ArrayDeque<>();
+
+		if (root == null)
+			return new ArrayList<>();
+
+		queue.addLast(root);
+
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			List<Integer> levelValues = new ArrayList<>();
+
+			while (size-- > 0) {
+				TreeNode tn = queue.removeFirst();
+
+				levelValues.add(tn.val);
+
+				if (tn.left != null)
+					queue.addLast(tn.left);
+				if (tn.right != null)
+					queue.addLast(tn.right);
+			}
+
+			values.addFirst(levelValues);
+		}
+
+		return values.stream().collect(Collectors.toList());
+	}
+
+	public TreeNode _108_sortedArrayToBST(int[] nums) {
+		if (nums == null || nums.length == 0)
+			return null;
+
+		return _108_sortedArrayToBST_recursive(nums, 0, nums.length - 1);
+	}
+
+	private TreeNode _108_sortedArrayToBST_recursive(int[] nums, int l, int h) {
+		if (l <= h) {
+			int m = l + (h - l) / 2;
+			TreeNode tn = new TreeNode(nums[m]);
+
+			tn.left = _108_sortedArrayToBST_recursive(nums, l, m - 1);
+			tn.right = _108_sortedArrayToBST_recursive(nums, m + 1, h);
+
+			return tn;
+		} else
+			return null;
+	}
+
+	public boolean _110_isBalanced(TreeNode root) {
+		if (root == null)
+			return true;
+
+		int left = _110_isBalanced_max_height(root.left);
+		int right = _110_isBalanced_max_height(root.right);
+
+		return Math.abs(left - right) <= 1 && _110_isBalanced(root.left) && _110_isBalanced(root.right);
+	}
+
+	private int _110_isBalanced_max_height(TreeNode root) {
+		if (root == null)
+			return 0;
+		return 1 + Math.max(_110_isBalanced_max_height(root.left), _110_isBalanced_max_height(root.right));
+	}
+
+	public int _111_minDepth(TreeNode root) {
+		if (root == null)
+			return 0;
+
+		Deque<TreeNode> queue = new ArrayDeque<>();
+		queue.addLast(root);
+		int level = 1;
+
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+
+			while (size-- > 0) {
+				TreeNode tn = queue.removeFirst();
+
+				if (tn.left == null && tn.right == null)
+					return level;
+
+				if (tn.left != null)
+					queue.addLast(tn.left);
+				if (tn.right != null)
+					queue.addLast(tn.right);
+			}
+			level++;
+		}
+
+		return level;
+	}
+
+	public boolean _112_hasPathSum(TreeNode root, int sum) {
+		if (root == null)
+			return false;
+
+		Deque<TreeNode> stack = new ArrayDeque<>();
+		Deque<Integer> sums = new ArrayDeque<>();
+
+		stack.addLast(root);
+		sums.addLast(root.val);
+
+		while (!stack.isEmpty()) {
+			TreeNode tn = stack.removeLast();
+			Integer path = sums.removeLast();
+
+			if (tn.left == null && tn.right == null && path == sum)
+				return true;
+
+			if (tn.right != null) {
+				stack.addLast(tn.right);
+				sums.addLast(path + tn.right.val);
+			}
+			if (tn.left != null) {
+				stack.addLast(tn.left);
+				sums.addLast(path + tn.left.val);
+			}
+		}
+
+		return false;
+	}
+
+	public List<List<Integer>> _118_generate(int numRows) {
+		if (numRows == 0)
+			return new ArrayList<>();
+
+		List<List<Integer>> rows = new ArrayList<>();
+
+		rows.add(IntStream.of(1).boxed().collect(Collectors.toList()));
+		if (numRows == 1)
+			return rows;
+
+		rows.add(IntStream.of(1, 1).boxed().collect(Collectors.toList()));
+
+		for (int i = 2; i < numRows; i++) {
+			List<Integer> row = new ArrayList<>();
+
+			for (int j = 0; j <= i; j++)
+				if (j == 0)
+					row.add(1);
+				else if (j == i)
+					row.add(1);
+				else
+					row.add(rows.get(i - 1).get(j - 1) + rows.get(i - 1).get(j));
+
+			rows.add(row);
+		}
+
+		return rows;
+	}
+
+	public List<Integer> _119_getRow(int rowIndex) {
+		List<List<Integer>> rows = new ArrayList<>();
+
+		rows.add(IntStream.of(1).boxed().collect(Collectors.toList()));
+		if (rowIndex == 0)
+			return rows.get(0);
+
+		rows.add(IntStream.of(1, 1).boxed().collect(Collectors.toList()));
+
+		for (int i = 2; i < rowIndex + 1; i++) {
+			List<Integer> row = new ArrayList<>();
+
+			for (int j = 0; j <= i; j++)
+				if (j == 0)
+					row.add(1);
+				else if (j == i)
+					row.add(1);
+				else
+					row.add(rows.get(i - 1).get(j - 1) + rows.get(i - 1).get(j));
+
+			rows.add(row);
+		}
+
+		return rows.get(rowIndex);
+	}
+
+	public int _121_maxProfit(int[] prices) {
+		if (prices == null || prices.length == 0)
+			return 0;
+
+		int min = prices[0];// buy stock by min value
+		int max = 0;// max profit -> buy min value sell max value
+
+		for (int i = 1; i < prices.length; i++) {
+			if (prices[i] < min)
+				min = prices[i];
+			else {
+				if (prices[i] - min > max)
+					max = prices[i] - min;
+			}
+		}
+
+		return max;
 	}
 }

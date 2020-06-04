@@ -212,4 +212,130 @@ public class Solution2Test {
 		assertTrue(solution._100_isSameTree(root, root));
 	}
 
+	@Test
+	void _101_isSymmetric() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(2);
+
+		root.left.left = new TreeNode(3);
+		root.left.right = new TreeNode(4);
+		root.right.left = new TreeNode(4);
+		root.right.right = new TreeNode(3);
+
+		assertTrue(solution._101_isSymmetric(root));
+	}
+
+	@Test
+	void _104_maxDepth() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.right = new TreeNode(4);
+
+		assertEquals(3, solution._104_maxDepth(root));
+	}
+
+	@Test
+	void _107_levelOrderBottom() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		List<List<Integer>> results = Arrays.asList(Arrays.asList(4, 5, 6, 7), Arrays.asList(2, 3), Arrays.asList(1));
+
+		assertThat(solution._107_levelOrderBottom(root), is(results));
+	}
+
+	@Test
+	void _108_sortedArrayToBST() {
+		TreeNode root = solution._108_sortedArrayToBST(new int[] { -10, -3, 0, 5, 9 });
+		assertEquals(0, root.val);
+		assertEquals(-10, root.left.val);
+		assertEquals(5, root.right.val);
+		assertEquals(-3, root.left.right.val);
+		assertEquals(9, root.right.right.val);
+	}
+
+	@Test
+	void _110_isBalanced() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+		root.right.right.right = new TreeNode(7);
+		root.right.right.right.right = new TreeNode(7);
+
+		assertFalse(solution._110_isBalanced(root));
+	}
+
+	@Test
+	void _111_minDepth() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.right.left = new TreeNode(6);
+
+		assertEquals(3, solution._111_minDepth(root));
+	}
+
+	@Test
+	void _112_hasPathSum() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+		root.right.right.right = new TreeNode(7);
+		root.right.right.right.right = new TreeNode(7);
+
+		assertTrue(solution._112_hasPathSum(root, 7));
+	}
+
+	@Test
+	void _118_generate() {
+		List<List<Integer>> results = solution._118_generate(5);
+		List<List<Integer>> allRows = new LinkedList<>();
+		allRows.add(Arrays.asList(1));
+		allRows.add(Arrays.asList(1, 1));
+		allRows.add(Arrays.asList(1, 2, 1));
+		allRows.add(Arrays.asList(1, 3, 3, 1));
+		allRows.add(Arrays.asList(1, 4, 6, 4, 1));
+
+		assertThat(results, is(allRows));
+	}
+
+	@Test
+	void _119_getRow() {
+		List<Integer> results = solution._119_getRow(4);
+
+		assertThat(results, is(Arrays.asList(1, 4, 6, 4, 1)));
+	}
+
+	@Test
+	void _121_maxProfit() {
+		assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
+		assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
+	}
 }
