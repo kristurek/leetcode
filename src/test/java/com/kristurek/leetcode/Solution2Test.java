@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
+import com.kristurek.leetcode.challenge.Solution;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.TreeNode;
 
@@ -337,5 +338,97 @@ public class Solution2Test {
 	void _121_maxProfit() {
 		assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
 		assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
+	}
+
+	@Test
+	void _122_maxProfit() {
+		assertEquals(7, solution._122_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
+		assertEquals(9, solution._122_maxProfit(new int[] { 7, 1, 5, 10 }));
+		assertEquals(0, solution._122_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
+	}
+
+	// Tested
+	@Test
+	void _125_isPalindrome() {
+		assertTrue(solution._125_isPalindrome("   "));
+		assertTrue(solution._125_isPalindrome("A man, a plan, a canal: Panama"));
+		assertFalse(solution._125_isPalindrome("race a car"));
+	}
+
+	@Test
+	void _136_singleNumber() {
+		assertEquals(1, solution._136_singleNumber(new int[] { 3, 5, 1, 2, 3, 5, 2 }));
+	}
+
+	@Test
+	void _141_hasCycle() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = head.next;
+
+		assertTrue(solution._141_hasCycle(head));
+	}
+
+	@Test
+	void _155_minStack() {
+		Solution2.MinStack minStack = solution._155_minStack();
+		minStack.push(-2);
+		minStack.push(0);
+		minStack.push(-3);
+		assertThat(minStack.getMin(), is(equalTo(-3)));
+		minStack.pop();
+		assertThat(minStack.top(), is(equalTo(0)));
+		assertThat(minStack.getMin(), is(equalTo(-2)));
+	}
+
+	@Test
+	void _160_getIntersectionNode() {
+		ListNode head1 = new ListNode(1);
+		head1.next = new ListNode(2);
+		head1.next.next = new ListNode(3);
+		head1.next.next.next = new ListNode(4);
+
+		ListNode head2 = new ListNode(7);
+		head2.next = new ListNode(6);
+		head2.next.next = new ListNode(3);
+		head2.next.next.next = new ListNode(4);
+		head2.next.next.next.next = new ListNode(5);
+
+		ListNode head3 = solution._160_getIntersectionNode(head1, head2);
+
+		assertEquals(3, head3.val);
+		assertEquals(4, head3.next.val);
+		assertEquals(5, head3.next.next.val);
+		assertNull(head3.next.next.next);
+	}
+
+	@Test
+	void _167_twoSum() {
+		assertArrayEquals(new int[] { 1, 2 }, solution._167_twoSum(new int[] { 2, 7, 11, 15 }, 9));
+	}
+
+	@Test
+	void _168_convertToTitle() {
+		assertEquals("A", solution._168_convertToTitle(1));
+		assertEquals("Z", solution._168_convertToTitle(26));
+		assertEquals("AA", solution._168_convertToTitle(27));
+		assertEquals("AMJ", solution._168_convertToTitle(1024));
+	}
+
+	@Test
+	void _169_majorityElement() {
+		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 2, 3).toArray()));
+		assertEquals(2, solution._169_majorityElement(IntStream.of(2, 2, 1, 1, 1, 2, 2).toArray()));
+		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 3, 4).toArray()));
+	}
+
+	@Test
+	void _171_titleToNumber() {
+		assertEquals(1, solution._171_titleToNumber("A"));
+		assertEquals(26, solution._171_titleToNumber("Z"));
+		assertEquals(27, solution._171_titleToNumber("AA"));
+		assertEquals(1024, solution._171_titleToNumber("AMJ"));
 	}
 }

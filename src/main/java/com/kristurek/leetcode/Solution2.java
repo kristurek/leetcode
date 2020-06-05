@@ -2,14 +2,19 @@ package com.kristurek.leetcode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.kristurek.leetcode.challenge.Solution.MinStack;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.TreeNode;
 
@@ -639,7 +644,7 @@ public class Solution2 {
 			return 0;
 
 		int min = prices[0];// buy stock by min value
-		int max = 0;// max profit -> buy min value sell max value
+		int max = 0;// max profit -> buy min value sell max value ide
 
 		for (int i = 1; i < prices.length; i++) {
 			if (prices[i] < min)
@@ -652,4 +657,165 @@ public class Solution2 {
 
 		return max;
 	}
+
+	public int _122_maxProfit(int[] prices) { // buy stock in day 1, sell stock in day 2, buy stock in day 2 ..
+		if (prices == null || prices.length == 0)
+			return 0;
+
+		int max = 0;
+		for (int i = 1; i < prices.length; i++)
+			if (prices[i] - prices[i - 1] > 0)
+				max += (prices[i] - prices[i - 1]);
+
+		return max;
+	}
+
+	public boolean _125_isPalindrome(String s) {
+		if (s == null)
+			return false;
+
+		s = s.toLowerCase().trim();
+
+		int l = 0;
+		int h = s.length() - 1;
+
+		while (l <= h) {
+			if (!Character.isAlphabetic(s.charAt(l)) && !Character.isDigit(s.charAt(l))) {
+				l++;
+				continue;
+			}
+			if (!Character.isAlphabetic(s.charAt(h)) && !Character.isDigit(s.charAt(h))) {
+				h--;
+				continue;
+			}
+
+			if (s.charAt(l) != s.charAt(h))
+				return false;
+
+			l++;
+			h--;
+		}
+
+		return true;
+	}
+
+	public int _136_singleNumber(int[] nums) {
+		Set<Integer> set = new HashSet<>();
+
+		for (int num : nums)
+			if (set.contains(num))
+				set.remove(num);
+			else
+				set.add(num);
+
+		return set.stream().findFirst().get();
+	}
+
+	public boolean _141_hasCycle(ListNode head) {
+		Set<ListNode> set = new HashSet<>();
+
+		while (head != null) {
+			if (set.contains(head))
+				return true;
+			else
+				set.add(head);
+			head = head.next;
+		}
+
+		return false;
+	}
+
+	public MinStack _155_minStack() {
+		return new MinStack();
+	}
+
+	class MinStack {
+
+		private Stack<Integer> stack = new Stack<>();
+		private int min = Integer.MAX_VALUE;
+
+		public void push(int x) {
+			if (x <= min) { // new min (x<=old_min), so remember old
+				stack.push(min);
+				min = x;
+			}
+			stack.push(x);
+		}
+
+		public void pop() {
+			int x = stack.pop();
+
+			if (x == min)
+				min = stack.pop();
+		}
+
+		public int top() {
+			return stack.peek();
+		}
+
+		public int getMin() {
+			return min;
+		}
+	}
+
+	public ListNode _160_getIntersectionNode(ListNode headA, ListNode headB) {
+		Set<ListNode> set = new HashSet<>();
+
+		while (headA != null) {
+			set.add(headA);
+			headA = headA.next;
+		}
+
+		while (headB != null) {
+			if (set.contains(headB))
+				return headB;
+			headB = headB.next;
+		}
+
+		return null;
+	}
+
+	public int[] _167_twoSum(int[] numbers, int target) {
+		Map<Integer, Integer> map = new HashMap<>();// Map.Entry<Value, Index>
+
+		for (int i = 0; i < numbers.length; i++) {
+			if (map.containsKey(target - numbers[i]))
+				return new int[] { map.get(target - numbers[i]) + 1, i + 1 };
+
+			if (!map.containsKey(numbers[i]))
+				map.put(numbers[i], i);
+		}
+
+		throw new IllegalArgumentException("Solution not found");
+	}
+
+	public String _168_convertToTitle(int n) {
+		StringBuilder sb = new StringBuilder();
+
+		while (n-- > 0) { // n-- ---> if n=1 then n-- 'A'(65) + 0%26(0)=='A'(65) for every char n--
+			sb.append((char) (n % 26 + 'A'));
+			n /= 26;
+		}
+
+		return sb.reverse().toString();
+	}
+
+	public int _169_majorityElement(int[] nums) {
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int num : nums)
+			map.put(num, map.getOrDefault(num, 0) + 1);
+
+		return map.entrySet().stream().max((e1, e2) -> e1.getValue() - e2.getValue()).get().getKey();
+	}
+
+	public int _171_titleToNumber(String s) {
+		int num = 0;
+
+		for (char sChar : s.toCharArray())
+			num = num * 26 + sChar - 64; // 64 below 'A' 65
+
+		return num;
+	}
+
 }
