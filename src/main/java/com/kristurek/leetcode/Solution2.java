@@ -2,7 +2,6 @@ package com.kristurek.leetcode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +13,6 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.kristurek.leetcode.challenge.Solution.MinStack;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.TreeNode;
 
@@ -37,7 +35,7 @@ public class Solution2 {
 	public int _7_reverse(int x) {
 		boolean minus = x < 0 ? true : false;
 		x = Math.abs(x);
-		int number = 0;
+		long number = 0;
 
 		while (x > 0) {
 			number = number * 10 + x % 10;
@@ -47,7 +45,7 @@ public class Solution2 {
 		if (number > Integer.MAX_VALUE || number < Integer.MIN_VALUE)
 			return 0;
 
-		return minus ? number * -1 : number;
+		return minus ? (int) number * -1 : (int) number;
 	}
 
 	public boolean _9_isPalindrome(int x) {
@@ -109,8 +107,10 @@ public class Solution2 {
 	}
 
 	public String _14_longestCommonPrefix(String[] strs) {
-		if (strs == null || strs.length == 0)
+		if (strs == null)
 			return null;
+		if (strs.length == 0)
+			return "";
 
 		String longestPrefix = strs[0];
 
@@ -127,12 +127,14 @@ public class Solution2 {
 		for (char c : s.toCharArray())
 			if (c == '(' || c == '[' || c == '{')
 				stack.push(c);
-			else if (c == ')' && stack.peek() == '(')
+			else if (c == ')' && !stack.isEmpty() && stack.peek() == '(')
 				stack.pop();
-			else if (c == ']' && stack.peek() == '[')
+			else if (c == ']' && !stack.isEmpty() && stack.peek() == '[')
 				stack.pop();
-			else if (c == '}' && stack.peek() == '{')
+			else if (c == '}' && !stack.isEmpty() && stack.peek() == '{')
 				stack.pop();
+			else
+				return false;
 
 		return stack.isEmpty();
 	}
@@ -292,12 +294,12 @@ public class Solution2 {
 		if (x == 0)
 			return 0;
 
-		int l = 0;
-		int h = x;
-		int answer = -1;
+		long l = 0;
+		long h = x;
+		long answer = -1;
 
 		while (l <= h) {
-			int m = l + (h - l) / 2;
+			long m = l + (h - l) / 2;
 
 			if (m * m < x) {
 				l = m + 1;
@@ -305,10 +307,10 @@ public class Solution2 {
 			} else if (m * m > x)
 				h = m - 1;
 			else
-				return m;
+				return (int) m;
 		}
 
-		return answer;
+		return (int) answer;
 	}
 
 	public int _70_climbStairs(int n) {
@@ -332,6 +334,9 @@ public class Solution2 {
 	}
 
 	public ListNode _83_deleteDuplicates(ListNode ln) {
+		if (ln == null)
+			return null;
+
 		ListNode current = ln;
 		ListNode head = current;
 

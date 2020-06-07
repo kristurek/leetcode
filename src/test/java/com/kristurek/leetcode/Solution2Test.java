@@ -3,7 +3,6 @@ package com.kristurek.leetcode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,17 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 
-import com.kristurek.leetcode.challenge.Solution;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.TreeNode;
 
@@ -34,20 +29,20 @@ public class Solution2Test {
 		assertNotNull(solution);
 	}
 
-	@Test
+	@Test // T
 	void _1_twoSum() {
 		assertArrayEquals(new int[] { 1, 0 }, solution._1_twoSum(new int[] { 2, 7, 11, 15 }, 9));
 		assertArrayEquals(new int[] { 3, 0 }, solution._1_twoSum(new int[] { 2, 7, 11, 15 }, 17));
 	}
 
-	@Test
+	@Test // T
 	void _7_reverse() {
 		assertEquals(321, solution._7_reverse(123));
 		assertEquals(-321, solution._7_reverse(-123));
 		assertEquals(21, solution._7_reverse(120));
 	}
 
-	@Test
+	@Test // T
 	void _9_isPalindrome() {
 		assertTrue(solution._9_isPalindrome(121));
 		assertTrue(solution._9_isPalindrome(0));
@@ -55,7 +50,7 @@ public class Solution2Test {
 		assertFalse(solution._9_isPalindrome(10));
 	}
 
-	@Test
+	@Test // T
 	void _13_romanToInt() {
 		assertEquals(3, solution._13_romanToInt("III"));
 		assertEquals(4, solution._13_romanToInt("IV"));
@@ -64,13 +59,13 @@ public class Solution2Test {
 		assertEquals(1994, solution._13_romanToInt("MCMXCIV"));
 	}
 
-	@Test
+	@Test // T
 	void _14_longestCommonPrefix() {
 		assertEquals("fl", solution._14_longestCommonPrefix(new String[] { "flower", "flow", "flight" }));
 		assertEquals("", solution._14_longestCommonPrefix(new String[] { "dog", "racecar", "car" }));
 	}
 
-	@Test
+	@Test // T
 	void _20_isValid() {
 		assertTrue(solution._20_isValid("()"));
 		assertTrue(solution._20_isValid("()[]{}"));
@@ -79,7 +74,7 @@ public class Solution2Test {
 		assertTrue(solution._20_isValid("{[]}"));
 	}
 
-	@Test
+	@Test // T
 	void _21_mergeTwoLists() {
 		ListNode head1 = new ListNode(1);
 		head1.next = new ListNode(2);
@@ -99,7 +94,7 @@ public class Solution2Test {
 		assertEquals(4, head3.next.next.next.next.next.val);
 	}
 
-	@Test
+	@Test // T
 	void _26_removeDuplicates() {
 		int[] arr = new int[] { 1, 1, 1, 2, 2, 2 };
 
@@ -109,7 +104,7 @@ public class Solution2Test {
 		assertEquals(2, arr[1]);
 	}
 
-	@Test
+	@Test // T
 	void _27_removeElement() {
 		int[] arr = new int[] { 1, 1, 2 };
 
@@ -118,13 +113,13 @@ public class Solution2Test {
 		assertEquals(2, arr[0]);
 	}
 
-	@Test
+	@Test // T
 	void _28_strStr() {
 		assertEquals(2, solution._28_strStr("hello", "ll"));
 		assertEquals(-1, solution._28_strStr("aaaaa", "bba"));
 	}
 
-	@Test
+	@Test // T
 	void _35_searchInsert() {
 		assertEquals(2, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 5));
 		assertEquals(1, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 2));
@@ -132,35 +127,35 @@ public class Solution2Test {
 		assertEquals(0, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 0));
 	}
 
-	@Test
+	@Test // T
 	void _53_maxSubArray() {
 		assertEquals(6, solution._53_maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
 	}
 
-	@Test
+	@Test // T
 	void _58_lengthOfLastWord() {
 		assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
 	}
 
-	@Test
+	@Test // T
 	void _66_plusOne() {
 		assertArrayEquals(IntStream.of(1, 0, 0, 0).toArray(), solution._66_plusOne(IntStream.of(9, 9, 9).toArray()));
 		assertArrayEquals(IntStream.of(9, 9, 1).toArray(), solution._66_plusOne(IntStream.of(9, 9, 0).toArray()));
 	}
 
-	@Test
+	@Test // T
 	void _67_addBinary() {
 		assertEquals("100", solution._67_addBinary("1", "11"));
 	}
 
-	@Test
+	@Test // T
 	void _69_mySqrt() {
 		assertEquals(2, solution._69_mySqrt(4));
 		assertEquals(4, solution._69_mySqrt(16));
 		assertEquals(2, solution._69_mySqrt(8));
 	}
 
-	@Test
+	@Test // T
 	void _70_climbStairs() {
 		assertEquals(0, solution._70_climbStairs(0));
 		assertEquals(1, solution._70_climbStairs(1));
@@ -170,7 +165,7 @@ public class Solution2Test {
 		assertEquals(8, solution._70_climbStairs(5));
 	}
 
-	@Test
+	@Test // T
 	void _83_deleteDuplicates() {
 		ListNode head = new ListNode(1);
 		head.next = new ListNode(1);
@@ -187,7 +182,7 @@ public class Solution2Test {
 
 	}
 
-	@Test
+	@Test // T
 	void _88_merge() {
 		int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
 		int[] nums2 = new int[] { 2, 5, 6 };
@@ -198,7 +193,7 @@ public class Solution2Test {
 		assertArrayEquals(nums3, nums1);
 	}
 
-	@Test
+	@Test // T
 	void _100_isSameTree() {
 		TreeNode root = new TreeNode(1);
 
@@ -213,7 +208,7 @@ public class Solution2Test {
 		assertTrue(solution._100_isSameTree(root, root));
 	}
 
-	@Test
+	@Test // T
 	void _101_isSymmetric() {
 		TreeNode root = new TreeNode(1);
 
@@ -228,7 +223,7 @@ public class Solution2Test {
 		assertTrue(solution._101_isSymmetric(root));
 	}
 
-	@Test
+	@Test // T
 	void _104_maxDepth() {
 		TreeNode root = new TreeNode(1);
 
@@ -240,7 +235,7 @@ public class Solution2Test {
 		assertEquals(3, solution._104_maxDepth(root));
 	}
 
-	@Test
+	@Test // T
 	void _107_levelOrderBottom() {
 		TreeNode root = new TreeNode(1);
 
@@ -257,7 +252,7 @@ public class Solution2Test {
 		assertThat(solution._107_levelOrderBottom(root), is(results));
 	}
 
-	@Test
+	@Test // T
 	void _108_sortedArrayToBST() {
 		TreeNode root = solution._108_sortedArrayToBST(new int[] { -10, -3, 0, 5, 9 });
 		assertEquals(0, root.val);
@@ -267,7 +262,7 @@ public class Solution2Test {
 		assertEquals(9, root.right.right.val);
 	}
 
-	@Test
+	@Test // T
 	void _110_isBalanced() {
 		TreeNode root = new TreeNode(1);
 
@@ -284,7 +279,7 @@ public class Solution2Test {
 		assertFalse(solution._110_isBalanced(root));
 	}
 
-	@Test
+	@Test // T
 	void _111_minDepth() {
 		TreeNode root = new TreeNode(1);
 
@@ -297,7 +292,7 @@ public class Solution2Test {
 		assertEquals(3, solution._111_minDepth(root));
 	}
 
-	@Test
+	@Test // T
 	void _112_hasPathSum() {
 		TreeNode root = new TreeNode(1);
 
@@ -314,7 +309,7 @@ public class Solution2Test {
 		assertTrue(solution._112_hasPathSum(root, 7));
 	}
 
-	@Test
+	@Test // T
 	void _118_generate() {
 		List<List<Integer>> results = solution._118_generate(5);
 		List<List<Integer>> allRows = new LinkedList<>();
@@ -327,20 +322,20 @@ public class Solution2Test {
 		assertThat(results, is(allRows));
 	}
 
-	@Test
+	@Test // T
 	void _119_getRow() {
 		List<Integer> results = solution._119_getRow(4);
 
 		assertThat(results, is(Arrays.asList(1, 4, 6, 4, 1)));
 	}
 
-	@Test
+	@Test // T
 	void _121_maxProfit() {
 		assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
 		assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
 	}
 
-	@Test
+	@Test // T
 	void _122_maxProfit() {
 		assertEquals(7, solution._122_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
 		assertEquals(9, solution._122_maxProfit(new int[] { 7, 1, 5, 10 }));
@@ -355,12 +350,12 @@ public class Solution2Test {
 		assertFalse(solution._125_isPalindrome("race a car"));
 	}
 
-	@Test
+	@Test // T
 	void _136_singleNumber() {
 		assertEquals(1, solution._136_singleNumber(new int[] { 3, 5, 1, 2, 3, 5, 2 }));
 	}
 
-	@Test
+	@Test // T
 	void _141_hasCycle() {
 		ListNode head = new ListNode(1);
 		head.next = new ListNode(2);
@@ -371,7 +366,7 @@ public class Solution2Test {
 		assertTrue(solution._141_hasCycle(head));
 	}
 
-	@Test
+	@Test // T
 	void _155_minStack() {
 		Solution2.MinStack minStack = solution._155_minStack();
 		minStack.push(-2);
@@ -383,7 +378,7 @@ public class Solution2Test {
 		assertThat(minStack.getMin(), is(equalTo(-2)));
 	}
 
-	@Test
+	@Test // T
 	void _160_getIntersectionNode() {
 		ListNode head1 = new ListNode(1);
 		head1.next = new ListNode(2);
@@ -404,12 +399,12 @@ public class Solution2Test {
 		assertNull(head3.next.next.next);
 	}
 
-	@Test
+	@Test // T
 	void _167_twoSum() {
 		assertArrayEquals(new int[] { 1, 2 }, solution._167_twoSum(new int[] { 2, 7, 11, 15 }, 9));
 	}
 
-	@Test
+	@Test // T
 	void _168_convertToTitle() {
 		assertEquals("A", solution._168_convertToTitle(1));
 		assertEquals("Z", solution._168_convertToTitle(26));
@@ -417,14 +412,14 @@ public class Solution2Test {
 		assertEquals("AMJ", solution._168_convertToTitle(1024));
 	}
 
-	@Test
+	@Test // T
 	void _169_majorityElement() {
 		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 2, 3).toArray()));
 		assertEquals(2, solution._169_majorityElement(IntStream.of(2, 2, 1, 1, 1, 2, 2).toArray()));
 		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 3, 4).toArray()));
 	}
 
-	@Test
+	@Test // T
 	void _171_titleToNumber() {
 		assertEquals(1, solution._171_titleToNumber("A"));
 		assertEquals(26, solution._171_titleToNumber("Z"));
