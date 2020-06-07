@@ -27,11 +27,6 @@ public class SolutionTest {
 	private Solution solution = new Solution();
 
 	@Test
-	void _1_twoSum() {
-		assertArrayEquals(new int[] { 0, 1 }, solution._1_twoSum(new int[] { 2, 7, 11, 15 }, 9));
-	}
-
-	@Test
 	void _2_addTwoNumbers() {
 		ListNode l1 = new ListNode(2);
 		l1.next = new ListNode(4);
@@ -63,20 +58,6 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _7_reverse() {
-		assertEquals(321, solution._7_reverse(123));
-		assertEquals(-321, solution._7_reverse(-123));
-		assertEquals(21, solution._7_reverse(120));
-	}
-
-	@Test
-	void _9_isPalindrome() {
-		assertTrue(solution._9_isPalindrome(121));
-		assertFalse(solution._9_isPalindrome(-123));
-		assertFalse(solution._9_isPalindrome(10));
-	}
-
-	@Test
 	void _11_maxArea() {
 		assertEquals(49, solution._11_maxArea(new int[] { 1, 8, 6, 2, 5, 4, 8, 3, 7 }));
 	}
@@ -88,21 +69,6 @@ public class SolutionTest {
 		assertEquals("IX", solution._12_intToRoman(9));
 		assertEquals("LVIII", solution._12_intToRoman(58));
 		assertEquals("MCMXCIV", solution._12_intToRoman(1994));
-	}
-
-	@Test
-	void _13_romanToInt() {
-		assertEquals(3, solution._13_romanToInt("III"));
-		assertEquals(4, solution._13_romanToInt("IV"));
-		assertEquals(9, solution._13_romanToInt("IX"));
-		assertEquals(58, solution._13_romanToInt("LVIII"));
-		assertEquals(1994, solution._13_romanToInt("MCMXCIV"));
-	}
-
-	@Test
-	void _14_longestCommonPrefix() {
-		assertEquals("fl", solution._14_longestCommonPrefix(new String[] { "flower", "flow", "flight" }));
-		assertEquals("", solution._14_longestCommonPrefix(new String[] { "dog", "racecar", "car" }));
 	}
 
 	@Test
@@ -136,8 +102,7 @@ public class SolutionTest {
 
 	@Test
 	void _17_letterCombinations() {
-		assertEquals(Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"),
-				solution._17_letterCombinations("23"));
+		assertEquals(Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"), solution._17_letterCombinations("23"));
 	}
 
 	@Test
@@ -150,35 +115,6 @@ public class SolutionTest {
 
 		assertEquals(2, head.val);
 		assertEquals(3, head.next.val);
-	}
-
-	@Test
-	void _20_isValid() {
-		assertTrue(solution._20_isValid("()"));
-		assertTrue(solution._20_isValid("()[]{}"));
-		assertFalse(solution._20_isValid("(]"));
-		assertFalse(solution._20_isValid("([)]"));
-		assertTrue(solution._20_isValid("{[]}"));
-	}
-
-	@Test
-	void _21_mergeTwoLists() {
-		ListNode head1 = new ListNode(1);
-		head1.next = new ListNode(2);
-		head1.next.next = new ListNode(4);
-
-		ListNode head2 = new ListNode(1);
-		head2.next = new ListNode(3);
-		head2.next.next = new ListNode(4);
-
-		ListNode head3 = solution._21_mergeTwoLists(head1, head2);
-
-		assertEquals(1, head3.val);
-		assertEquals(1, head3.next.val);
-		assertEquals(2, head3.next.next.val);
-		assertEquals(3, head3.next.next.next.val);
-		assertEquals(4, head3.next.next.next.next.val);
-		assertEquals(4, head3.next.next.next.next.next.val);
 	}
 
 	@Test
@@ -223,31 +159,6 @@ public class SolutionTest {
 		assertEquals(1, head.next.val);
 		assertEquals(4, head.next.next.val);
 		assertEquals(3, head.next.next.next.val);
-	}
-
-	@Test
-	void removeDuplicates() {
-		int[] arr = new int[] { 1, 1, 2 };
-
-		assertEquals(2, solution._26_removeDuplicates(arr));
-
-		assertEquals(1, arr[0]);
-		assertEquals(2, arr[1]);
-	}
-
-	@Test
-	void _27_removeElement() {
-		int[] arr = new int[] { 1, 1, 2 };
-
-		assertEquals(1, solution._27_removeElement(arr, 1));
-
-		assertEquals(2, arr[0]);
-	}
-
-	@Test
-	void _28_strStr() {
-		assertEquals(2, solution._28_strStr("hello", "ll"));
-		assertEquals(-1, solution._28_strStr("aaaaa", "bba"));
 	}
 
 	@Test
@@ -315,19 +226,8 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _53_maxSubArray() {
-		assertEquals(6, solution._53_maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
-	}
-
-	@Test
 	void _54_spiralOrder() {
-		assertThat(solution._54_spiralOrder(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }),
-				is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
-	}
-
-	@Test
-	void _58_lengthOfLastWord() {
-		assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
+		assertThat(solution._54_spiralOrder(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }), is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
 	}
 
 	@Test
@@ -361,34 +261,6 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _66_plusOne() {
-		assertArrayEquals(IntStream.of(1, 0, 0, 0).toArray(), solution._66_plusOne(IntStream.of(9, 9, 9).toArray()));
-		assertArrayEquals(IntStream.of(9, 9, 1).toArray(), solution._66_plusOne(IntStream.of(9, 9, 0).toArray()));
-	}
-
-	@Test
-	void _67_addBinary() {
-		assertEquals("100", solution._67_addBinary("1", "11"));
-	}
-
-	@Test
-	void _69_mySqrt() {
-		assertEquals(2, solution._69_mySqrt(8));
-		assertEquals(2, solution._69_mySqrt(4));
-		assertEquals(4, solution._69_mySqrt(16));
-	}
-
-	@Test
-	void _70_climbStairs() {
-		assertEquals(0, solution._70_climbStairs(0));
-		assertEquals(1, solution._70_climbStairs(1));
-		assertEquals(2, solution._70_climbStairs(2));
-		assertEquals(3, solution._70_climbStairs(3));
-		assertEquals(5, solution._70_climbStairs(4));
-		assertEquals(8, solution._70_climbStairs(5));
-	}
-
-	@Test
 	void _71_simplifyPath() {
 		assertEquals("/home", solution._71_simplifyPath("/home/"));
 		assertEquals("/", solution._71_simplifyPath("/../"));
@@ -400,8 +272,7 @@ public class SolutionTest {
 
 	@Test
 	void _74_searchMatrix() {
-		assertTrue(solution._74_searchMatrix(
-				new int[][] { new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 7, 8, 9 } }, 7));
+		assertTrue(solution._74_searchMatrix(new int[][] { new int[] { 1, 2, 3 }, new int[] { 4, 5, 6 }, new int[] { 7, 8, 9 } }, 7));
 	}
 
 	@Test
@@ -470,22 +341,6 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _83_deleteDuplicates() {
-		ListNode head = new ListNode(1);
-		head.next = new ListNode(1);
-		head.next.next = new ListNode(3);
-		head.next.next.next = new ListNode(4);
-
-		head = solution._83_deleteDuplicates(head);
-
-		assertEquals(1, head.val);
-		assertEquals(3, head.next.val);
-		assertEquals(4, head.next.next.val);
-		assertNull(head.next.next.next);
-
-	}
-
-	@Test
 	void _86_partition() {
 		ListNode head = new ListNode(1);
 		head.next = new ListNode(4);
@@ -503,17 +358,6 @@ public class SolutionTest {
 		assertEquals(3, head.next.next.next.next.val);
 		assertEquals(5, head.next.next.next.next.next.val);
 		assertNull(head.next.next.next.next.next.next);
-	}
-
-	@Test
-	void _88_merge() {
-		int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
-		int[] nums2 = new int[] { 2, 5, 6 };
-		int[] nums3 = new int[] { 1, 2, 2, 3, 5, 6 };
-
-		solution._88_merge(nums1, 3, nums2, 3);
-
-		assertArrayEquals(nums3, nums1);
 	}
 
 	@Test
@@ -537,62 +381,8 @@ public class SolutionTest {
 	}
 
 	@Test
-	void _118_generate() {
-		List<List<Integer>> results = solution._118_generate(5);
-		List<List<Integer>> allRows = new LinkedList<>();
-		allRows.add(Arrays.asList(1));
-		allRows.add(Arrays.asList(1, 1));
-		allRows.add(Arrays.asList(1, 2, 1));
-		allRows.add(Arrays.asList(1, 3, 3, 1));
-		allRows.add(Arrays.asList(1, 4, 6, 4, 1));
-
-		assertThat(results, is(allRows));
-	}
-
-	@Test
-	void _119_getRow() {
-		List<Integer> results = solution._119_getRow(4);
-
-		assertThat(results, is(Arrays.asList(1, 4, 6, 4, 1)));
-	}
-
-	@Test
-	void _125_isPalindrome() {
-		assertTrue(solution._125_isPalindrome("A man, a plan, a canal: Panama"));
-		assertFalse(solution._125_isPalindrome("race a car"));
-	}
-
-	@Test
-	void _121_maxProfit() {
-		assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
-		assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
-	}
-
-	@Test
-	void _122_maxProfit() {
-		assertEquals(7, solution._122_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
-		assertEquals(0, solution._122_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
-	}
-
-	@Test
-	void _136_singleNumber() {
-		assertEquals(1, solution._136_singleNumber(new int[] { 3, 5, 1, 2, 3, 5, 2 }));
-	}
-
-	@Test
 	void _137_singleNumber() {
 		assertEquals(1, solution._137_singleNumber(new int[] { 3, 5, 3, 5, 3, 1, 2, 3, 5, 2 }));
-	}
-
-	@Test
-	void _141_hasCycle() {
-		ListNode head = new ListNode(1);
-		head.next = new ListNode(2);
-		head.next.next = new ListNode(3);
-		head.next.next.next = new ListNode(4);
-		head.next.next.next.next = head.next;
-
-		assertTrue(solution._141_hasCycle(head));
 	}
 
 	@Test
@@ -604,34 +394,6 @@ public class SolutionTest {
 		head.next.next.next.next = head.next;
 
 		assertEquals(head.next, solution._142_detectCycle(head));
-	}
-
-	@Test
-	void _167_twoSum() {
-		assertArrayEquals(new int[] { 1, 2 }, solution._167_twoSum(new int[] { 2, 7, 11, 15 }, 9));
-	}
-
-	@Test
-	void _168_convertToTitle() {
-		assertEquals("A", solution._168_convertToTitle(1));
-		assertEquals("Z", solution._168_convertToTitle(26));
-		assertEquals("AA", solution._168_convertToTitle(27));
-		assertEquals("AMJ", solution._168_convertToTitle(1024));
-	}
-
-	@Test
-	void _169_majorityElement() {
-		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 2, 3).toArray()));
-		assertEquals(2, solution._169_majorityElement(IntStream.of(2, 2, 1, 1, 1, 2, 2).toArray()));
-		assertEquals(3, solution._169_majorityElement(IntStream.of(3, 3, 4).toArray()));
-	}
-
-	@Test
-	void _171_titleToNumber() {
-		assertEquals(1, solution._171_titleToNumber("A"));
-		assertEquals(26, solution._171_titleToNumber("Z"));
-		assertEquals(27, solution._171_titleToNumber("AA"));
-		assertEquals(1024, solution._171_titleToNumber("AMJ"));
 	}
 
 	@Test
@@ -656,7 +418,7 @@ public class SolutionTest {
 		assertEquals(4, solution._198_rob(IntStream.of(1, 2, 3, 1).toArray()));
 		assertEquals(12, solution._198_rob(IntStream.of(2, 7, 9, 3, 1).toArray()));
 	}
-	
+
 	@Test
 	void _200_numIslands() {
 		assertEquals(1, solution._200_numIslands(new char[][] { { '1', '1', '1', '1', '0' }, { '1', '1', '0', '1', '0' }, { '1', '1', '0', '0', '0' }, { '0', '0', '0', '0', '0' } }));
@@ -791,12 +553,9 @@ public class SolutionTest {
 
 	@Test
 	void _1365_smallerNumbersThanCurrent() {
-		assertArrayEquals(IntStream.of(4, 0, 1, 1, 3).toArray(),
-				solution._1365_smallerNumbersThanCurrent(IntStream.of(8, 1, 2, 2, 3).toArray()));
-		assertArrayEquals(IntStream.of(2, 1, 0, 3).toArray(),
-				solution._1365_smallerNumbersThanCurrent(IntStream.of(6, 5, 4, 8).toArray()));
-		assertArrayEquals(IntStream.of(0, 0, 0, 0).toArray(),
-				solution._1365_smallerNumbersThanCurrent(IntStream.of(7, 7, 7, 7).toArray()));
+		assertArrayEquals(IntStream.of(4, 0, 1, 1, 3).toArray(), solution._1365_smallerNumbersThanCurrent(IntStream.of(8, 1, 2, 2, 3).toArray()));
+		assertArrayEquals(IntStream.of(2, 1, 0, 3).toArray(), solution._1365_smallerNumbersThanCurrent(IntStream.of(6, 5, 4, 8).toArray()));
+		assertArrayEquals(IntStream.of(0, 0, 0, 0).toArray(), solution._1365_smallerNumbersThanCurrent(IntStream.of(7, 7, 7, 7).toArray()));
 	}
 
 	@Test
@@ -808,20 +567,16 @@ public class SolutionTest {
 
 	@Test
 	void _1380_luckyNumbers() {
-		int[][] matrix = Stream.of(new int[] { 3, 7, 8 }, new int[] { 9, 11, 13 }, new int[] { 15, 16, 17 })
-				.toArray(int[][]::new);
+		int[][] matrix = Stream.of(new int[] { 3, 7, 8 }, new int[] { 9, 11, 13 }, new int[] { 15, 16, 17 }).toArray(int[][]::new);
 
 		assertThat(solution._1380_luckyNumbers(matrix), is(equalTo(Stream.of(15).collect(Collectors.toList()))));
 	}
 
 	@Test
 	void _1389_createTargetArray() {
-		assertArrayEquals(IntStream.of(0, 4, 1, 3, 2).toArray(), solution
-				._1389_createTargetArray(IntStream.of(0, 1, 2, 3, 4).toArray(), IntStream.of(0, 1, 2, 2, 1).toArray()));
-		assertArrayEquals(IntStream.of(0, 1, 2, 3, 4).toArray(), solution
-				._1389_createTargetArray(IntStream.of(1, 2, 3, 4, 0).toArray(), IntStream.of(0, 1, 2, 3, 0).toArray()));
-		assertArrayEquals(IntStream.of(1).toArray(),
-				solution._1389_createTargetArray(IntStream.of(1).toArray(), IntStream.of(0).toArray()));
+		assertArrayEquals(IntStream.of(0, 4, 1, 3, 2).toArray(), solution._1389_createTargetArray(IntStream.of(0, 1, 2, 3, 4).toArray(), IntStream.of(0, 1, 2, 2, 1).toArray()));
+		assertArrayEquals(IntStream.of(0, 1, 2, 3, 4).toArray(), solution._1389_createTargetArray(IntStream.of(1, 2, 3, 4, 0).toArray(), IntStream.of(0, 1, 2, 3, 0).toArray()));
+		assertArrayEquals(IntStream.of(1).toArray(), solution._1389_createTargetArray(IntStream.of(1).toArray(), IntStream.of(0).toArray()));
 	}
 
 	@Test
@@ -842,10 +597,8 @@ public class SolutionTest {
 
 	@Test
 	void _1403_minSubsequence() {
-		assertThat(solution._1403_minSubsequence(IntStream.of(4, 3, 10, 9, 8).toArray()),
-				is(Stream.of(10, 9).collect(Collectors.toList())));
+		assertThat(solution._1403_minSubsequence(IntStream.of(4, 3, 10, 9, 8).toArray()), is(Stream.of(10, 9).collect(Collectors.toList())));
 
-		assertThat(solution._1403_minSubsequence(IntStream.of(4, 4, 7, 6, 7).toArray()),
-				is(Stream.of(7, 7, 6).collect(Collectors.toList())));
+		assertThat(solution._1403_minSubsequence(IntStream.of(4, 4, 7, 6, 7).toArray()), is(Stream.of(7, 7, 6).collect(Collectors.toList())));
 	}
 }

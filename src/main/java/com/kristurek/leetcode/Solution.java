@@ -19,19 +19,6 @@ import com.kristurek.leetcode.common.ListNode;
 
 public class Solution {
 
-	public int[] _1_twoSum(int[] nums, int target) {
-		Map<Integer, Integer> map = new HashMap<>();
-
-		for (int i = 0; i < nums.length; i++) {
-			int search = target - nums[i];
-			if (map.containsKey(search))
-				return new int[] { map.get(search), i };
-			map.put(nums[i], i);
-		}
-
-		throw new IllegalArgumentException("No found");
-	}
-
 	public ListNode _2_addTwoNumbers(ListNode l1, ListNode l2) {
 		ListNode dummyHead = new ListNode(0);
 		ListNode p = l1, q = l2, curr = dummyHead;
@@ -106,50 +93,6 @@ public class Solution {
 			return ((double) (nums[(nums.length / 2) - 1] + nums[nums.length / 2])) / 2.0;
 	}
 
-	public int _7_reverse(int x) {
-		boolean minus = false;
-		if (x < 0) {
-			minus = true;
-			x = x * -1;
-		}
-
-		long reverseNumber = 0;
-		long number = x;
-
-		while (number > 0) {
-			reverseNumber = reverseNumber * 10 + number % 10;
-			number = number / 10;
-		}
-
-		if (reverseNumber > Integer.MAX_VALUE || reverseNumber < Integer.MIN_VALUE)
-			return 0;
-
-		if (minus)
-			return (int) reverseNumber * -1;
-		else
-			return (int) reverseNumber;
-	}
-
-	public boolean _9_isPalindrome(int x) {
-		if (x < 0)
-			return false;
-		if (x == 0)
-			return true;
-
-		long reverseNumber = 0;
-		long number = x;
-
-		while (number > 0) {
-			reverseNumber = reverseNumber * 10 + number % 10;
-			number = number / 10;
-		}
-
-		if (reverseNumber > Integer.MAX_VALUE || reverseNumber < Integer.MIN_VALUE)
-			return false;
-
-		return reverseNumber == x;
-	}
-
 	public int _11_maxArea(int[] height) {
 		int max = 0;
 		int l = 0, r = height.length - 1;
@@ -197,58 +140,6 @@ public class Solution {
 		}
 
 		return roman.toString();
-	}
-
-	public int _13_romanToInt(String s) {
-		if (s == null || s.isBlank())
-			throw new IllegalArgumentException("Wrong input param");
-
-		int sum = 0;
-		for (int i = 0; i < s.length() - 1; i++) {
-			int currentChar = _13_romanToInt_convert(s.charAt(i));
-			int nextChar = _13_romanToInt_convert(s.charAt(i + 1));
-
-			if (currentChar >= nextChar)
-				sum += currentChar;
-			else
-				sum -= currentChar;
-		}
-
-		return sum + _13_romanToInt_convert(s.charAt(s.length() - 1));
-	}
-
-	private int _13_romanToInt_convert(Character c) {
-		switch (c) {
-		case 'I':
-			return 1;
-		case 'V':
-			return 5;
-		case 'X':
-			return 10;
-		case 'L':
-			return 50;
-		case 'C':
-			return 100;
-		case 'D':
-			return 500;
-		case 'M':
-			return 1000;
-		default:
-			throw new IllegalArgumentException("Unsupported char");
-		}
-	}
-
-	public String _14_longestCommonPrefix(String[] strs) {
-		if (strs == null || strs.length == 0)
-			return "";
-
-		String prefix = strs[0];
-		for (String str : strs) {
-			while (str.indexOf(prefix) != 0)
-				prefix = prefix.substring(0, prefix.length() - 1);
-		}
-
-		return prefix;
 	}
 
 	public List<List<Integer>> _15_threeSum(int[] nums) {
@@ -323,8 +214,7 @@ public class Solution {
 		return output;
 	}
 
-	private void letterCombinations(List<String> output, String digits, int i, String current,
-			Map<Character, String> map) {
+	private void letterCombinations(List<String> output, String digits, int i, String current, Map<Character, String> map) {
 		if (i == digits.length()) {
 			output.add(current);
 		} else {
@@ -358,65 +248,6 @@ public class Solution {
 		current.next = current.next.next;
 
 		return dummy.next;
-	}
-
-	public boolean _20_isValid(String s) {
-		Deque<Character> queue = new LinkedList<>();
-
-		for (char c : s.toCharArray()) {
-			if (c == '(' || c == '{' || c == '[')
-				queue.addLast(c);
-			else if (c == ')' && queue.peekLast() == '(') {
-				queue.removeLast();
-			} else if (c == '}' && queue.peekLast() == '{') {
-				queue.removeLast();
-			} else if (c == ']' && queue.peekLast() == '[') {
-				queue.removeLast();
-			} else
-				return false;
-		}
-
-		return queue.isEmpty();
-	}
-
-	public ListNode _21_mergeTwoLists(ListNode l1, ListNode l2) {
-		ListNode current = new ListNode(-1);
-		ListNode head = current;
-
-		ListNode cl1 = l1;
-		ListNode cl2 = l2;
-
-		while (cl1 != null && cl2 != null) {
-			if (cl1.val < cl2.val) {
-				current.next = cl1;
-
-				cl1 = cl1.next;
-				current = current.next;
-			} else if (cl1.val > cl2.val) {
-				current.next = cl2;
-
-				cl2 = cl2.next;
-				current = current.next;
-			} else {
-				current.next = cl1;
-
-				cl1 = cl1.next;
-				current = current.next;
-
-				current.next = cl2;
-
-				cl2 = cl2.next;
-				current = current.next;
-			}
-		}
-
-		if (cl1 != null)
-			current.next = cl1;
-
-		if (cl2 != null)
-			current.next = cl2;
-
-		return head.next;
 	}
 
 	public List<String> _22_generateParenthesis(int n) {
@@ -511,56 +342,6 @@ public class Solution {
 		}
 
 		return newHead.next;
-	}
-
-	public int _26_removeDuplicates(int[] nums) {
-		if (nums.length == 0)
-			return 0;
-
-		int i = 1;
-		for (int j = 1; j < nums.length; j++) {
-			if (nums[j] != nums[j - 1])
-				nums[i++] = nums[j];
-		}
-
-		return i;
-	}
-
-	public int _27_removeElement(int[] nums, int val) {
-		if (nums.length == 0)
-			return 0;
-
-		int i = 0;
-		for (int j = 0; j < nums.length; j++) {
-			if (nums[j] != val) {
-				nums[i++] = nums[j];
-			}
-		}
-
-		return i;
-	}
-
-	public int _28_strStr(String haystack, String needle) {
-		if (haystack == null || needle == null)
-			throw new IllegalArgumentException("No null value allowed");
-		if (needle.length() == 0)
-			return 0;
-
-		int j = 0;
-		for (int i = 0; i < haystack.length(); i++) {
-			if (haystack.charAt(i) == needle.charAt(j))
-				j++;
-			else {
-				if (j != 0)
-					i = i - j;
-				j = 0;
-			}
-
-			if (j == needle.length())
-				return i - needle.length() + 1;
-		}
-
-		return -1;
 	}
 
 	public int _33_search(int[] nums, int target) {
@@ -658,8 +439,7 @@ public class Solution {
 				char val = board[row][col];
 				if (val != '.') {
 					int cube = (row / 3 * 3) + (col / 3);
-					if (set.contains("r" + row + val) || set.contains("c" + col + val)
-							|| set.contains("b" + cube + val))
+					if (set.contains("r" + row + val) || set.contains("c" + col + val) || set.contains("b" + cube + val))
 						return false;
 					else {
 						set.add("r" + row + val);
@@ -856,23 +636,6 @@ public class Solution {
 		}
 	}
 
-	public int _53_maxSubArray(int[] nums) {
-		int sum = 0;
-		int max = Integer.MIN_VALUE;
-
-		for (int i = 0; i < nums.length; i++) {
-			if (sum < 0)
-				sum = nums[i];
-			else
-				sum += nums[i];
-
-			if (sum > max)
-				max = sum;
-		}
-
-		return max;
-	}
-
 	public List<Integer> _54_spiralOrder(int[][] matrix) {
 		List<Integer> res = new ArrayList<>();
 
@@ -914,15 +677,6 @@ public class Solution {
 		return res;
 	}
 
-	public int _58_lengthOfLastWord(String s) {
-		if (s == null || s.isEmpty())
-			return 0;
-
-		String[] ss = s.split(" ");
-
-		return ss[ss.length - 1].length();
-	}
-
 	public ListNode _61_rotateRight(ListNode head, int k) {
 		if (head == null || k == 0)
 			return head;
@@ -945,112 +699,6 @@ public class Solution {
 		current.next = null;
 
 		return newH;
-	}
-
-	public int[] _66_plusOne(int[] digits) {
-		int carry = 0;
-
-		// fix this - loop no need
-		for (int i = digits.length - 1; i >= 0; i--) {
-			if (digits[i] == 9) {
-				carry++;
-				digits[i] = 0;
-				break;
-			} else {
-				digits[i] = digits[i] + 1;
-				break;// just return digits in this place;
-			}
-		}
-
-		if (carry != 0) {
-			int[] nDigits = new int[digits.length + 1];
-			nDigits[0] = 1;
-			return nDigits;
-		}
-
-		return digits;
-	}
-
-	public String _67_addBinary(String a, String b) {
-		int i = a.length() - 1;
-		int j = b.length() - 1;
-		int carry = 0;
-		int sum = 0;
-
-		StringBuilder sb = new StringBuilder();
-
-		while (i >= 0 || j >= 0) {
-			sum = carry;
-
-			if (i >= 0)
-				sum += Integer.parseInt(Character.toString(a.charAt(i--)));
-			if (j >= 0)
-				sum += Integer.valueOf(Character.toString(b.charAt(j--)));
-
-//			if (sum == 0) {
-//				sb.append('0');
-//				carry = 0;
-//			} else if (sum == 1) {
-//				sb.append('1');
-//				carry = 0;
-//			} else if (sum == 2) {
-//				sb.append('0');
-//				carry = 1;
-//			} else {
-//				sb.append('1');
-//				carry = 1;
-//			}
-			sb.append(sum % 2);
-			carry = sum / 2;
-		}
-
-		if (carry != 0)
-			sb.append('1');
-
-		return sb.reverse().toString();
-	}
-
-	public int _69_mySqrt(int x) {
-		if (x == 0)
-			return 0;
-
-		int l = 1;
-		int r = x;
-		int ans = -1;
-
-		while (l <= r) {
-			int mid = (l + r) / 2;
-
-			if (mid * mid < x) {
-				l = mid + 1;
-				ans = mid;
-			} else if (mid * mid > x)
-				r = mid - 1;
-			else
-				return mid;
-		}
-		return ans;
-	}
-
-	public int _70_climbStairs(int n) {
-		if (n == 0)
-			return 0;
-		if (n == 1)
-			return 1;
-		if (n == 2)
-			return 2;
-
-		int first = 1; // one combination
-		int second = 2;// two combination
-
-		for (int i = 3; i <= n; i++) {
-			int third = first + second;
-
-			first = second;
-			second = third;
-		}
-
-		return second;
 	}
 
 	public String _71_simplifyPath(String path) {
@@ -1195,18 +843,6 @@ public class Solution {
 		return dummy.next;
 	}
 
-	public ListNode _83_deleteDuplicates(ListNode head) {
-		ListNode current = head;
-		while (current != null && current.next != null) {
-			if (current.val == current.next.val)
-				current.next = current.next.next;
-			else
-				current = current.next;
-		}
-
-		return head;
-	}
-
 	public ListNode _86_partition(ListNode head, int x) {
 		ListNode beforeHead = new ListNode(-1);
 		ListNode before = beforeHead;
@@ -1228,29 +864,6 @@ public class Solution {
 		after.next = null;
 		before.next = afterHead.next;
 		return beforeHead.next;
-	}
-
-	public void _88_merge(int[] nums1, int m, int[] nums2, int n) {
-		int i = m - 1;
-		int j = n - 1;
-		int k = m + n - 1;
-
-		while (k >= 0) {
-			if (i >= 0 && j < 0)
-				nums1[k--] = nums1[i--];
-			else if (i < 0 && j >= 0)
-				nums1[k--] = nums2[j--];
-			else {
-				if (nums1[i] > nums2[j])
-					nums1[k--] = nums1[i--];
-				else if (nums1[i] < nums2[j])
-					nums1[k--] = nums2[j--];
-				else {
-					nums1[k--] = nums1[i--];
-					nums1[k--] = nums2[j--];
-				}
-			}
-		}
 	}
 
 	public ListNode _92_reverseBetween(ListNode head, int m, int n) {
@@ -1281,100 +894,6 @@ public class Solution {
 		return dummy.next;
 	}
 
-	public List<List<Integer>> _118_generate(int numRows) {
-		List<List<Integer>> allRows = new LinkedList<>();
-		if (numRows == 0)
-			return allRows;
-
-		allRows.add(Arrays.asList(1));
-		if (numRows == 1)
-			return allRows;
-
-		for (int i = 1; i < numRows; i++) {
-			List<Integer> row = new LinkedList<>();
-			row.add(1);
-			for (int j = 1; j < i; j++) {
-				row.add(allRows.get(i - 1).get(j - 1) + allRows.get(i - 1).get(j));
-			}
-			row.add(1);
-
-			allRows.add(row);
-		}
-
-		return allRows;
-	}
-
-	public List<Integer> _119_getRow(int rowIndex) {
-		List<Integer> row = new ArrayList<Integer>(rowIndex + 1);
-		for (int i = 0; i <= rowIndex; i++)
-			row.add(1);
-
-		for (int i = 2; i <= rowIndex; i++) {
-			row.set(rowIndex - i, 1);
-			for (int j = rowIndex + 1 - i; j < rowIndex; j++)
-				row.set(j, row.get(j) + row.get(j + 1));
-		}
-
-		return row;
-	}
-
-	public boolean _125_isPalindrome(String s) {
-		if (s == null)
-			return false;
-		if (s.isBlank())
-			return true;
-
-		s = s.replaceAll("[^A-Za-z0-9]", "");
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = s.length() - 1; i >= 0; i--)
-			sb.append(s.charAt(i));
-
-		return sb.toString().equalsIgnoreCase(s);
-	}
-
-	public int _121_maxProfit(int[] prices) {
-		if (prices == null || prices.length == 0)
-			return 0;
-
-		int min = prices[0];// buy stock by min value
-		int max = 0;// max profit -> buy min value sell max value
-
-		for (int i = 1; i < prices.length; i++) {
-			if (prices[i] < min)
-				min = prices[i];
-			else {
-				if (prices[i] - min > max)
-					max = prices[i] - min;
-			}
-		}
-
-		return max;
-	}
-
-	public int _122_maxProfit(int[] prices) {
-		int maxprofit = 0;
-		for (int i = 1; i < prices.length; i++) {
-			if (prices[i] > prices[i - 1]) // if we can buy[i-1] and sell[i] with some profit?
-				maxprofit += prices[i] - prices[i - 1];
-		}
-		return maxprofit;
-	}
-
-	public int _136_singleNumber(int[] nums) {
-		Set<Integer> set = new HashSet<>();
-
-		for (int i = 0; i < nums.length; i++) {
-			if (!set.contains(nums[i]))
-				set.add(nums[i]);
-			else
-				set.remove(nums[i]);
-		}
-
-		return set.stream().findFirst().get();
-	}
-
 	public int _137_singleNumber(int[] nums) {
 		Map<Integer, Integer> map = new HashMap<>();
 
@@ -1393,21 +912,6 @@ public class Solution {
 		return map.entrySet().stream().findFirst().get().getKey();
 	}
 
-	public boolean _141_hasCycle(ListNode head) {
-		Set<ListNode> set = new HashSet<>();
-
-		while (head != null) {
-			if (!set.contains(head))
-				set.add(head);
-			else
-				return true;
-
-			head = head.next;
-		}
-
-		return false;
-	}
-
 	public ListNode _142_detectCycle(ListNode head) {
 		Set<ListNode> set = new HashSet<>();
 
@@ -1421,57 +925,6 @@ public class Solution {
 		}
 
 		return null;
-	}
-
-	public int[] _167_twoSum(int[] numbers, int target) {
-		Map<Integer, Integer> map = new HashMap<>();// Map.Entry<Value, Index>
-
-		for (int i = 0; i < numbers.length; i++) {
-			int searchNumber = target - numbers[i];
-			if (map.containsKey(searchNumber))
-				return new int[] { map.get(searchNumber), i + 1 };
-			else
-				map.put(numbers[i], i + 1);
-		}
-
-		throw new IllegalArgumentException("No found");
-	}
-
-	public String _168_convertToTitle(int n) {
-		StringBuilder result = new StringBuilder();
-
-		while (n-- > 0) { // n-- ---> if n=1 then n-- 'A'(65) + 0%26(0)=='A'(65)
-			result.append((char) ('A' + (n % 26))); // 65 + (n % 26)
-			n /= 26;
-		}
-
-		return result.reverse().toString();
-	}
-
-	public int _169_majorityElement(int[] nums) {
-		Map<Integer, Integer> map = new HashMap<>(); // Map.Entry<Num,Count>
-		Map.Entry<Integer, Integer> majorElement = null;
-
-		for (int num : nums)
-			if (map.containsKey(num))
-				map.put(num, map.get(num) + 1);
-			else
-				map.put(num, 1);
-
-		for (Map.Entry<Integer, Integer> entry : map.entrySet())
-			if (majorElement == null || entry.getValue() > majorElement.getValue())
-				majorElement = entry;
-
-		return majorElement.getKey();
-	}
-
-	public int _171_titleToNumber(String s) {
-		int num = 0;
-
-		for (int i = 0; i < s.length(); i++)
-			num = num * 26 + s.charAt(i) - 64; // 64 below 'A' 65
-
-		return num;
 	}
 
 	public int _172_trailingZeroes(int n) {
@@ -1521,9 +974,9 @@ public class Solution {
 		}
 		return oneDayAgo;
 	}
-	
-    public int _200_numIslands(char[][] matrix) {
-        int count = 0;
+
+	public int _200_numIslands(char[][] matrix) {
+		int count = 0;
 
 		for (int i = 0; i < matrix.length; i++)
 			for (int j = 0; j < matrix[0].length; j++) {
@@ -1886,8 +1339,7 @@ public class Solution {
 		for (int num : nums)
 			map.put(num, map.getOrDefault(num, 0) + 1);
 
-		Optional<Integer> max = map.entrySet().stream().filter(e -> e.getKey() == e.getValue()).map(e -> e.getKey())
-				.max(Integer::compare);
+		Optional<Integer> max = map.entrySet().stream().filter(e -> e.getKey() == e.getValue()).map(e -> e.getKey()).max(Integer::compare);
 
 		return max.orElse(-1);
 	}
