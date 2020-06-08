@@ -823,4 +823,242 @@ public class Solution2 {
 		return num;
 	}
 
+	public int _172_trailingZeroes(int n) {
+		int count = 0;
+
+		while (n > 0) {
+			n /= 5;
+			count += n;
+		}
+
+		return count;
+	}
+
+	public void _189_rotate(int[] nums, int k) {
+		while (k-- > 0) {
+			int lNum = nums[nums.length - 1];
+			for (int i = nums.length - 1; i > 0; i--)
+				nums[i] = nums[i - 1];
+			nums[0] = lNum;
+		}
+	}
+
+	public void _189_rotate_v2(int[] nums, int k) {
+		if (nums == null || nums.length < 2)
+			return;
+
+		k = k % nums.length; // example - k=7 and nums.length=3 then k=1
+
+		_189_rotate_reverse(nums, 0, nums.length - 1);
+		_189_rotate_reverse(nums, 0, k - 1);
+		_189_rotate_reverse(nums, k, nums.length - 1);
+	}
+
+	private void _189_rotate_reverse(int[] nums, int begin, int end) {
+		while (begin < end) {
+			int tmp = nums[begin];
+			nums[begin] = nums[end];
+			nums[end] = tmp;
+
+			begin++;
+			end--;
+		}
+	}
+
+	public int _198_rob(int[] nums) {
+		if (nums.length == 0)
+			return 0;
+
+		int oneDayAgo = 0; // in first iteration dummy value
+		int twoDayAgo = 0; // in first iteration dummy value
+
+		// nums=[1,2,3,4] so first iteration with dummy element ->
+		// 0,0,1 -> twoDayAgo,oneDayAgo,currentDay
+
+		for (int num : nums) {
+			int tmp = oneDayAgo;
+			oneDayAgo = Math.max(twoDayAgo + num, oneDayAgo);
+			twoDayAgo = tmp;
+		}
+
+		return oneDayAgo;
+	}
+
+	public boolean _202_isHappy(int n) {
+		Set<Integer> set = new HashSet<>();
+
+		while (!set.contains(n)) {
+			set.add(n);
+			int sumOfSquare = 0;
+			while (n > 0) {
+				sumOfSquare += (n % 10) * (n % 10);
+				n /= 10;
+			}
+			if (sumOfSquare == 1)
+				return true;
+
+			n = sumOfSquare;
+		}
+
+		return false;
+	}
+
+	public ListNode _203_removeElements(ListNode head, int val) {
+		ListNode current = new ListNode(-1);
+		ListNode dummyHead = current;
+
+		while (head != null) {
+			if (head.val == val)
+				head = head.next;
+			else {
+				current.next = head;
+				current = current.next;
+
+				head = head.next;
+			}
+		}
+
+		current.next = null;
+
+		return dummyHead.next;
+	}
+
+	public boolean _205_isIsomorphic(String s, String t) {
+		Map<Character, Character> map = new HashMap<>();
+
+		for (int i = 0; i < s.length(); i++) {
+			if (!map.containsKey(s.charAt(i))) {
+				if (map.containsValue(t.charAt(i)))
+					return false;
+				map.put(s.charAt(i), t.charAt(i));
+			}
+
+			if (t.charAt(i) != map.get(s.charAt(i)))
+				return false;
+		}
+
+		return true;
+	}
+
+	public boolean _217_containsDuplicate(int[] nums) {
+		if (nums == null)
+			return false;
+
+		Set<Integer> set = new HashSet<>();
+
+		for (int num : nums) {
+			if (set.contains(num))
+				return true;
+			else
+				set.add(num);
+		}
+
+		return false;
+	}
+
+	public boolean _219_containsNearbyDuplicate(int[] nums, int k) {
+		if (nums == null)
+			return false;
+
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int i = 0; i < nums.length; i++) {
+			if (map.containsKey(nums[i]) && Math.abs(map.get(nums[i]) - i) <= k)
+				return true;
+			else
+				map.put(nums[i], i);
+		}
+
+		return false;
+	}
+
+	public TreeNode _226_invertTree(TreeNode root) {
+		if (root == null)
+			return null;
+
+		Deque<TreeNode> queue = new LinkedList<>();
+		queue.addLast(root);
+
+		while (!queue.isEmpty()) {
+			TreeNode tn = queue.removeFirst();
+
+			TreeNode tmp = tn.left;
+			tn.left = tn.right;
+			tn.right = tmp;
+
+			if (tn.left != null)
+				queue.addLast(tn.left);
+			if (tn.right != null)
+				queue.addLast(tn.right);
+		}
+
+		return root;
+	}
+
+	public boolean _231_isPowerOfTwo(int n) {
+		if (n <= 0)
+			return false;
+
+		while (n % 2 == 0)
+			n /= 2;
+
+		return n == 1;
+	}
+
+	public boolean _234_isPalindrome(ListNode head) {
+		ListNode slow = head;
+		ListNode fast = head;
+
+		while (fast != null && fast.next != null) {
+			fast = fast.next.next;
+			slow = slow.next;
+		}
+
+		if (fast != null) // odd nodes
+			slow = slow.next;
+
+		fast = head;
+		slow = _234_isPalindrome_reverse(slow);
+
+		while (slow != null && fast != null) {
+			if (slow.val != fast.val)
+				return false;
+			slow = slow.next;
+			fast = fast.next;
+		}
+		return true;
+
+	}
+
+	private ListNode _234_isPalindrome_reverse(ListNode head) {
+		ListNode prev = null;
+		ListNode current = head;
+		ListNode next = null;
+
+		while (current != null) {
+			next = current.next;
+			current.next = prev;
+			prev = current;
+			current = next;
+		}
+
+		head = prev;
+		return head;
+	}
+
+	public void _283_moveZeroes(int[] nums) {
+		if (nums == null || nums.length == 0)
+			return;
+
+		int slow = 0;
+		for (int fast = 0; fast < nums.length; fast++) {
+			if (nums[fast] == 0)
+				continue;
+			else
+				nums[slow++] = nums[fast];
+		}
+
+		while (slow < nums.length)
+			nums[slow++] = 0;
+	}
 }

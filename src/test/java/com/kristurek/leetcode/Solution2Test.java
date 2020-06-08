@@ -426,4 +426,124 @@ public class Solution2Test {
 		assertEquals(27, solution._171_titleToNumber("AA"));
 		assertEquals(1024, solution._171_titleToNumber("AMJ"));
 	}
+
+	@Test // T
+	void _172_trailingZeroes() {
+		assertEquals(0, solution._172_trailingZeroes(0));
+		assertEquals(0, solution._172_trailingZeroes(4));
+		assertEquals(1, solution._172_trailingZeroes(5));
+		assertEquals(2, solution._172_trailingZeroes(10));
+		assertEquals(7, solution._172_trailingZeroes(30));
+	}
+
+	@Test // T
+	void _189_rotate() {
+		int[] nums = IntStream.of(1, 2, 3, 4, 5, 6, 7).toArray();
+		solution._189_rotate(nums, 3);
+
+		assertArrayEquals(IntStream.of(5, 6, 7, 1, 2, 3, 4).toArray(), nums);
+	}
+
+	@Test // T
+	void _198_rob() {
+		assertEquals(4, solution._198_rob(IntStream.of(1, 2, 3, 1).toArray()));
+		assertEquals(12, solution._198_rob(IntStream.of(2, 7, 9, 3, 1).toArray()));
+	}
+
+	@Test // T
+	void _202_isHappy() {
+		assertTrue(solution._202_isHappy(19));
+		assertFalse(solution._202_isHappy(2));
+	}
+
+	@Test // T
+	void _203_removeElements() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(1);
+
+		head = solution._203_removeElements(head, 1);
+
+		assertEquals(2, head.val);
+		assertEquals(3, head.next.val);
+		assertNull(head.next.next);
+	}
+
+	@Test // T
+	void _205_isIsomorphic() {
+		assertTrue(solution._205_isIsomorphic("egg", "add"));
+		assertFalse(solution._205_isIsomorphic("foo", "bar"));
+		assertTrue(solution._205_isIsomorphic("paper", "title"));
+		assertFalse(solution._205_isIsomorphic("ab", "aa"));
+	}
+
+	@Test // T
+	void _217_containsDuplicate() {
+		assertFalse(solution._217_containsDuplicate(null));
+		assertFalse(solution._217_containsDuplicate(new int[] {}));
+		assertTrue(solution._217_containsDuplicate(new int[] { 1, 2, 3, 1 }));
+		assertFalse(solution._217_containsDuplicate(new int[] { 1, 2, 3, 4 }));
+		assertTrue(solution._217_containsDuplicate(new int[] { 1, 1, 1, 3, 3, 4, 3, 2, 4, 2 }));
+	}
+
+	@Test // T
+	void _219_containsNearbyDuplicate() {
+		assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1 }, 3));
+		assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 0, 1, 1 }, 1));
+		assertFalse(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1, 2, 3 }, 2));
+	}
+
+	@Test // T
+	void _226_invertTree() {
+		TreeNode root = new TreeNode(1);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+		root.right.left = new TreeNode(6);
+		root.right.right = new TreeNode(7);
+
+		root = solution._226_invertTree(root);
+
+		assertEquals(1, root.val);
+		assertEquals(3, root.left.val);
+		assertEquals(2, root.right.val);
+
+		assertEquals(7, root.left.left.val);
+		assertEquals(6, root.left.right.val);
+		assertEquals(5, root.right.left.val);
+		assertEquals(4, root.right.right.val);
+	}
+
+	@Test // T
+	void _231_isPowerOfTwo() {
+		assertTrue(solution._231_isPowerOfTwo(1));
+		assertTrue(solution._231_isPowerOfTwo(16));
+		assertFalse(solution._231_isPowerOfTwo(218));
+	}
+
+	@Test // T
+	void _234_isPalindrome() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		assertFalse(solution._234_isPalindrome(head));
+
+		head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(2);
+		head.next.next.next = new ListNode(1);
+		assertTrue(solution._234_isPalindrome(head));
+	}
+
+	@Test // T
+	void _283_moveZeroes() {
+		int[] nums = IntStream.of(0, 1, 0, 3, 12).toArray();
+		int[] answer = IntStream.of(1, 3, 12, 0, 0).toArray();
+		solution._283_moveZeroes(nums);
+
+		assertArrayEquals(answer, nums);
+	}
 }

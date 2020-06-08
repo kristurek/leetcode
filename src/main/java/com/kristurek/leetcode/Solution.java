@@ -927,54 +927,6 @@ public class Solution {
 		return null;
 	}
 
-	public int _172_trailingZeroes(int n) {
-		int count = 0;
-
-		while (n > 0) {
-			n = n / 5;
-			count += n;
-		}
-
-		return count;
-	}
-
-	public void _189_rotate(int[] nums, int k) {
-		if (nums == null || nums.length < 2)
-			return;
-
-		k = k % nums.length; // example - k=7 and nums.length=3 then k=1
-
-		_189_rotate_reverse(nums, 0, nums.length - 1);
-		_189_rotate_reverse(nums, 0, k - 1);
-		_189_rotate_reverse(nums, k, nums.length - 1);
-	}
-
-	private void _189_rotate_reverse(int[] nums, int begin, int end) {
-		while (begin < end) {
-			int tmp = nums[begin];
-			nums[begin] = nums[end];
-			nums[end] = tmp;
-
-			begin++;
-			end--;
-		}
-	}
-
-	public int _198_rob(int[] nums) {
-		if (nums.length == 0)
-			return 0;
-
-		int oneDayAgo = 0; // in first iteration dummy value
-		int twoDayAgo = 0; // in first iteration dummy value
-
-		for (int num : nums) {
-			int tmp = oneDayAgo;
-			oneDayAgo = Math.max(twoDayAgo + num, oneDayAgo);
-			twoDayAgo = tmp;
-		}
-		return oneDayAgo;
-	}
-
 	public int _200_numIslands(char[][] matrix) {
 		int count = 0;
 
@@ -997,78 +949,6 @@ public class Solution {
 			_200_numIslands_search_island(matrix, i, j + 1);
 			_200_numIslands_search_island(matrix, i, j - 1);
 		}
-	}
-
-	public ListNode _203_removeElements(ListNode head, int val) {
-		ListNode dummy = new ListNode(-1);
-		dummy.next = head;
-		ListNode current = dummy;
-
-		while (current.next != null) {
-			if (current.next.val == val)
-				current.next = current.next.next;
-			else
-				current = current.next;
-		}
-
-		return dummy.next;
-	}
-
-	public boolean _205_isIsomorphic(String s, String t) {
-		Map<Character, Character> map = new HashMap<>();
-
-		for (int i = 0; i < s.length(); i++)
-			if (map.containsKey(s.charAt(i)))
-				if (map.get(s.charAt(i)) == t.charAt(i))
-					continue;
-				else
-					return false;
-			else if (!map.containsValue(t.charAt(i)))
-				map.put(s.charAt(i), t.charAt(i));
-			else
-				return false;
-
-		return true;
-	}
-
-	public boolean _217_containsDuplicate(int[] nums) {
-		if (nums == null)
-			return false;
-
-		Set<Integer> set = new HashSet<>();
-
-		for (int num : nums)
-			if (set.contains(num))
-				return true;
-			else
-				set.add(num);
-
-		return false;
-	}
-
-	public boolean _219_containsNearbyDuplicate(int[] nums, int k) {
-		if (nums == null)
-			return false;
-
-		Map<Integer, Integer> map = new HashMap<>();
-
-		for (int i = 0; i < nums.length; i++)
-			if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k)
-				return true;
-			else
-				map.put(nums[i], i);
-
-		return false;
-	}
-
-	public boolean _231_isPowerOfTwo(int n) {
-		if (n <= 0)
-			return false;
-
-		while (n % 2 == 0)
-			n /= 2;
-
-		return n == 1;
 	}
 
 	public boolean _234_isPalindrome(ListNode head) {
