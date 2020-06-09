@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,9 @@ import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 
+import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.Node;
 import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution2Test {
@@ -545,5 +548,121 @@ public class Solution2Test {
 		solution._283_moveZeroes(nums);
 
 		assertArrayEquals(answer, nums);
+	}
+
+	@Test
+	void _344_reverseString() {
+		char[] actual = new char[] { 'h', 'e', 'l', 'l', 'o' };
+		char[] expected = new char[] { 'o', 'l', 'l', 'e', 'h' };
+
+		solution._344_reverseString(actual);
+
+		assertArrayEquals(expected, actual);
+	}
+
+	@Test
+	void _509_fib() {
+		assertEquals(0, solution._509_fib(0));
+		assertEquals(1, solution._509_fib(1));
+		assertEquals(1, solution._509_fib(2));
+		assertEquals(2, solution._509_fib(3));
+		assertEquals(3, solution._509_fib(4));
+	}
+
+	@Test
+	void _543_diameterOfBinaryTree() {
+		TreeNode root = new TreeNode(1);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
+
+		assertThat(solution._543_diameterOfBinaryTree(root), is(equalTo(3)));
+	}
+
+	@Test
+	public void _557_reverseWords() {
+		assertEquals("s'teL ekat edoCteeL tsetnoc", solution._557_reverseWords("Let's take LeetCode contest"));
+	}
+
+	@Test
+	public void _561_arrayPairSum() {
+		assertEquals(4, solution._561_arrayPairSum(new int[] { 1, 4, 3, 2 }));
+	}
+
+	@Test
+	public void _589_preorder() {
+		Node root = new Node(1, Arrays.asList(new Node(3), new Node(2), new Node(4)));
+		root.children.get(0).children = Arrays.asList(new Node(5), new Node(6));
+
+		List<Integer> answer = Arrays.asList(1, 3, 5, 6, 2, 4);
+
+		assertEquals(answer, solution._589_preorder(root));
+	}
+
+	@Test
+	public void _590_postorder() {
+		Node root = new Node(1, Arrays.asList(new Node(3), new Node(2), new Node(4)));
+		root.children.get(0).children = Arrays.asList(new Node(5), new Node(6));
+
+		List<Integer> answer = Arrays.asList(5, 6, 3, 2, 4, 1);
+
+		assertEquals(answer, solution._590_postorder(root));
+	}
+
+	@Test
+	public void _617_mergeTrees() {
+		TreeNode root1 = new TreeNode(1);
+		root1.left = new TreeNode(2);
+		root1.right = new TreeNode(3);
+		root1.left.left = new TreeNode(4);
+		root1.left.right = new TreeNode(5);
+
+		TreeNode root2 = new TreeNode(5);
+		root2.left = new TreeNode(6);
+		root2.right = new TreeNode(7);
+		root2.right.right = new TreeNode(8);
+
+		TreeNode root3 = solution._617_mergeTrees(root1, root2);
+
+		assertEquals(6, root3.val);
+		assertEquals(8, root3.left.val);
+		assertEquals(10, root3.right.val);
+		assertEquals(4, root3.left.left.val);
+		assertEquals(5, root3.left.right.val);
+		assertNull(root3.right.left);
+		assertEquals(8, root3.right.right.val);
+	}
+
+	@Test
+	public void _657_judgeCircle() {
+		assertTrue(solution._657_judgeCircle("UD"));
+		assertFalse(solution._657_judgeCircle("LL"));
+	}
+
+	@Test
+	public void _665_checkPossibility() {
+		assertTrue(solution._665_checkPossibility(new int[] {}));
+		assertTrue(solution._665_checkPossibility(new int[] { 3 }));
+		assertTrue(solution._665_checkPossibility(new int[] { 4, 2, 3 }));
+		assertTrue(solution._665_checkPossibility(new int[] { 2, 3, 3, 2 }));
+		assertFalse(solution._665_checkPossibility(new int[] { 4, 2, 1 }));
+		assertTrue(solution._665_checkPossibility(new int[] { 3, 4, 2, 4 }));
+	}
+
+	@Test
+	public void _690_getImportance() {
+		// [[1, 5, [2, 3]], [2, 3, []], [3, 3, []]], 1
+		List<Employee> workers = new ArrayList<>();
+
+		Employee e1 = new Employee(1, 5, Arrays.asList(2, 3));
+		Employee e2 = new Employee(2, 3, new ArrayList<>());
+		Employee e3 = new Employee(3, 3, new ArrayList<>());
+
+		workers.add(e1);
+		workers.add(e2);
+		workers.add(e3);
+
+		assertEquals(11, solution._690_getImportance(workers, 1));
 	}
 }

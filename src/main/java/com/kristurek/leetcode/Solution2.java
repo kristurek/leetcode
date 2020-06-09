@@ -2,6 +2,7 @@ package com.kristurek.leetcode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +14,9 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
+import com.kristurek.leetcode.common.Node;
 import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution2 {
@@ -835,6 +838,8 @@ public class Solution2 {
 	}
 
 	public void _189_rotate(int[] nums, int k) {
+		k = k % nums.length; // example - k=7 and nums.length=3 then k=1, remove empty loops
+
 		while (k-- > 0) {
 			int lNum = nums[nums.length - 1];
 			for (int i = nums.length - 1; i > 0; i--)
@@ -869,19 +874,19 @@ public class Solution2 {
 		if (nums.length == 0)
 			return 0;
 
-		int oneDayAgo = 0; // in first iteration dummy value
-		int twoDayAgo = 0; // in first iteration dummy value
+		int oneHouseBefore = 0; // in first iteration dummy value
+		int twoHouseBefore = 0; // in first iteration dummy value
 
 		// nums=[1,2,3,4] so first iteration with dummy element ->
-		// 0,0,1 -> twoDayAgo,oneDayAgo,currentDay
+		// 0,0,1 -> twoHouseBefore,oneHouseBefore,currentHouse
 
 		for (int num : nums) {
-			int tmp = oneDayAgo;
-			oneDayAgo = Math.max(twoDayAgo + num, oneDayAgo);
-			twoDayAgo = tmp;
+			int tmp = oneHouseBefore;
+			oneHouseBefore = Math.max(twoHouseBefore + num, oneHouseBefore);
+			twoHouseBefore = tmp;
 		}
 
-		return oneDayAgo;
+		return oneHouseBefore;
 	}
 
 	public boolean _202_isHappy(int n) {
@@ -1060,5 +1065,198 @@ public class Solution2 {
 
 		while (slow < nums.length)
 			nums[slow++] = 0;
+	}
+
+	public void _344_reverseString(char[] s) {
+		for (int i = 0, j = s.length - 1; i < j; i++, j--) {
+			char tmp = s[i];
+			s[i] = s[j];
+			s[j] = tmp;
+		}
+	}
+
+	public int _509_fib(int N) {
+		if (N <= 1)
+			return N;
+
+		int f0 = 0;
+		int f1 = 1;
+		int f2 = 0;
+
+		for (int i = 2; i <= N; i++) {
+			f2 = f0 + f1;
+
+			f0 = f1;
+			f1 = f2;
+		}
+
+		return f2;
+	}
+
+	public int _543_diameterOfBinaryTree(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+
+		int dia = _543_diameterOfBinaryTree_depth(root.left) + _543_diameterOfBinaryTree_depth(root.right);
+
+		int ldia = _543_diameterOfBinaryTree(root.left);
+		int rdia = _543_diameterOfBinaryTree(root.right);
+
+		return Math.max(dia, Math.max(ldia, rdia));
+
+	}
+
+	public int _543_diameterOfBinaryTree_depth(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+
+		int lDepth = _543_diameterOfBinaryTree_depth(root.left);
+		int rDepth = _543_diameterOfBinaryTree_depth(root.right);
+
+		return 1 + Math.max(lDepth, rDepth);
+	}
+
+	public String _557_reverseWords(String s) {
+		StringBuilder sb = new StringBuilder();
+
+		String[] splitS = s.split(" ");
+
+		for (String word : splitS) {
+			for (int i = word.length() - 1; i >= 0; i--)
+				sb.append(word.charAt(i));
+			sb.append(' ');
+		}
+
+		sb.deleteCharAt(sb.length() - 1);
+
+		return sb.toString();
+	}
+
+	public int _561_arrayPairSum(int[] nums) {
+		Arrays.sort(nums);
+
+		int sum = 0;
+		for (int i = 0; i < nums.length; i = i + 2)
+			sum += nums[i];
+
+		return sum;
+	}
+
+	public List<Integer> _589_preorder(Node root) {
+		if (root == null)
+			return new ArrayList<>();
+
+		List<Integer> traverseValues = new ArrayList<>();
+		Deque<Node> stack = new LinkedList<Node>();
+		stack.add(root);
+
+		while (!stack.isEmpty()) {
+			Node n = stack.pop();
+
+			traverseValues.add(n.val);
+
+			if (n.children != null)
+				for (int i = n.children.size() - 1; i >= 0; i--)
+					stack.push(n.children.get(i));
+		}
+
+		return traverseValues;
+	}
+
+	public List<Integer> _590_postorder(Node root) {
+		if (root == null)
+			return new ArrayList<>();
+
+		List<Integer> values = new ArrayList<>();
+		Deque<Node> stack1 = new ArrayDeque<>();
+		Deque<Node> stack2 = new ArrayDeque<>();
+
+		stack1.push(root);
+
+		while (!stack1.isEmpty()) {
+			Node n = stack1.pop();
+
+			stack2.push(n);
+
+			if (n.children != null)
+				for (Node child : n.children)
+					stack1.push(child);
+		}
+
+		while (!stack2.isEmpty())
+			values.add(stack2.pop().val);
+
+		return values;
+	}
+
+	public TreeNode _617_mergeTrees(TreeNode t1, TreeNode t2) {
+		if (t1 == null && t2 == null)
+			return null;
+
+		int sum = (t1 != null ? t1.val : 0) + (t2 != null ? t2.val : 0);
+		TreeNode tn = new TreeNode(sum);
+
+		tn.left = _617_mergeTrees(t1 != null ? t1.left : null, t2 != null ? t2.left : null);
+		tn.right = _617_mergeTrees(t1 != null ? t1.right : null, t2 != null ? t2.right : null);
+
+		return tn;
+	}
+
+	public boolean _657_judgeCircle(String moves) {
+		int[] position = new int[] { 0, 0 }; // x,y
+
+		for (char move : moves.toCharArray()) {
+			switch (move) {
+			case 'L':
+				position[0] -= 1;
+				break;
+			case 'R':
+				position[0] += 1;
+				break;
+			case 'U':
+				position[1] += 1;
+				break;
+			case 'D':
+				position[1] -= 1;
+				break;
+			default:
+				throw new IllegalArgumentException("Unsuported move");
+			}
+		}
+
+		return position[0] == 0 && position[1] == 0;
+	}
+
+	public boolean _665_checkPossibility(int[] nums) {
+		int modyfications = 0;
+		for (int i = 1; i < nums.length; i++)
+			if (nums[i - 1] > nums[i]) {
+				modyfications++;
+				if (i - 2 >= 0 && nums[i] < nums[i - 2])
+					nums[i] = nums[i - 1];
+			}
+
+		return modyfications <= 1;
+	}
+
+	public int _690_getImportance(List<Employee> employees, int id) {
+		HashMap<Integer, Employee> map = new HashMap<Integer, Employee>();
+
+		for (Employee emp : employees)
+			map.put(emp.id, emp);
+
+		return _690_getImportance_dfs(map, id);
+	}
+
+	private int _690_getImportance_dfs(HashMap<Integer, Employee> map, int id) {
+		Employee employee = map.get(id);
+
+		int importance = employee.importance;
+		for (int subordinate : employee.subordinates)
+			importance += _690_getImportance_dfs(map, subordinate);
+
+		return importance;
 	}
 }
