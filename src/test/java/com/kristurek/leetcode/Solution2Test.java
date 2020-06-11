@@ -3,6 +3,7 @@ package com.kristurek.leetcode;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -664,5 +665,123 @@ public class Solution2Test {
 		workers.add(e3);
 
 		assertEquals(11, solution._690_getImportance(workers, 1));
+	}
+
+	@Test
+	public void _700_searchBST() {
+		TreeNode root = new TreeNode(4);
+
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(7);
+
+		root.left.left = new TreeNode(1);
+		root.left.right = new TreeNode(3);
+
+		assertEquals(root.left, solution._700_searchBST(root, 2));
+	}
+
+	@Test
+	public void _705_myHashSet() {
+		Solution2.MyHashSet myHashSet = solution._705_myHashSet();
+
+		myHashSet.add(3);
+		assertTrue(myHashSet.contains(3));
+		myHashSet.remove(3);
+		assertFalse(myHashSet.contains(3));
+		myHashSet.add(3);
+		myHashSet.add(9);
+		assertTrue(myHashSet.contains(3));
+		assertFalse(myHashSet.contains(1));
+	}
+
+	@Test
+	public void _709_toLowerCase() {
+		assertEquals("", solution._709_toLowerCase(""));
+		assertNull(solution._709_toLowerCase(null));
+		assertEquals("123!~", solution._709_toLowerCase("123!~"));
+		assertEquals("abc", solution._709_toLowerCase("abc"));
+		assertEquals("abc", solution._709_toLowerCase("ABC"));
+		assertEquals("abcd", solution._709_toLowerCase("aBcD"));
+	}
+
+	@Test
+	public void _728_selfDividingNumbers() {
+		List<Integer> list = Arrays.asList((new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 15, 22 }));
+		assertEquals(list, solution._728_selfDividingNumbers(1, 22));
+	}
+
+	@Test
+	public void _771_numJewelsInStones() {
+		assertEquals(3, solution._771_numJewelsInStones("aA", "aAAbbbb"));
+	}
+
+	@Test
+	void _796_rotateString() {
+		assertTrue(solution._796_rotateString("abcde", "cdeab"));
+		assertFalse(solution._796_rotateString("abcde", "abced"));
+	}
+
+	@Test
+	public void _804_uniqueMorseRepresentations() {
+		assertEquals(2, solution._804_uniqueMorseRepresentations(new String[] { "gin", "zen", "gig", "msg" }));
+	}
+
+	@Test
+	public void _811_subdomainVisits() {
+		List<String> answer = Arrays.asList("9001 discuss.leetcode.com", "9001 leetcode.com", "9001 com");
+
+		assertThat(solution._811_subdomainVisits(new String[] { "9001 discuss.leetcode.com" }), containsInAnyOrder(answer.toArray()));
+
+		answer = Arrays.asList("901 mail.com", "50 yahoo.com", "900 google.mail.com", "5 wiki.org", "5 org", "1 intel.mail.com", "951 com");
+
+		assertThat(solution._811_subdomainVisits(new String[] { "900 google.mail.com", "50 yahoo.com", "1 intel.mail.com", "5 wiki.org" }), containsInAnyOrder(answer.toArray()));
+	}
+
+	@Test
+	public void _821_shortestToChar() {
+		int[] answer = new int[] { 3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0 };
+
+		assertArrayEquals(answer, solution._821_shortestToChar("loveleetcode", 'e'));
+	}
+
+	@Test
+	public void _832_flipAndInvertImage() {
+		assertArrayEquals(new int[][] { { 1, 0, 0 } }, solution._832_flipAndInvertImage(new int[][] { { 1, 1, 0 } }));
+		assertArrayEquals(new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { 1, 1, 1 } }, solution._832_flipAndInvertImage(new int[][] { { 1, 1, 0 }, { 1, 0, 1 }, { 0, 0, 0 } }));
+	}
+
+	@Test
+	void _844_backspaceCompare() {
+		assertTrue(solution._844_backspaceCompare("", ""));
+		assertTrue(solution._844_backspaceCompare("ab#c", "ad#c"));
+		assertTrue(solution._844_backspaceCompare("ab##", "c#d#"));
+		assertTrue(solution._844_backspaceCompare("a##c", "#a#c"));
+		assertFalse(solution._844_backspaceCompare("a#c", "b"));
+	}
+
+	@Test
+	public void _852_peakIndexInMountainArray() {
+		assertEquals(1, solution._852_peakIndexInMountainArray(new int[] { 0, 1, 0 }));
+		assertEquals(1, solution._852_peakIndexInMountainArray(new int[] { 0, 2, 1, 0 }));
+	}
+
+	@Test
+	public void _876_middleNode() {
+		ListNode head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+
+		assertEquals(3, solution._876_middleNode(head).val);
+	}
+
+	@Test
+	public void _905_sortArrayByParity() {
+		assertArrayEquals(new int[] { 2, 4, 3, 1 }, solution._905_sortArrayByParity(new int[] { 1, 2, 3, 4 }));
+	}
+
+	@Test
+	public void _922_sortArrayByParityII() {
+		assertArrayEquals(new int[] { 4, 5, 2, 7 }, solution._922_sortArrayByParityII(new int[] { 4, 2, 5, 7 }));
 	}
 }

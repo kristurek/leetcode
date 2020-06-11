@@ -1093,7 +1093,7 @@ public class Solution2 {
 		return f2;
 	}
 
-	public int _543_diameterOfBinaryTree(TreeNode root) {
+	public int _543_diameterOfBinaryTree(TreeNode root) { // TODO look at python version
 		if (root == null) {
 			return 0;
 		}
@@ -1258,5 +1258,315 @@ public class Solution2 {
 			importance += _690_getImportance_dfs(map, subordinate);
 
 		return importance;
+	}
+
+	public TreeNode _700_searchBST(TreeNode root, int val) {
+		while (root != null) {
+			if (val < root.val)
+				root = root.left;
+			else if (val > root.val)
+				root = root.right;
+			else
+				return root;
+		}
+
+		return root;
+	}
+
+	public TreeNode _700_searchBST_v2(TreeNode root, int val) {
+		if (root == null)
+			return null;
+
+		if (val < root.val)
+			return _700_searchBST(root.left, val);
+		else if (val > root.val)
+			return _700_searchBST(root.right, val);
+		else
+			return root;
+	}
+
+	public MyHashSet _705_myHashSet() {
+		return new MyHashSet();
+	}
+
+	class MyHashSet {
+
+		private final static int SIZE = 128 * 1024; // FIXME Time Limit Exceeded on small SIZE 128
+
+		public class HashEntry {
+			private int value;
+			HashEntry next;
+
+			HashEntry(int value) {
+
+				this.value = value;
+			}
+
+			public int getValue() {
+				return value;
+			}
+		}
+
+		private HashEntry[] buckets;
+
+		public MyHashSet() {
+			this.buckets = new HashEntry[SIZE];
+		}
+
+		public void add(int value) {
+			int hash = getHash(value);
+
+			HashEntry hashEntry = buckets[hash];
+			if (hashEntry == null)
+				buckets[hash] = new HashEntry(value);
+			else {
+				while (hashEntry != null) {
+					if (hashEntry.value == value) {
+						hashEntry.value = value;
+						break;
+					} else {
+						if (hashEntry.next != null)
+							hashEntry = hashEntry.next;
+						else
+							hashEntry.next = new HashEntry(value);
+					}
+				}
+			}
+		}
+
+		public void remove(int value) {
+			int hash = getHash(value);
+			HashEntry cHe = buckets[hash];
+			HashEntry pHe = null;
+
+			while (cHe != null) {
+				if (cHe.value != value) {
+					pHe = cHe;
+					cHe = cHe.next;
+				} else {
+					if (pHe == null)// Remove first
+						buckets[hash] = cHe.next;
+					else if (cHe.next == null)// Remove last
+						pHe.next = null;
+					else // Remove middle
+						pHe.next = cHe.next;
+
+					break;
+				}
+			}
+		}
+
+		public boolean contains(int value) {
+			HashEntry he = buckets[getHash(value)];
+
+			if (he != null)
+				while (he != null)
+					if (he.getValue() == value)
+						return true;
+
+			return false;
+		}
+
+		private int getHash(int value) {
+			return value * 31 % SIZE;
+		}
+	}
+
+	public String _709_toLowerCase(String str) {
+		if (str == null || str.isBlank())
+			return str;
+
+		StringBuilder sb = new StringBuilder();
+
+		for (Character sChar : str.toCharArray()) {
+			if (sChar >= 65 && sChar <= 90)
+				sb.append((char) (sChar + 32));
+			else
+				sb.append(sChar);
+		}
+
+		return sb.toString();
+	}
+
+	public List<Integer> _728_selfDividingNumbers(int left, int right) {
+		List<Integer> values = new ArrayList<>();
+
+		for (; left <= right; left++) {
+			int number = left;
+			int noSelfDividing = 0;
+
+			while (number > 0) {
+				int digit = number % 10;
+				number = number / 10;
+
+				if (digit == 0 || left % digit != 0) {
+					noSelfDividing++;
+					break;
+				}
+			}
+
+			if (noSelfDividing == 0)
+				values.add(left);
+		}
+		return values;
+	}
+
+	public int _771_numJewelsInStones(String J, String S) {
+		Map<Character, Integer> map = new HashMap<>();
+
+		for (char charS : S.toCharArray())
+			map.put(charS, map.getOrDefault(charS, 0) + 1);
+
+		int count = 0;
+
+		for (char charJ : J.toCharArray())
+			count += map.getOrDefault(charJ, 0);
+
+		return count;
+	}
+
+	public boolean _796_rotateString(String A, String B) {
+		if (A.length() != B.length())
+			return false;
+
+		return (A + A).contains(B);
+	}
+
+	public int _804_uniqueMorseRepresentations(String[] words) {
+		String[] MORS = new String[] { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.." };
+		Set<String> set = new HashSet<>();
+
+		for (String word : words) {
+			StringBuilder sb = new StringBuilder();
+			for (char cWord : word.toCharArray())
+				sb.append(MORS[cWord - 97]);
+			set.add(sb.toString());
+		}
+
+		return set.size();
+	}
+
+	public List<String> _811_subdomainVisits(String[] cpdomains) {
+		Map<String, Integer> map = new HashMap<>();
+
+		for (String cpdomain : cpdomains) {
+			String[] counterAndDomain = cpdomain.split(" ");
+			int counter = Integer.parseInt(counterAndDomain[0]);
+			String domain = counterAndDomain[1];
+
+			map.put(domain, counter + map.getOrDefault(domain, 0));
+			while (domain.contains(".")) {
+				domain = domain.substring(domain.indexOf('.') + 1, domain.length());
+				map.put(domain, counter + map.getOrDefault(domain, 0));
+			}
+		}
+
+		return map.entrySet().stream().map(entry -> entry.getValue() + " " + entry.getKey()).collect(Collectors.toList());
+	}
+
+	public int[] _821_shortestToChar(String S, char C) {
+		Set<Integer> cSet = new HashSet<>();
+		int[] values = new int[S.length()];
+
+		for (int i = 0; i < S.length(); i++)
+			if (S.charAt(i) == C)
+				cSet.add(i);
+
+		for (int i = 0; i < values.length; i++) {
+			int index = i;
+			int nearestIndex = cSet.stream().min((f1, f2) -> Math.abs(f1 - index) - Math.abs(f2 - index)).get();
+			values[i] = Math.abs(i - nearestIndex);
+		}
+
+		return values;
+	}
+
+	public int[][] _832_flipAndInvertImage(int[][] A) {
+		int rLength = A.length;
+		int cLength = A[0].length;
+		int[][] B = new int[rLength][cLength];
+
+		for (int row = 0; row < rLength; row++)
+			for (int aCol = 0, bCol = cLength - 1; aCol < cLength; aCol++, bCol--)
+				B[row][bCol] = 1 - A[row][aCol];
+
+		return B;
+	}
+
+	public boolean _844_backspaceCompare(String S, String T) {
+		Deque<Character> stack = new LinkedList<>();
+
+		for (Character cChar : S.toCharArray())
+			if (cChar != '#')
+				stack.push(cChar);
+			else if (!stack.isEmpty())
+				stack.pop();
+
+		S = stack.stream().map(o -> String.valueOf(o)).collect(Collectors.joining());
+		stack = new LinkedList<>();
+
+		for (Character cChar : T.toCharArray())
+			if (cChar != '#')
+				stack.push(cChar);
+			else if (!stack.isEmpty())
+				stack.pop();
+
+		T = stack.stream().map(o -> String.valueOf(o)).collect(Collectors.joining());
+
+		return S.equals(T);
+	}
+
+	public int _852_peakIndexInMountainArray(int[] A) {
+		int l = 0;
+		int h = A.length - 1;
+
+		while (l < h) {
+			int m = l + (h - l) / 2;
+			if (A[m] < A[m + 1])
+				l = m + 1;
+			else
+				h = m;
+		}
+
+		return l;
+	}
+
+	public ListNode _876_middleNode(ListNode head) {
+		ListNode slow = head;
+		ListNode fast = head;
+
+		while (fast != null && fast.next != null) {
+			fast = fast.next.next;
+			slow = slow.next;
+		}
+
+		return slow;
+	}
+
+	public int[] _905_sortArrayByParity(int[] A) {
+		int[] B = new int[A.length];
+
+		for (int i = 0, j = A.length - 1, k = 0; k < A.length; k++)
+			if (A[k] % 2 == 0)
+				B[i++] = A[k];
+			else
+				B[j--] = A[k];
+
+		return B;
+	}
+
+	public int[] _922_sortArrayByParityII(int[] A) {
+		int[] B = new int[A.length];
+
+		for (int i = 0, j = 1, k = 0; k < A.length; k++)
+			if (A[k] % 2 == 0) {
+				B[i] = A[k];
+				i = i + 2;
+			} else {
+				B[j] = A[k];
+				j = j + 2;
+			}
+
+		return B;
 	}
 }
