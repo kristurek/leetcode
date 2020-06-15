@@ -3,12 +3,15 @@ package com.kristurek.leetcode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -1568,5 +1571,246 @@ public class Solution2 {
 			}
 
 		return B;
+	}
+
+	public int _929_numUniqueEmails(String[] emails) {
+		Set<String> uniqueEmails = new HashSet<>();
+
+		for (String email : emails) {
+			String[] sEmail = email.split("@");
+
+			sEmail[0] = sEmail[0].replace(".", "");
+
+			if (sEmail[0].contains("+"))
+				sEmail[0] = sEmail[0].substring(0, sEmail[0].indexOf('+'));
+
+			uniqueEmails.add(sEmail[0] + "@" + sEmail[1]);
+		}
+
+		return uniqueEmails.size();
+	}
+
+	public String[] _937_reorderLogFiles(String[] logs) {
+		Arrays.sort(logs, (log1, log2) -> {
+			String[] split1 = log1.split(" ", 2);
+			String[] split2 = log2.split(" ", 2);
+
+			if (Character.isAlphabetic(split1[1].charAt(0)) && Character.isAlphabetic(split2[1].charAt(0))) {
+				int cmp = split1[1].compareTo(split2[1]);
+				if (cmp != 0)
+					return cmp;
+				else
+					return split1[0].compareTo(split2[0]);
+			} else if (Character.isDigit(split1[1].charAt(0)) && Character.isDigit(split2[1].charAt(0)))
+				return 0;
+			else {
+				if (Character.isAlphabetic(split1[1].charAt(0)))
+					return -1;
+				else
+					return 1;
+			}
+		});
+
+		return logs;
+	}
+
+	public int _938_rangeSumBST(TreeNode root, int L, int R) {
+		if (root == null)
+			return 0;
+
+		int sum = 0;
+		Deque<TreeNode> stack = new LinkedList<>();
+		stack.addLast(root);
+
+		while (!stack.isEmpty()) {
+			TreeNode tn = stack.removeLast();
+
+			if (tn.val >= L && tn.val <= R)
+				sum += tn.val;
+
+			if (tn.left != null)
+				stack.addLast(tn.left);
+			if (tn.right != null)
+				stack.addLast(tn.right);
+		}
+
+		return sum;
+	}
+
+	public int[] _942_diStringMatch(String S) {
+		int n = S.length();
+		int left = 0;
+		int right = S.length();
+
+		int[] values = new int[n + 1];
+
+		for (int i = 0; i < n; i++)
+			values[i] = S.charAt(i) == 'I' ? left++ : right--;
+
+		values[n] = left;// or right, doesn't matter, the same
+
+		return values;
+	}
+
+	public int _944_minDeletionSize(String[] A) {
+		int count = 0;
+
+		for (int col = 0; col < A[0].length(); col++)
+			for (int row = 1; row < A.length; row++)
+				if (A[row - 1].charAt(col) > A[row].charAt(col)) {
+					count++;
+					break;
+				}
+
+		return count;
+	}
+
+	public int _961_repeatedNTimes(int[] A) {
+		int n = A.length / 2;
+
+		Map<Integer, Integer> map = new HashMap<>();
+
+		for (int a : A)
+			map.put(a, map.getOrDefault(a, 0) + 1);
+
+		return map.entrySet().stream().filter(entry -> entry.getValue() == n).findFirst().get().getKey();
+	}
+
+	public int[] _977_sortedSquares(int[] A) {
+		int[] B = new int[A.length];
+		int left = 0;
+		int right = A.length - 1;
+		int index = A.length - 1;
+
+		while (left <= right) {
+			if (A[left] * A[left] >= A[right] * A[right]) {
+				B[index--] = A[left] * A[left];
+				left++;
+			} else {
+				B[index--] = A[right] * A[right];
+				right--;
+			}
+		}
+
+		return B;
+	}
+
+	public List<String> _1002_commonChars(String[] A) {
+		List<String> commonChars = new ArrayList<>();
+
+		for (char commonChar = 'a'; commonChar <= 'z'; commonChar++) {
+			int min = Integer.MAX_VALUE;
+
+			for (String a : A) {
+				int count = 0;
+
+				for (char cChar : a.toCharArray())
+					if (cChar == commonChar)
+						count++;
+
+				min = Math.min(min, count);
+			}
+
+			while (min-- > 0)
+				commonChars.add(String.valueOf(commonChar));
+		}
+
+		return commonChars;
+	}
+
+	public String _1021_removeOuterParentheses(String S) {
+		StringBuilder sb = new StringBuilder();
+
+		int opened = 0;
+		for (char c : S.toCharArray()) {
+			if (c == '(') {
+				if (opened > 0)
+					sb.append(c);
+				opened++;
+			}
+			if (c == ')') {
+				if (opened > 1)
+					sb.append(c);
+				opened--;
+			}
+		}
+
+		return sb.toString();
+	}
+
+	public int _1046_lastStoneWeight(int[] stones) {
+		PriorityQueue<Integer> queue = new PriorityQueue<>((v1, v2) -> v2 - v1);
+
+		for (int stone : stones)
+			queue.add(stone);
+
+		while (queue.size() >= 2) {
+			int stone1 = queue.poll();
+			int stone2 = queue.poll();
+			int stone3 = Math.abs(stone1 - stone2);
+
+			if (stone3 != 0)
+				queue.add(stone3);
+		}
+
+		return queue.isEmpty() ? 0 : queue.peek();
+	}
+
+	public String _1047_removeDuplicates(String S) {
+		if (S == null)
+			return null;
+
+		Stack<Character> stack = new Stack<>(); // FIXME change to Deque and stream() iterate like stack, not like queue
+
+		for (char cChar : S.toCharArray())
+			if (!stack.isEmpty() && stack.peek() == cChar)
+				stack.pop();
+			else
+				stack.push(cChar);
+
+		return stack.stream().map(v -> String.valueOf(v)).collect(Collectors.joining());
+	}
+
+	public int _1051_heightChecker(int[] heights) {
+		int[] sHeights = heights.clone();
+		Arrays.sort(sHeights);
+
+		int count = 0;
+
+		for (int i = 0; i < heights.length; i++)
+			if (heights[i] != sHeights[i])
+				count++;
+
+		return count;
+	}
+
+	public String[] _1078_findOcurrences(String text, String first, String second) {
+		String[] sText = text.split(" ");
+		List<String> thirds = new ArrayList<>();
+
+		for (int i = 2; i < sText.length; i++)
+			if (sText[i - 2].equals(first) && sText[i - 1].equals(second))
+				thirds.add(sText[i]);
+
+		return thirds.toArray(new String[thirds.size()]);
+	}
+
+	public void _1089_duplicateZeros(int[] arr) {
+		for (int i = 0; i < arr.length; i++)
+			if (arr[i] == 0) {
+				for (int j = arr.length - 1; j >= i + 1; j--)
+					arr[j] = arr[j - 1];
+
+				i++;
+				if (i < arr.length)
+					arr[i] = 0;
+			}
+	}
+
+	public String _1108_defangIPaddr(String address) {
+		if (address == null)
+			return null;
+
+		return address.replace(".", "[.]");
 	}
 }

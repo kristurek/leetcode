@@ -784,4 +784,101 @@ public class Solution2Test {
 	public void _922_sortArrayByParityII() {
 		assertArrayEquals(new int[] { 4, 5, 2, 7 }, solution._922_sortArrayByParityII(new int[] { 4, 2, 5, 7 }));
 	}
+
+	@Test
+	public void _929_numUniqueEmails() {
+		assertEquals(2, solution._929_numUniqueEmails(new String[] { "test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail+david@lee.tcode.com" }));
+
+		assertEquals(1, solution._929_numUniqueEmails(new String[] { "test.email+alex@leetcode.com", "test.email@leetcode.com" }));
+	}
+
+	@Test
+	public void _937_reorderLogFiles() {
+		String[] expected = new String[] { "let1 art can", "let3 art zero", "let2 own kit dig", "dig1 8 1 5 1", "dig2 3 6" };
+		assertArrayEquals(expected, solution._937_reorderLogFiles(new String[] { "dig1 8 1 5 1", "let1 art can", "dig2 3 6", "let2 own kit dig", "let3 art zero" }));
+	}
+
+	@Test
+	public void _938_rangeSumBST() {
+		TreeNode root = new TreeNode(10);
+		root.left = new TreeNode(5);
+		root.right = new TreeNode(15);
+		root.left.left = new TreeNode(3);
+		root.left.right = new TreeNode(7);
+		root.right.right = new TreeNode(18);
+
+		assertEquals(32, solution._938_rangeSumBST(root, 7, 15));
+	}
+
+	@Test
+	public void _942_diStringMatch() {
+		assertArrayEquals(new int[] { 0, 4, 1, 3, 2 }, solution._942_diStringMatch("IDID"));
+		assertArrayEquals(new int[] { 3, 2, 0, 1 }, solution._942_diStringMatch("DDI"));
+		assertArrayEquals(new int[] { 0, 1, 2, 3 }, solution._942_diStringMatch("III"));
+		assertArrayEquals(new int[] { 3, 2, 1, 0 }, solution._942_diStringMatch("DDD"));
+	}
+
+	@Test
+	public void _944_minDeletionSize() {
+		assertEquals(1, solution._944_minDeletionSize(new String[] { "cba", "daf", "ghi" }));
+		assertEquals(2, solution._944_minDeletionSize(new String[] { "rrjk", "furt", "guzm" }));
+		assertEquals(3, solution._944_minDeletionSize(new String[] { "zyx", "wvu", "tsr" }));
+	}
+
+	@Test
+	public void _961_repeatedNTimes() {
+		assertEquals(3, solution._961_repeatedNTimes(new int[] { 1, 2, 3, 3 }));
+		assertEquals(2, solution._961_repeatedNTimes(new int[] { 2, 1, 2, 5, 3, 2 }));
+		assertEquals(5, solution._961_repeatedNTimes(new int[] { 5, 1, 5, 2, 5, 3, 5, 4 }));
+	}
+
+	@Test
+	public void _1002_commonChars() {
+		assertThat(solution._1002_commonChars(new String[] { "bella", "label", "roller" }), containsInAnyOrder(new String[] { "e", "l", "l" }));
+		assertThat(solution._1002_commonChars(new String[] { "cool", "lock", "cook" }), containsInAnyOrder(new String[] { "c", "o" }));
+	}
+
+	@Test
+	public void _1021_removeOuterParentheses() {
+		assertEquals("()()()()(())", solution._1021_removeOuterParentheses("(()())(())(()(()))"));
+		assertEquals("()()()", solution._1021_removeOuterParentheses("(()())(())"));
+		assertEquals("", solution._1021_removeOuterParentheses("()()"));
+	}
+
+	@Test
+	void _1046_lastStoneWeight() {
+		assertThat(solution._1046_lastStoneWeight(IntStream.of(2, 7, 4, 1, 8, 1).toArray()), is(equalTo(1)));
+	}
+
+	@Test
+	public void _1047_removeDuplicates() {
+		assertEquals("ca", solution._1047_removeDuplicates("abbaca"));
+		assertEquals("a", solution._1047_removeDuplicates("a"));
+		assertEquals("", solution._1047_removeDuplicates(""));
+		assertNull(solution._1047_removeDuplicates(null));
+	}
+
+	@Test
+	public void _1051_heightChecker() {
+		assertEquals(3, solution._1051_heightChecker(new int[] { 1, 1, 4, 2, 1, 3 }));
+	}
+
+	@Test
+	public void _1078_findOcurrences() {
+		assertArrayEquals(new String[] { "girl", "student" }, solution._1078_findOcurrences("alice is a good girl she is a good student", "a", "good"));
+		assertArrayEquals(new String[] { "we", "rock" }, solution._1078_findOcurrences("we will we will rock you", "we", "will"));
+	}
+
+	@Test
+	void _1089_duplicateZeros() {
+		int[] param = new int[] { 1, 0, 2, 3, 0, 4, 5, 0 };
+		solution._1089_duplicateZeros(param);
+
+		assertArrayEquals(new int[] { 1, 0, 0, 2, 3, 0, 0, 4 }, param);
+	}
+	
+	@Test
+	public void _1108_defangIPaddr() {
+		assertEquals("192[.]168[.]1[.]1", solution._1108_defangIPaddr("192.168.1.1"));
+	}
 }
