@@ -6,13 +6,15 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,6 +37,101 @@ public class Solution2 {
 	}
 
 	throw new IllegalArgumentException("No found solution, check input params");
+    }
+
+    public ListNode _2_addTwoNumbers(ListNode l1, ListNode l2) {
+	ListNode l3 = new ListNode(-1);
+	ListNode head = l3;
+	int carry = 0;
+
+	while (l1 != null || l2 != null) {
+	    int sum = (l1 != null ? l1.val : 0) + (l2 != null ? l2.val : 0) + carry;
+
+	    l3.next = new ListNode(sum % 10);
+	    carry = sum / 10;
+
+	    if (l1 != null)
+		l1 = l1.next;
+	    if (l2 != null)
+		l2 = l2.next;
+	    l3 = l3.next;
+	}
+
+	if (carry != 0)
+	    l3.next = new ListNode(carry);
+
+	return head.next;
+    }
+
+    public int _3_lengthOfLongestSubstring(String s) {
+	String maxSub = "";
+	String currentSub = "";
+
+	for (int slow = 0; slow < s.length(); slow++) {
+	    currentSub = String.valueOf(s.charAt(slow));
+
+	    for (int fast = slow + 1; fast < s.length(); fast++)
+		if (!currentSub.contains(String.valueOf(s.charAt(fast))))
+		    currentSub += String.valueOf(s.charAt(fast));
+		else
+		    break;
+
+	    if (currentSub.length() > maxSub.length())
+		maxSub = currentSub;
+	}
+
+	return maxSub.length();
+    }
+
+    public int _3_lengthOfLongestSubstring_v2(String s) {
+	if (s.length() == 1)
+	    return 1;
+
+	Queue<Character> chars = new LinkedList<>();
+	int max = 0;
+
+	for (int i = 0; i < s.length(); i++) {
+	    if (!chars.contains(s.charAt(i))) {
+		chars.add(s.charAt(i));
+		max = Math.max(max, chars.size());
+	    } else {
+		while (chars.contains(s.charAt(i)))
+		    chars.poll();
+		chars.add(s.charAt(i));
+	    }
+	}
+
+	return max;
+    }
+
+    public String _5_longestPalindrome(String s) {
+	if (s == null || s.isEmpty())
+	    return s;
+
+	String max = s.substring(0, 1);
+
+	for (int i = 0; i < s.length(); i++) {
+
+	    // get longest palindrome with center of i
+	    String tmp = _5_longestPalindrome_findPalindromeByExtend(s, i, i);// odd
+	    if (tmp.length() > max.length())
+		max = tmp;
+
+	    // get longest palindrome with center of i, i+1
+	    tmp = _5_longestPalindrome_findPalindromeByExtend(s, i, i + 1);// even
+	    if (tmp.length() > max.length())
+		max = tmp;
+	}
+	return max;
+    }
+
+    private String _5_longestPalindrome_findPalindromeByExtend(String s, int begin, int end) {
+	while (begin >= 0 && end <= s.length() - 1 && s.charAt(begin) == s.charAt(end)) {
+	    begin--;
+	    end++;
+	}
+
+	return s.substring(begin + 1, end);
     }
 
     public int _7_reverse(int x) {
@@ -69,6 +166,86 @@ public class Solution2 {
 	    return false;
 
 	return reverse == number ? true : false;
+    }
+
+    public int _11_maxArea(int[] height) {
+	int l = 0;
+	int h = height.length - 1;
+	int max = Integer.MIN_VALUE;
+
+	while (l < h) {
+	    int area = Math.min(height[l], height[h]) * (h - l);
+	    max = Math.max(max, area);
+
+	    if (height[l] <= height[h])
+		l++;
+	    else
+		h--;
+	}
+
+	return max;
+    }
+
+    public String _12_intToRoman(int num) {
+	Map<Integer, String> map = new LinkedHashMap<>(); // remember order
+	map.put(1000, "M");
+	map.put(900, "CM");
+	map.put(500, "D");
+	map.put(400, "CD");
+	map.put(100, "C");
+	map.put(90, "XC");
+	map.put(50, "L");
+	map.put(40, "XL");
+	map.put(10, "X");
+	map.put(9, "IX");
+	map.put(5, "V");
+	map.put(4, "IV");
+	map.put(1, "I");
+
+	StringBuilder roman = new StringBuilder();
+
+	for (Map.Entry<Integer, String> entry : map.entrySet()) {
+	    while (num > 0) { // multiple append the same char, 3 will be I I I
+		if (num >= entry.getKey()) {// but if num < current entry, break and try next
+		    roman.append(entry.getValue());
+		    num = num - entry.getKey();
+		} else
+		    break;
+	    }
+	}
+
+	return roman.toString();
+    }
+
+    public String _12_intToRoman_v2(int num) {
+	Map<Integer, String> map = new LinkedHashMap<>();
+	map.put(1000, "M");
+	map.put(900, "CM");
+	map.put(500, "D");
+	map.put(400, "CD");
+	map.put(100, "C");
+	map.put(90, "XC");
+	map.put(50, "L");
+	map.put(40, "XL");
+	map.put(10, "X");
+	map.put(9, "IX");
+	map.put(5, "V");
+	map.put(4, "IV");
+	map.put(1, "I");
+
+	StringBuilder roman = new StringBuilder();
+
+	for (Entry<Integer, String> entry : map.entrySet()) {
+	    int mult = entry.getKey();
+	    String code = entry.getValue();
+
+	    for (int i = 0; i < num / mult; i++)
+		roman.append(code);
+
+	    num = num % mult;
+	}
+
+	return roman.toString();
     }
 
     public int _13_romanToInt(String s) {
