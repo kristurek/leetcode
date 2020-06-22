@@ -133,6 +133,65 @@ public class Solution2Test {
     }
 
     @Test
+    void _15_threeSum() {
+	List<List<Integer>> answer = solution._15_threeSum(new int[] { -1, 0, 1, 2, -1 });
+	List<List<Integer>> l = new ArrayList<>();
+	l.add(Arrays.asList(-1, -1, 2));
+	l.add(Arrays.asList(-1, 0, 1));
+
+	assertThat(answer, is(l));
+
+	answer = solution._15_threeSum(new int[] { 0, 0, 0, 0 });
+	l = new ArrayList<>();
+	l.add(Arrays.asList(0, 0, 0));
+
+	assertThat(answer, is(l));
+
+	answer = solution._15_threeSum(new int[] { -2, 0, 1, 1, 2 });
+	l = new ArrayList<>();
+	l.add(Arrays.asList(-2, 1, 1));
+	l.add(Arrays.asList(-2, 0, 2));
+
+	assertThat(answer, is(l));
+    }
+
+    @Test
+    void _16_threeSumClosest() {
+	assertEquals(0, solution._16_threeSumClosest(new int[] { -2, 0, 1, 1, 2 }, 0));
+	assertEquals(2, solution._16_threeSumClosest(new int[] { -1, 2, 1, -4 }, 1));
+    }
+
+    @Test
+    void _17_letterCombinations() {
+	assertEquals(Arrays.asList("ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"),
+		solution._17_letterCombinations("23"));
+    }
+
+    @Test
+    void _18_fourSum() {
+	List<List<Integer>> answer = solution._18_fourSum(new int[] { 1, 0, -1, 0, -2, 2 }, 0);
+	List<List<Integer>> l = new ArrayList<>();
+
+	l.add(Arrays.asList(-2, 0, 0, 2));
+	l.add(Arrays.asList(-2, -1, 1, 2));
+	l.add(Arrays.asList(-1, 0, 0, 1));
+
+	assertThat(answer, is(l));
+    }
+
+    @Test
+    void _19_removeNthFromEnd() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+
+	head = solution._19_removeNthFromEnd(head, 3);
+
+	assertEquals(2, head.val);
+	assertEquals(3, head.next.val);
+    }
+
+    @Test
     void _20_isValid() {
 	assertTrue(solution._20_isValid("()"));
 	assertTrue(solution._20_isValid("()[]{}"));
@@ -159,6 +218,12 @@ public class Solution2Test {
 	assertEquals(3, head3.next.next.next.val);
 	assertEquals(4, head3.next.next.next.next.val);
 	assertEquals(4, head3.next.next.next.next.next.val);
+    }
+
+    @Test
+    void _22_generateParenthesis() {
+	List<String> list = Arrays.asList("((()))", "(()())", "(())()", "()(())", "()()()");
+	assertThat(solution._22_generateParenthesis(3), is(list));
     }
 
     @Test

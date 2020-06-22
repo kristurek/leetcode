@@ -10,13 +10,14 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
@@ -205,12 +206,9 @@ public class Solution2 {
 	StringBuilder roman = new StringBuilder();
 
 	for (Map.Entry<Integer, String> entry : map.entrySet()) {
-	    while (num > 0) { // multiple append the same char, 3 will be I I I
-		if (num >= entry.getKey()) {// but if num < current entry, break and try next
-		    roman.append(entry.getValue());
-		    num = num - entry.getKey();
-		} else
-		    break;
+	    while (num >= entry.getKey()) { // multiple append the same char, 3 will be I I I
+		roman.append(entry.getValue());
+		num = num - entry.getKey();
 	    }
 	}
 
@@ -303,6 +301,213 @@ public class Solution2 {
 	return longestPrefix;
     }
 
+    public List<List<Integer>> _15_threeSum(int[] nums) {
+	Set<List<Integer>> groups = new HashSet<>();
+
+	Arrays.sort(nums);
+
+	for (int i = 0; i < nums.length; i++) {
+	    int l = i + 1;
+	    int h = nums.length - 1;
+
+	    while (l < h)
+		if (nums[i] + nums[l] + nums[h] < 0)
+		    l++;
+		else if (nums[i] + nums[l] + nums[h] > 0)
+		    h--;
+		else
+		    groups.add(Stream.of(nums[i], nums[l++], nums[h--]).collect(Collectors.toList()));
+	}
+
+	return new ArrayList<>(groups);
+    }
+
+    public List<List<Integer>> _15_threeSum_v2(int[] nums) {
+	Set<List<Integer>> groups = new HashSet<>();
+
+	Arrays.sort(nums);
+
+	_15_threeSum_v2_backtracking(groups, new ArrayList<>(), nums, 0);
+
+	return new ArrayList<>(groups);
+    }
+
+    private void _15_threeSum_v2_backtracking(Set<List<Integer>> output, List<Integer> tmp, int[] nums, int from) {
+	if (tmp.size() == 3) {
+	    if (tmp.stream().mapToInt(i -> i).sum() == 0)
+		output.add(new ArrayList<>(tmp));
+	} else {
+	    for (int i = from; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_15_threeSum_v2_backtracking(output, tmp, nums, i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public int _16_threeSumClosest(int[] nums, int target) {
+	int closetSum = Integer.MAX_VALUE;
+	int minDiff = Integer.MAX_VALUE;
+
+	Arrays.sort(nums);
+
+	for (int i = 0; i < nums.length; i++) {
+	    int l = i + 1;
+	    int h = nums.length - 1;
+
+	    while (l < h) {
+		int sum = nums[i] + nums[l] + nums[h];
+
+		if (Math.abs(target - sum) < minDiff) {
+		    closetSum = sum;
+		    minDiff = Math.abs(target - sum);
+		}
+
+		if (sum > target)
+		    h--;
+		else if (sum < target)
+		    l++;
+		else
+		    return sum;
+	    }
+	}
+
+	return closetSum;
+    }
+
+    public List<String> _17_letterCombinations(String digits) {
+	Map<Character, List<Character>> map = new HashMap<>();
+	map.put('1', Arrays.asList());
+	map.put('2', Arrays.asList('a', 'b', 'c'));
+	map.put('3', Arrays.asList('d', 'e', 'f'));
+	map.put('4', Arrays.asList('g', 'h', 'i'));
+	map.put('5', Arrays.asList('j', 'k', 'l'));
+	map.put('6', Arrays.asList('m', 'n', 'o'));
+	map.put('7', Arrays.asList('p', 'q', 'r', 's'));
+	map.put('8', Arrays.asList('t', 'u', 'v'));
+	map.put('9', Arrays.asList('w', 'x', 'y', 'z'));
+	map.put('0', Arrays.asList());
+
+	List<String> output = new ArrayList<>();
+	if (digits.length() > 0)
+	    _17_letterCombinations_backtracking(output, new ArrayList<>(), digits.toCharArray(), 0, map);
+
+	return output;
+    }
+
+    private void _17_letterCombinations_backtracking(List<String> output, List<Character> tmp, char[] digits,
+	    int digitsIndex, Map<Character, List<Character>> map) {
+	if (tmp.size() == digits.length)
+	    output.add(tmp.stream().map(String::valueOf).collect(Collectors.joining()));
+	else {
+	    for (char cChar : map.get(digits[digitsIndex])) {
+		tmp.add(cChar);
+		_17_letterCombinations_backtracking(output, tmp, digits, digitsIndex + 1, map);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public List<String> _17_letterCombinations_v2(String digits) {
+	Map<Character, String> map = new HashMap<>();
+	map.put('1', "");
+	map.put('2', "abc");
+	map.put('3', "def");
+	map.put('4', "ghi");
+	map.put('5', "jkl");
+	map.put('6', "mno");
+	map.put('7', "pqrs");
+	map.put('8', "tuv");
+	map.put('9', "wxyz");
+
+	List<String> output = new LinkedList<String>();
+	if (digits.length() > 0) {
+	    letterCombinations(output, digits, 0, "", map);
+	}
+	return output;
+    }
+
+    private void letterCombinations(List<String> output, String digits, int i, String current,
+	    Map<Character, String> map) {
+	if (i == digits.length()) {
+	    output.add(current);
+	} else {
+	    String chars = map.get(digits.charAt(i));
+	    for (char c : chars.toCharArray()) {
+		letterCombinations(output, digits, i + 1, current + c, map);
+	    }
+	}
+    }
+
+    public List<List<Integer>> _18_fourSum(int[] nums, int target) {// FIXME Time Limit Exceeded
+	Set<List<Integer>> groups = new HashSet<>();
+
+	Arrays.sort(nums);
+
+	_18_fourSum_backtracking(groups, new ArrayList<>(), nums, 0, target);
+
+	return new ArrayList<>(groups);
+    }
+
+    private void _18_fourSum_backtracking(Set<List<Integer>> output, List<Integer> tmp, int[] nums, int from,
+	    int target) {
+	if (tmp.size() == 4) {
+	    if (tmp.stream().mapToInt(i -> i).sum() == target)
+		output.add(new ArrayList<>(tmp));
+	} else {
+	    for (int i = from; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_18_fourSum_backtracking(output, tmp, nums, i + 1, target);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public ListNode _19_removeNthFromEnd(ListNode head, int n) {
+	ListNode current = head;
+	List<ListNode> list = new ArrayList<>();
+
+	while (current != null) {
+	    list.add(current);
+	    current = current.next;
+	}
+
+	if (list.size() == n)
+	    return head.next;
+	else {
+	    ListNode ln = list.get(list.size() - n - 1);
+
+	    ln.next = ln.next.next;
+
+	    return head;
+	}
+    }
+
+    public ListNode _19_removeNthFromEnd_v2(ListNode head, int n) {
+	ListNode current = head;
+	ListNode dummy = new ListNode(-1);
+	dummy.next = head;
+
+	int length = 0;
+
+	while (current != null) {
+	    length++;
+	    current = current.next;
+	}
+
+	length = length - n;
+	current = dummy;
+
+	while (length > 0) {
+	    length--;
+	    current = current.next;
+	}
+
+	current.next = current.next.next;
+
+	return dummy.next;
+    }
+
     public boolean _20_isValid(String s) {
 	Deque<Character> stack = new LinkedList<>();
 
@@ -345,6 +550,27 @@ public class Solution2 {
 	    l3.next = l2;
 
 	return head.next;
+    }
+
+    public List<String> _22_generateParenthesis(int n) {
+	List<String> output = new ArrayList<>();
+
+	_22_generateParenthesis_backtracking(output, "", 0, 0, n);
+
+	return output;
+    }
+
+    private void _22_generateParenthesis_backtracking(List<String> output, String tmp, int open, int close, int n) {
+	if (tmp.length() == n * 2)
+	    output.add(tmp);
+	else {
+	    if (open >= close) {
+		if (open < n)
+		    _22_generateParenthesis_backtracking(output, tmp + "(", open + 1, close, n);
+		if (close < n)
+		    _22_generateParenthesis_backtracking(output, tmp + ")", open, close + 1, n);
+	    }
+	}
     }
 
     public int _26_removeDuplicates(int[] nums) {
