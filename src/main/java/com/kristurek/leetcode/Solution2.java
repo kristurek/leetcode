@@ -615,6 +615,82 @@ public class Solution2 {
 	return -1;
     }
 
+    public int _33_search(int[] nums, int target) {
+	if (nums == null || nums.length == 0)
+	    return -1;
+
+	int l = 0;
+	int h = nums.length - 1;
+
+	while (l < h) {
+	    int m = l + (h - l) / 2;
+
+	    if (nums[m] > nums[h])
+		l = m + 1;
+	    else
+		h = m;
+	}
+
+	int p = l;// pivot - lowest elemnt
+	l = 0;
+	h = nums.length - 1;
+
+	if (target >= nums[p] && target <= nums[h])
+	    l = p;
+	else
+	    h = p - 1;
+
+	while (l <= h) {
+	    int m = l + (h - l) / 2;
+
+	    if (nums[m] > target)
+		h = m - 1;
+	    else if (nums[m] < target)
+		l = m + 1;
+	    else
+		return m;
+
+	}
+
+	return -1;
+    }
+
+    public int[] _34_searchRange(int[] nums, int target) {
+	int l = _34_searchRange_search(nums, target, true);
+	int r = _34_searchRange_search(nums, target, false);
+
+	return new int[] { l, r };
+    }
+
+    private int _34_searchRange_search(int[] nums, int target, boolean left) {
+	int l = 0;
+	int h = nums.length - 1;
+
+	while (l <= h) {
+	    int m = l + (h - l) / 2;
+	    if (nums[m] < target)
+		l = m + 1;
+	    else if (nums[m] > target)
+		h = m - 1;
+	    else {
+		if (left) {
+		    if (m > 0 && nums[m - 1] == target)
+			h = m - 1;
+		    else
+			return m;
+		} else {
+
+		    if (m < nums.length - 1 && nums[m + 1] == target)
+			l = m + 1;
+		    else
+			return m;
+		}
+	    }
+	}
+
+	return -1;
+    }
+
     public int _35_searchInsert(int[] nums, int target) {
 	int l = 0;
 	int h = nums.length - 1;
@@ -631,6 +707,73 @@ public class Solution2 {
 	}
 
 	return l;
+    }
+
+    public boolean _36_isValidSudoku(char[][] board) {
+	Set<String> set = new HashSet<>();
+
+	for (int row = 0; row < board.length; row++)
+	    for (int col = 0; col < board[row].length; col++) {
+		char val = board[row][col];
+
+		if (val != '.') {
+		    if (set.contains("r" + row + val) || set.contains("c" + col + val)
+			    || set.contains("b" + row / 3 + "-" + col / 3 + val))
+			return false;
+		    else {
+			set.add("r" + row + val);
+			set.add("c" + col + val);
+			set.add("b" + row / 3 + "-" + col / 3 + val);
+		    }
+		}
+	    }
+
+	return true;
+    }
+
+    public boolean _36_isValidSudoku_v2(char[][] board) {
+	Set<String> set = new HashSet<>();
+
+	for (int row = 0; row < board.length; row++)
+	    for (int col = 0; col < board[row].length; col++) {
+		char val = board[row][col];
+
+		if (val != '.') {
+		    int box = (row / 3 * 3) + (col / 3);
+		    if (set.contains("r" + row + val) || set.contains("c" + col + val) || set.contains("b" + box + val))
+			return false;
+		    else {
+			set.add("r" + row + val);
+			set.add("c" + col + val);
+			set.add("b" + box + val);
+		    }
+		}
+	    }
+
+	return true;
+    }
+
+    public List<List<Integer>> _39_combinationSum(int[] nums, int target) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	_39_combinationSum_backtracking(output, new ArrayList<>(), nums, target, target, 0);
+
+	return output;
+    }
+
+    private void _39_combinationSum_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int target,
+	    int remained, int from) {
+	if (remained == 0) {
+	    output.add(new ArrayList<>(tmp));
+	} else if (remained < 0)
+	    return;
+	else {
+	    for (int i = from; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_39_combinationSum_backtracking(output, tmp, nums, target, remained - nums[i], i);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
     }
 
     public int _53_maxSubArray(int[] nums) {

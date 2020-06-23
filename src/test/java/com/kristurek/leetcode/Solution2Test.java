@@ -252,11 +252,32 @@ public class Solution2Test {
     }
 
     @Test
+    void _33_search() {
+	assertEquals(4, solution._33_search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 0));
+	assertEquals(-1, solution._33_search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 3));
+    }
+
+    @Test
+    void _34_searchRange() {
+	assertArrayEquals(new int[] { 3, 4 }, solution._34_searchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 8));
+	assertArrayEquals(new int[] { -1, -1 }, solution._34_searchRange(new int[] { 5, 7, 7, 8, 8, 10 }, 6));
+    }
+
+    @Test
     void _35_searchInsert() {
 	assertEquals(2, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 5));
 	assertEquals(1, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 2));
 	assertEquals(4, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 7));
 	assertEquals(0, solution._35_searchInsert(new int[] { 1, 3, 5, 6 }, 0));
+    }
+
+    @Test
+    void _39_combinationSum() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList(2, 2, 3));
+	answer.add(Arrays.asList(7));
+
+	assertThat(solution._39_combinationSum(new int[] { 2, 3, 6, 7 }, 7), is(answer));
     }
 
     @Test
