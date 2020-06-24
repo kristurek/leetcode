@@ -281,6 +281,60 @@ public class Solution2Test {
     }
 
     @Test
+    void _40_combinationSum2() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList(7));
+
+	assertThat(solution._40_combinationSum2(new int[] { 2, 3, 6, 7 }, 7), is(answer));
+    }
+
+    @Test
+    void _43_multiply() {
+	assertEquals("56088", solution._43_multiply("123", "456"));
+    }
+
+    @Test
+    void _46_permute() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList(1, 2));
+	answer.add(Arrays.asList(2, 1));
+
+	assertThat(solution._46_permute(new int[] { 1, 2 }), is(answer));
+    }
+
+    @Test
+    void _47_permuteUnique() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList(1, 1, 2));
+	answer.add(Arrays.asList(1, 2, 1));
+	answer.add(Arrays.asList(2, 1, 1));
+
+	assertThat(solution._47_permuteUnique(new int[] { 1, 2, 1 }), is(answer));
+    }
+
+    @Test
+    void _49_groupAnagrams() {
+	String[] input = Stream.of("eat", "tea", "tan", "ate", "nat", "bat").toArray(String[]::new);
+
+	List<String> l1 = Stream.of("eat", "tea", "ate").collect(Collectors.toList());
+	List<String> l2 = Stream.of("tan", "nat").collect(Collectors.toList());
+	List<String> l3 = Stream.of("bat").collect(Collectors.toList());
+
+	List<List<String>> expected = new ArrayList<>();
+	expected.add(l1);
+	expected.add(l2);
+	expected.add(l3);
+
+	assertThat(solution._49_groupAnagrams(input), containsInAnyOrder(expected.toArray()));
+    }
+
+    @Test
+    void _50_myPow() {
+	assertEquals(8, solution._50_myPow(2, 3));
+	assertEquals(0, solution._50_myPow(2, -2147483648));
+    }
+
+    @Test
     void _53_maxSubArray() {
 	assertEquals(6, solution._53_maxSubArray(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }));
     }

@@ -3,6 +3,7 @@ package com.kristurek.leetcode;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -773,6 +774,169 @@ public class Solution2 {
 		_39_combinationSum_backtracking(output, tmp, nums, target, remained - nums[i], i);
 		tmp.remove(tmp.size() - 1);
 	    }
+	}
+    }
+
+    public List<List<Integer>> _40_combinationSum2(int[] candidates, int target) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	Arrays.sort(candidates);
+
+	_40_combinationSum2(output, new ArrayList<>(), candidates, target, 0);
+
+	return new ArrayList<>(output);
+    }
+
+    private void _40_combinationSum2(List<List<Integer>> output, List<Integer> tmp, int[] nums, int remained,
+	    int from) {
+	if (remained == 0) {
+	    output.add(new ArrayList<>(tmp));
+	} else if (remained < 0)
+	    return;
+	else {
+	    for (int i = from; i < nums.length; i++) {
+		if (i > from && nums[i] == nums[i - 1])
+		    continue;
+
+		tmp.add(nums[i]);
+		_40_combinationSum2(output, tmp, nums, remained - nums[i], i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public List<List<Integer>> _40_combinationSum2_v2(int[] candidates, int target) { // Time Limit Exceeded
+	Set<List<Integer>> output = new HashSet<>();
+
+	_40_combinationSum2_v2(output, new ArrayList<>(), candidates, target, 0);
+
+	return new ArrayList<>(output);
+    }
+
+    private void _40_combinationSum2_v2(Set<List<Integer>> output, List<Integer> tmp, int[] nums, int target,
+	    int from) {
+	int sum = tmp.stream().mapToInt(Integer::intValue).sum();
+	if (sum == target) {
+	    List<Integer> list = new ArrayList<>(tmp);
+	    Collections.sort(list);
+	    output.add(list);
+	} else if (tmp.size() >= nums.length)
+	    return;
+	else {
+	    for (int i = from; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_40_combinationSum2_v2(output, tmp, nums, target, i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public String _43_multiply(String num1, String num2) {
+	int[] muls = new int[num1.length() + num2.length()];
+
+	for (int i = num1.length() - 1; i >= 0; i--) {
+	    for (int j = num2.length() - 1; j >= 0; j--) {
+		int val1 = Integer.parseInt(Character.toString(num1.charAt(i)));
+		int val2 = Integer.parseInt(Character.toString(num2.charAt(j)));
+
+		int index = num1.length() + num2.length() - i - j - 2;
+		muls[index] += val1 * val2;
+		muls[index + 1] += muls[index] / 10;
+		muls[index] %= 10;
+	    }
+	}
+
+	StringBuilder sb = new StringBuilder();
+	for (int i = muls.length - 1; i > 0; i--) {
+	    if (sb.length() == 0 && muls[i] == 0)
+		continue;
+	    sb.append(muls[i]);
+	}
+	sb.append(muls[0]);
+
+	return sb.toString();
+    }
+
+    public List<List<Integer>> _46_permute(int[] nums) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	_46_permute_backtracking(output, new ArrayList<>(), nums);
+
+	return output;
+    }
+
+    private void _46_permute_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums) {
+	if (tmp.size() == nums.length)
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = 0; i < nums.length; i++) {
+		if (tmp.contains(nums[i]))
+		    continue;
+
+		tmp.add(nums[i]);
+		_46_permute_backtracking(output, tmp, nums);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public List<List<Integer>> _47_permuteUnique(int[] nums) {
+	List<List<Integer>> output = new ArrayList<>();
+	boolean[] used = new boolean[nums.length];
+
+	Arrays.sort(nums);
+
+	_47_permuteUnique_backtracking(output, new ArrayList<>(), nums, 0, used);
+
+	return output;
+    }
+
+    private void _47_permuteUnique_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int from,
+	    boolean[] used) {
+	if (tmp.size() == nums.length)
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = from; i < nums.length; i++) {
+		if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
+		    continue;
+
+		used[i] = true;
+		tmp.add(nums[i]);
+		_47_permuteUnique_backtracking(output, tmp, nums, 0, used);
+		tmp.remove(tmp.size() - 1);
+		used[i] = false;
+	    }
+	}
+    }
+
+    public List<List<String>> _49_groupAnagrams(String[] strs) {
+	Map<String, List<String>> map = new HashMap<>();
+
+	for (String str : strs) {
+	    String sortedStr = str.chars().sorted().mapToObj(String::valueOf).collect(Collectors.joining());
+
+	    List<String> lStrs = map.getOrDefault(sortedStr, new ArrayList<>());
+	    lStrs.add(str);
+
+	    map.put(sortedStr, lStrs);
+	}
+
+	return new ArrayList<>(map.values());
+    }
+
+    public double _50_myPow(double x, int n) {
+	if (n == 0)
+	    return 1;
+
+	double temp = _50_myPow(x, n / 2);
+
+	if (n % 2 == 0)
+	    return temp * temp;
+	else {
+	    if (n > 0)
+		return (temp * temp) * x;
+	    else
+		return (temp * temp) / x;
 	}
     }
 
