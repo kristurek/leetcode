@@ -340,8 +340,41 @@ public class Solution2Test {
     }
 
     @Test
+    void _54_spiralOrder() {
+	assertThat(solution._54_spiralOrder(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }),
+		is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
+    }
+
+    @Test
     void _58_lengthOfLastWord() {
 	assertEquals(5, solution._58_lengthOfLastWord("Hello World"));
+    }
+
+    @Test
+    void _60_getPermutation() {
+	assertEquals("213", solution._60_getPermutation(3, 3));
+    }
+
+    @Test
+    void _61_rotateRight() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+
+	head = solution._61_rotateRight(head, 2);
+
+	assertEquals(3, head.val);
+	assertEquals(4, head.next.val);
+	assertEquals(1, head.next.next.val);
+	assertEquals(2, head.next.next.next.val);
+	assertNull(head.next.next.next.next);
+    }
+
+    @Test
+    void _64_minPathSum() {
+	int[][] grid = { { 1, 3, 1 }, { 1, 5, 1 }, { 4, 2, 1 } };
+	assertEquals(7, solution._64_minPathSum(grid));
     }
 
     @Test
@@ -370,6 +403,21 @@ public class Solution2Test {
 	assertEquals(3, solution._70_climbStairs(3));
 	assertEquals(5, solution._70_climbStairs(4));
 	assertEquals(8, solution._70_climbStairs(5));
+    }
+
+    @Test
+    void _71_simplifyPath() {
+	assertEquals("/home", solution._71_simplifyPath("/home/"));
+	assertEquals("/", solution._71_simplifyPath("/../"));
+	assertEquals("/home/foo", solution._71_simplifyPath("/home//foo/"));
+	assertEquals("/c", solution._71_simplifyPath("/a/./b/../../c/"));
+	assertEquals("/c", solution._71_simplifyPath("/a/../../b/../c//.//"));
+	assertEquals("/a/b/c", solution._71_simplifyPath("/a//b////c/d//././/.."));
+    }
+
+    @Test
+    void _74_searchMatrix() {
+	assertTrue(solution._74_searchMatrix(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }, 7));
     }
 
     @Test

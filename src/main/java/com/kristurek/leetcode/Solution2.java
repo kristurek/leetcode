@@ -886,23 +886,23 @@ public class Solution2 {
 
 	Arrays.sort(nums);
 
-	_47_permuteUnique_backtracking(output, new ArrayList<>(), nums, 0, used);
+	_47_permuteUnique_backtracking(output, new ArrayList<>(), nums, used);
 
 	return output;
     }
 
-    private void _47_permuteUnique_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int from,
+    private void _47_permuteUnique_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums,
 	    boolean[] used) {
 	if (tmp.size() == nums.length)
 	    output.add(new ArrayList<>(tmp));
 	else {
-	    for (int i = from; i < nums.length; i++) {
+	    for (int i = 0; i < nums.length; i++) {
 		if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]))
 		    continue;
 
 		used[i] = true;
 		tmp.add(nums[i]);
-		_47_permuteUnique_backtracking(output, tmp, nums, 0, used);
+		_47_permuteUnique_backtracking(output, tmp, nums, used);
 		tmp.remove(tmp.size() - 1);
 		used[i] = false;
 	    }
@@ -957,12 +957,113 @@ public class Solution2 {
 	return max;
     }
 
+    public List<Integer> _54_spiralOrder(int[][] matrix) {
+	if (matrix == null || matrix.length == 0)
+	    return new ArrayList<>();
+
+	List<Integer> values = new ArrayList<>();
+
+	int colBegin = 0;
+	int rowBegin = 0;
+	int colEnd = matrix[0].length - 1;
+	int rowEnd = matrix.length - 1;
+
+	while (colBegin <= colEnd && rowBegin <= rowEnd) {
+
+	    for (int col = colBegin; col <= colEnd; col++)
+		values.add(matrix[rowBegin][col]);
+	    rowBegin++;
+
+	    for (int row = rowBegin; row <= rowEnd; row++)
+		values.add(matrix[row][colEnd]);
+	    colEnd--;
+
+	    if (rowBegin <= rowEnd)
+		for (int col = colEnd; col >= colBegin; col--)
+		    values.add(matrix[rowEnd][col]);
+	    rowEnd--;
+
+	    if (colBegin <= colEnd)
+		for (int row = rowEnd; row >= rowBegin; row--)
+		    values.add(matrix[row][colBegin]);
+	    colBegin++;
+	}
+
+	return values;
+    }
+
     public int _58_lengthOfLastWord(String s) {
 	if (s == null || s.isBlank())
 	    return 0;
 
 	String[] ss = s.split(" ");
 	return ss[ss.length - 1].length();
+    }
+
+    public String _60_getPermutation(int n, int k) {
+	int[] nums = IntStream.range(1, n + 1).toArray();
+	List<List<Integer>> output = new ArrayList<>();
+
+	_60_getPermutation_backtracking(output, new ArrayList<>(), nums);
+
+	return output.get(k - 1).stream().map(i -> String.valueOf(i)).collect(Collectors.joining());
+    }
+
+    private void _60_getPermutation_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums) {
+	if (tmp.size() == nums.length)
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = 0; i < nums.length; i++) {
+		if (tmp.contains(nums[i]))
+		    continue;
+
+		tmp.add(nums[i]);
+		_60_getPermutation_backtracking(output, tmp, nums);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public ListNode _61_rotateRight(ListNode head, int k) {
+	if (head == null || k == 0)
+	    return head;
+
+	ListNode current = head;
+	int length = 1;
+
+	while (current.next != null) {
+	    length++;
+	    current = current.next;
+	}
+
+	current.next = head; // loop
+
+	k = k % length;
+	for (int i = 0; i < length - k; i++)
+	    current = current.next;
+
+	head = current.next;
+	current.next = null; // cut loop
+
+	return head;
+    }
+
+    public int _64_minPathSum(int[][] grid) {
+	int width = grid[0].length;
+	int[] dist = new int[width];
+
+	for (int i = 1; i < width; i++)
+	    dist[i] = Integer.MAX_VALUE;
+
+	for (int[] row : grid) {
+	    for (int i = 0; i < width; i++) {
+		if (i == 0)
+		    dist[i] = dist[i] + row[i];
+		else
+		    dist[i] = row[i] + Math.min(dist[i], dist[i - 1]);
+	    }
+	}
+	return dist[width - 1];
     }
 
     public int[] _66_plusOne(int[] digits) {
@@ -1046,6 +1147,49 @@ public class Solution2 {
 	}
 
 	return secondStep;
+    }
+
+    public String _71_simplifyPath(String path) {
+	Deque<String> stack = new LinkedList<>();
+
+	for (String s : path.split("/")) {
+	    if (s.equals(".."))
+		stack.poll();
+	    else if (!s.equals("") && !s.equals("."))
+		stack.push(s);
+	}
+
+	StringBuilder sb = new StringBuilder();
+	if (stack.size() == 0)
+	    return "/";
+	while (stack.size() != 0)
+	    sb.append("/").append(stack.pollLast());
+
+	return sb.toString();
+    }
+
+    public boolean _74_searchMatrix(int[][] matrix, int target) {
+	if (matrix == null || matrix.length == 0)
+	    return false;
+
+	int colLength = matrix[0].length;
+	int rowLength = matrix.length;
+
+	int l = 0;
+	int h = colLength * rowLength - 1;
+
+	while (l <= h) {
+	    int m = l + (h - l) / 2;
+
+	    if (target > matrix[m / colLength][m % colLength])
+		l = m + 1;
+	    else if (target < matrix[m / colLength][m % colLength])
+		h = m - 1;
+	    else
+		return true;
+	}
+
+	return false;
     }
 
     public ListNode _83_deleteDuplicates(ListNode ln) {
