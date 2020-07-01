@@ -1192,6 +1192,160 @@ public class Solution2 {
 	return false;
     }
 
+    public void _75_sortColors(int[] nums) {
+	_75_sortColors_quicksort(nums, 0, nums.length - 1);
+    }
+
+    private void _75_sortColors_quicksort(int[] nums, int l, int h) {
+	if (l < h) {
+	    int splitPoint = _75_sortColors_partition(nums, l, h);
+
+	    _75_sortColors_quicksort(nums, l, splitPoint - 1);
+	    _75_sortColors_quicksort(nums, splitPoint + 1, h);
+	}
+    }
+
+    private int _75_sortColors_partition(int[] nums, int left, int right) {
+	int pivot = nums[right];
+	int lowerIndex = left - 1;// index of values lower than pivot
+
+	for (int currentIndex = left; currentIndex < right; currentIndex++) { // currentIndex < right --> right is pivot
+	    if (nums[currentIndex] < pivot) {
+		lowerIndex++;
+
+		int tmp = nums[currentIndex];
+		nums[currentIndex] = nums[lowerIndex];
+		nums[lowerIndex] = tmp;
+	    }
+	}
+	// move pivot value to correct position
+	lowerIndex++;
+
+	int tmp = nums[lowerIndex];
+	nums[lowerIndex] = nums[right];
+	nums[right] = tmp;
+
+	return lowerIndex;
+    }
+
+    public List<List<Integer>> _77_combine(int n, int k) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	_77_combine_backtracking(output, new ArrayList<>(), IntStream.range(1, n + 1).toArray(), k, 0);
+
+	return output;
+    }
+
+    private void _77_combine_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int k, int from) {
+	if (tmp.size() == k)
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = from; i < nums.length; i++) {
+		if (tmp.contains(nums[i]))
+		    continue;
+
+		tmp.add(nums[i]);
+		_77_combine_backtracking(output, tmp, nums, k, i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public List<List<Integer>> _78_subsets(int[] nums) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	_78_subsets_backtracking(output, new ArrayList<>(), nums, 0);
+
+	return output;
+    }
+
+    private void _78_subsets_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int from) {
+	output.add(new ArrayList<>(tmp));
+
+	for (int i = from; i < nums.length; i++) {
+	    tmp.add(nums[i]);
+	    _78_subsets_backtracking(output, tmp, nums, i + 1);
+	    tmp.remove(tmp.size() - 1);
+	}
+    }
+
+    public int _80_removeDuplicates(int[] nums) {
+	int slow = 1;
+	int count = 1;
+
+	for (int fast = 1; fast < nums.length; fast++) {
+	    if (nums[fast - 1] == nums[fast])
+		count++;
+	    else
+		count = 1;
+
+	    if (count <= 2)
+		nums[slow++] = nums[fast];
+	}
+
+	return slow;
+    }
+
+    public boolean _81_search(int[] nums, int target) {
+	if (nums == null || nums.length == 0)
+	    return false;
+
+	int l = 0;
+	int h = nums.length - 1;
+
+	while (l <= h) {
+	    int m = l + (h - l) / 2;
+
+	    if (nums[m] == target)
+		return true;
+
+	    if (nums[m] > nums[h]) { // exists rotation, the middle element is in the left part of the PIVOT
+		if (target < nums[m] && target >= nums[l])
+		    h = m - 1;
+		else
+		    l = m + 1;
+	    } else if (nums[m] < nums[l]) {// exists rotation
+		if (target > nums[m] && target <= nums[h])
+		    l = m + 1;
+		else
+		    h = m - 1;
+	    } else { // standard binary search
+		if (target > nums[m])
+		    l = m + 1;
+		else if (target < nums[m])
+		    h = m - 1;
+		else
+		    return true;
+	    }
+
+	}
+
+	return false;
+    }
+
+    public ListNode _82_deleteDuplicates(ListNode head) {
+	ListNode dummy = new ListNode(0);
+	dummy.next = head;
+
+	ListNode fast = dummy.next;
+	ListNode slow = dummy;
+
+	while (fast != null) {
+	    while (fast.next != null && fast.val == fast.next.val)
+		fast = fast.next; // while loop to find the last node of the dups.
+
+	    if (slow.next != fast) { // duplicates detected.
+		slow.next = fast.next; // remove the dups.
+		fast = slow.next; // reposition the fast pointer.
+	    } else { // no dup, move down both pointer.
+		slow = slow.next;
+		fast = fast.next;
+	    }
+	}
+
+	return dummy.next;
+    }
+
     public ListNode _83_deleteDuplicates(ListNode ln) {
 	if (ln == null)
 	    return null;

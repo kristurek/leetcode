@@ -421,6 +421,79 @@ public class Solution2Test {
     }
 
     @Test
+    void _75_sortColors() {
+	int[] nums = new int[] { 2, 0, 2, 1, 1, 0 };
+
+	solution._75_sortColors(nums);
+
+	assertArrayEquals(new int[] { 0, 0, 1, 1, 2, 2 }, nums);
+    }
+
+    @Test
+    void _77_combine() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList(1, 2));
+	answer.add(Arrays.asList(1, 3));
+	answer.add(Arrays.asList(1, 4));
+	answer.add(Arrays.asList(2, 3));
+	answer.add(Arrays.asList(2, 4));
+	answer.add(Arrays.asList(3, 4));
+
+	assertThat(solution._77_combine(4, 2), is(answer));
+    }
+
+    @Test
+    void _78_subsets() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList());
+	answer.add(Arrays.asList(1));
+	answer.add(Arrays.asList(1, 2));
+	answer.add(Arrays.asList(1, 2, 3));
+	answer.add(Arrays.asList(1, 3));
+	answer.add(Arrays.asList(2));
+	answer.add(Arrays.asList(2, 3));
+	answer.add(Arrays.asList(3));
+
+	assertThat(solution._78_subsets(new int[] { 1, 2, 3 }), is(answer));
+    }
+
+    @Test
+    void _80_removeDuplicates() {
+	int[] nums = { 1, 1, 1, 2, 2, 3 };
+	int length = solution._80_removeDuplicates(nums);
+
+	assertEquals(5, length);
+	assertEquals(1, nums[0]);
+	assertEquals(1, nums[1]);
+	assertEquals(2, nums[2]);
+	assertEquals(2, nums[3]);
+	assertEquals(3, nums[4]);
+    }
+
+    @Test
+    void _81_search() {
+	assertTrue(solution._81_search(new int[] { 2, 5, 6, 0, 0, 1, 2 }, 0));
+	assertFalse(solution._81_search(new int[] { 2, 5, 6, 0, 0, 1, 2 }, 3));
+	assertTrue(solution._81_search(new int[] { 1, 1, 3, 1 }, 3));
+	assertTrue(solution._81_search(new int[] { 3, 1, 1 }, 3));
+    }
+
+    @Test
+    void _82_deleteDuplicates() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(1);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+
+	head = solution._82_deleteDuplicates(head);
+
+	assertEquals(3, head.val);
+	assertEquals(4, head.next.val);
+	assertNull(head.next.next);
+
+    }
+
+    @Test
     void _83_deleteDuplicates() {
 	ListNode head = new ListNode(1);
 	head.next = new ListNode(1);
