@@ -34,7 +34,7 @@ public class Solution {
 	}
 
 	public boolean _98_isValidBST(TreeNode root) {
-		List<Integer> results = new ArrayList<Integer>();
+		//List<Integer> results = new ArrayList<Integer>();
 		Deque<TreeNode> queue = new LinkedList<TreeNode>();
 
 		TreeNode current = root;
@@ -51,7 +51,7 @@ public class Solution {
 					return false;
 				previous = current;
 
-				results.add(current.val);
+				//results.add(current.val);
 				current = current.right;
 			}
 		}

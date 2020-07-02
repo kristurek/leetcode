@@ -490,7 +490,6 @@ public class Solution2Test {
 	assertEquals(3, head.val);
 	assertEquals(4, head.next.val);
 	assertNull(head.next.next);
-
     }
 
     @Test
@@ -507,7 +506,26 @@ public class Solution2Test {
 	assertEquals(3, head.next.val);
 	assertEquals(4, head.next.next.val);
 	assertNull(head.next.next.next);
+    }
 
+    @Test
+    void _86_partition() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(4);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(2);
+	head.next.next.next.next = new ListNode(5);
+	head.next.next.next.next.next = new ListNode(2);
+
+	head = solution._86_partition(head, 3);
+
+	assertEquals(1, head.val);
+	assertEquals(2, head.next.val);
+	assertEquals(2, head.next.next.val);
+	assertEquals(4, head.next.next.next.val);
+	assertEquals(3, head.next.next.next.next.val);
+	assertEquals(5, head.next.next.next.next.next.val);
+	assertNull(head.next.next.next.next.next.next);
     }
 
     @Test
@@ -519,6 +537,71 @@ public class Solution2Test {
 	solution._88_merge(nums1, 3, nums2, 3);
 
 	assertArrayEquals(nums3, nums1);
+    }
+
+    @Test
+    void _90_subsetsWithDup() {
+	List<List<Integer>> answer = new ArrayList<>();
+	answer.add(Arrays.asList());
+	answer.add(Arrays.asList(1));
+	answer.add(Arrays.asList(1, 2));
+	answer.add(Arrays.asList(1, 2, 2));
+	answer.add(Arrays.asList(2));
+	answer.add(Arrays.asList(2, 2));
+
+	assertThat(solution._90_subsetsWithDup(new int[] { 2, 1, 2 }), is(answer));
+    }
+
+    @Test
+    void _92_reverseBetween() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+	head.next.next.next.next = new ListNode(5);
+	head.next.next.next.next.next = new ListNode(6);
+
+	head = solution._92_reverseBetween(head, 3, 4);
+
+	assertEquals(1, head.val);
+	assertEquals(2, head.next.val);
+	assertEquals(4, head.next.next.val);
+	assertEquals(3, head.next.next.next.val);
+	assertEquals(5, head.next.next.next.next.val);
+	assertEquals(6, head.next.next.next.next.next.val);
+	assertNull(head.next.next.next.next.next.next);
+    }
+
+    @Test
+    void _94_inorderTraversal() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+	root.right.left = new TreeNode(6);
+	root.right.right = new TreeNode(7);
+
+	List<Integer> values = solution._94_inorderTraversal(root);
+
+	assertThat(values, is(Arrays.asList(4, 2, 5, 1, 6, 3, 7)));
+    }
+
+    @Test
+    void _98_isValidBST() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+	root.right.left = new TreeNode(6);
+	root.right.right = new TreeNode(7);
+
+	assertFalse(solution._98_isValidBST(root));
     }
 
     @Test

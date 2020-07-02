@@ -1241,9 +1241,6 @@ public class Solution2 {
 	    output.add(new ArrayList<>(tmp));
 	else {
 	    for (int i = from; i < nums.length; i++) {
-		if (tmp.contains(nums[i]))
-		    continue;
-
 		tmp.add(nums[i]);
 		_77_combine_backtracking(output, tmp, nums, k, i + 1);
 		tmp.remove(tmp.size() - 1);
@@ -1298,26 +1295,20 @@ public class Solution2 {
 
 	    if (nums[m] == target)
 		return true;
-
-	    if (nums[m] > nums[h]) { // exists rotation, the middle element is in the left part of the PIVOT
-		if (target < nums[m] && target >= nums[l])
-		    h = m - 1;
-		else
-		    l = m + 1;
-	    } else if (nums[m] < nums[l]) {// exists rotation
-		if (target > nums[m] && target <= nums[h])
+	    else if (nums[m] < nums[h]) { // range m,h is sorted
+		if (target > nums[m] && target <= nums[h]) // check sorted right side
 		    l = m + 1;
 		else
 		    h = m - 1;
-	    } else { // standard binary search
-		if (target > nums[m])
-		    l = m + 1;
-		else if (target < nums[m])
+	    } else if (nums[m] > nums[h]) { // range m,h unsorted so range l,m is sorted
+		if (target >= nums[l] && target < nums[m]) // check sorted left side
 		    h = m - 1;
 		else
-		    return true;
-	    }
-
+		    l = m + 1;
+	    } else if (nums[m] == nums[h]) // skip duplicates
+		h--;
+	    else if (nums[m] == nums[l]) // skip duplicates
+		l++;
 	}
 
 	return false;
@@ -1334,7 +1325,7 @@ public class Solution2 {
 	    while (fast.next != null && fast.val == fast.next.val)
 		fast = fast.next; // while loop to find the last node of the dups.
 
-	    if (slow.next != fast) { // duplicates detected.
+	    if (slow.next != fast) { // duplicates detected. by reference
 		slow.next = fast.next; // remove the dups.
 		fast = slow.next; // reposition the fast pointer.
 	    } else { // no dup, move down both pointer.
@@ -1369,6 +1360,30 @@ public class Solution2 {
 	return head;
     }
 
+    public ListNode _86_partition(ListNode head, int x) {
+	ListNode cNodeBeforeX = new ListNode(-1);
+	ListNode headBeforeX = cNodeBeforeX;
+	ListNode cNodeAfterX = new ListNode(-1);
+	ListNode headAfterX = cNodeAfterX;
+
+	while (head != null) {
+	    if (head.val < x) {
+		cNodeBeforeX.next = head;
+		cNodeBeforeX = cNodeBeforeX.next;
+	    } else {
+		cNodeAfterX.next = head;
+		cNodeAfterX = cNodeAfterX.next;
+	    }
+
+	    head = head.next;
+	}
+
+	cNodeAfterX.next = null;
+	cNodeBeforeX.next = headAfterX.next;
+
+	return headBeforeX.next;
+    }
+
     public void _88_merge(int[] nums1, int m, int[] nums2, int n) {
 	int k = m + n - 1;
 	int i = m - 1;
@@ -1385,6 +1400,106 @@ public class Solution2 {
 	    else if (j >= 0)
 		nums1[k--] = nums2[j--];
 	}
+    }
+
+    public List<List<Integer>> _90_subsetsWithDup(int[] nums) {
+	List<List<Integer>> output = new ArrayList<>();
+
+	Arrays.sort(nums);
+
+	_90_subsetsWithDup_backtracking(output, new ArrayList<>(), nums, 0);
+
+	return output;
+    }
+
+    private void _90_subsetsWithDup_backtracking(List<List<Integer>> output, List<Integer> tmp, int[] nums, int from) {
+	output.add(new ArrayList<>(tmp));
+
+	for (int i = from; i < nums.length; i++) {
+	    if (i > from && nums[i - 1] == nums[i])
+		continue;
+
+	    tmp.add(nums[i]);
+	    _90_subsetsWithDup_backtracking(output, tmp, nums, i + 1);
+	    tmp.remove(tmp.size() - 1);
+	}
+    }
+
+    public ListNode _92_reverseBetween(ListNode head, int m, int n) {
+	ListNode dNode = new ListNode(-1);
+	dNode.next = head;
+
+	ListNode cNode = dNode;
+
+	for (int i = 1; i < m; i++)
+	    cNode = cNode.next;
+
+	ListNode prev = null;
+	ListNode curr = cNode.next;
+	ListNode next = null;
+	ListNode last = cNode.next;
+	for (int i = m; i <= n; i++) {
+	    next = curr.next; // save next node
+
+	    curr.next = prev; // rotate
+
+	    prev = curr; // move pointer
+	    curr = next; // move pointer
+	}
+
+	cNode.next = prev;
+	last.next = next;
+
+	return dNode.next;
+    }
+
+    public List<Integer> _94_inorderTraversal(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<Integer> traversal = new ArrayList<>();
+	Deque<TreeNode> stack = new LinkedList<>();
+	TreeNode current = root;
+
+	while (!stack.isEmpty() || current != null) {
+	    if (current != null) {
+		stack.addLast(current);
+		current = current.left;
+	    } else {
+		current = stack.removeLast();
+		traversal.add(current.val);
+		current = current.right;
+	    }
+	}
+
+	return traversal;
+    }
+
+    public boolean _98_isValidBST(TreeNode root) {
+	if (root == null)
+	    return true;
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	TreeNode current = root;
+	TreeNode previous = null;
+
+	while (!stack.isEmpty() || current != null) {
+	    if (current != null) {
+		stack.addLast(current);
+
+		current = current.left;
+	    } else {
+		current = stack.removeLast();
+
+		if (previous != null && current.val < previous.val)
+		    return false;
+		previous = current;
+
+		current = current.right;
+	    }
+	}
+
+	return true;
     }
 
     public boolean _100_isSameTree(TreeNode p, TreeNode q) {
