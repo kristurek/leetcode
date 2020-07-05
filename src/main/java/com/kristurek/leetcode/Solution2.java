@@ -1568,6 +1568,14 @@ public class Solution2 {
 	return true;
     }
 
+    public List<List<Integer>> _102_levelOrder(TreeNode root) {
+	return null;
+    }
+
+    public List<List<Integer>> _103_zigzagLevelOrder(TreeNode root) {
+	return null;
+    }
+
     public int _104_maxDepth(TreeNode root) {
 	if (root == null)
 	    return 0;
@@ -1641,6 +1649,10 @@ public class Solution2 {
 	    return tn;
 	} else
 	    return null;
+    }
+
+    public TreeNode _109_sortedListToBST(ListNode head) {
+	return null;
     }
 
     public boolean _110_isBalanced(TreeNode root) {
@@ -1832,6 +1844,10 @@ public class Solution2 {
 	return true;
     }
 
+    public List<List<String>> _131_partition(String s) {
+	return null;
+    }
+
     public int _136_singleNumber(int[] nums) {
 	Set<Integer> set = new HashSet<>();
 
@@ -1842,6 +1858,10 @@ public class Solution2 {
 		set.add(num);
 
 	return set.stream().findFirst().get();
+    }
+
+    public int _137_singleNumber(int[] nums) {
+	return -1;
     }
 
     public boolean _141_hasCycle(ListNode head) {
@@ -1856,6 +1876,10 @@ public class Solution2 {
 	}
 
 	return false;
+    }
+
+    public ListNode _142_detectCycle(ListNode head) {
+	return null;
     }
 
     public MinStack _155_minStack() {
@@ -1962,6 +1986,27 @@ public class Solution2 {
 	return count;
     }
 
+    class BSTIterator {
+
+	public BSTIterator(TreeNode root) {
+
+	}
+
+	/** @return the next smallest number */
+	public int next() {
+	    return -1;
+	}
+
+	/** @return whether we have a next smallest number */
+	public boolean hasNext() {
+	    return false;
+	}
+    }
+
+    public BSTIterator _173_BSTIterator(TreeNode root) {
+	return new BSTIterator(root);
+    }
+
     public void _189_rotate(int[] nums, int k) {
 	k = k % nums.length; // example - k=7 and nums.length=3 then k=1, remove empty loops
 
@@ -2012,6 +2057,14 @@ public class Solution2 {
 	}
 
 	return oneHouseBefore;
+    }
+
+    public int _200_numIslands(char[][] grid) {
+	return -1;
+    }
+
+    public int _201_rangeBitwiseAnd(int m, int n) {
+	return -1;
     }
 
     public boolean _202_isHappy(int n) {
@@ -2176,6 +2229,10 @@ public class Solution2 {
 	return head;
     }
 
+    public int[] _238_productExceptSelf(int[] nums) {
+	return null;
+    }
+
     public void _283_moveZeroes(int[] nums) {
 	if (nums == null || nums.length == 0)
 	    return;
@@ -2200,6 +2257,10 @@ public class Solution2 {
 	}
     }
 
+    public List<List<Integer>> _429_levelOrder(Node root) {
+	return null;
+    }
+
     public int _509_fib(int N) {
 	if (N <= 1)
 	    return N;
@@ -2216,6 +2277,10 @@ public class Solution2 {
 	}
 
 	return f2;
+    }
+
+    public int _525_findMaxLength(int[] nums) {
+	return -1;
     }
 
     public int _543_diameterOfBinaryTree(TreeNode root) { // TODO look at python version
@@ -2257,6 +2322,10 @@ public class Solution2 {
 	sb.deleteCharAt(sb.length() - 1);
 
 	return sb.toString();
+    }
+
+    public int _560_subarraySum(int[] nums, int k) {
+	return -1;
     }
 
     public int _561_arrayPairSum(int[] nums) {
@@ -2364,6 +2433,10 @@ public class Solution2 {
 	    }
 
 	return modyfications <= 1;
+    }
+
+    public boolean _678_checkValidString(String s) {
+	return false;
     }
 
     public int _690_getImportance(List<Employee> employees, int id) {
@@ -2841,6 +2914,10 @@ public class Solution2 {
 	}
 
 	return commonChars;
+    }
+
+    public TreeNode _1008_bstFromPreorder(int[] preorder) {
+	return null;
     }
 
     public String _1021_removeOuterParentheses(String S) {
