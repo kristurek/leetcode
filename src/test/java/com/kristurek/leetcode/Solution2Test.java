@@ -827,6 +827,11 @@ public class Solution2Test {
 
     @Test
     void _137_singleNumber() {
+	assertEquals(99, solution._137_singleNumber(new int[] { 0, 0, 0, 99 }));
+	assertEquals(99, solution._137_singleNumber(new int[] { 99, 0, 0, 0 }));
+	assertEquals(99, solution._137_singleNumber(new int[] { 99 }));
+	assertEquals(1, solution._137_singleNumber(new int[] { 0, 0, 0, 1, 2, 2, 2 }));
+	assertEquals(1, solution._137_singleNumber(new int[] { 3, 5, 3, 5, 3, 1, 2, 3, 5, 2 }));
 	assertEquals(1, solution._137_singleNumber(new int[] { 3, 5, 3, 5, 3, 1, 2, 3, 5, 2 }));
     }
 

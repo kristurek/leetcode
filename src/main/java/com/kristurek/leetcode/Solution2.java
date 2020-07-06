@@ -1569,11 +1569,68 @@ public class Solution2 {
     }
 
     public List<List<Integer>> _102_levelOrder(TreeNode root) {
-	return null;
+	List<List<Integer>> valuesByLevels = new ArrayList<>();
+
+	if (root == null)
+	    return valuesByLevels;
+
+	Deque<TreeNode> queue = new ArrayDeque<>();
+
+	queue.addLast(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+	    List<Integer> values = new ArrayList<>();
+
+	    while (size-- > 0) {
+		TreeNode tn = queue.removeFirst();
+
+		values.add(tn.val);
+
+		if (tn.left != null)
+		    queue.addLast(tn.left);
+		if (tn.right != null)
+		    queue.addLast(tn.right);
+	    }
+
+	    valuesByLevels.add(values);
+	}
+
+	return valuesByLevels;
     }
 
     public List<List<Integer>> _103_zigzagLevelOrder(TreeNode root) {
-	return null;
+	List<List<Integer>> valuesByLevels = new ArrayList<>();
+
+	if (root == null)
+	    return valuesByLevels;
+
+	Deque<TreeNode> queue = new LinkedList<>();
+	queue.addLast(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+	    Deque<Integer> values = new LinkedList<>();
+	    int level = valuesByLevels.size();
+
+	    while (size-- > 0) {
+		TreeNode tn = queue.removeFirst();
+
+		if (level % 2 != 0)
+		    values.addFirst(tn.val);
+		else
+		    values.addLast(tn.val);
+
+		if (tn.left != null)
+		    queue.addLast(tn.left);
+		if (tn.right != null)
+		    queue.addLast(tn.right);
+	    }
+
+	    valuesByLevels.add(new ArrayList<>(values));
+	}
+
+	return valuesByLevels;
     }
 
     public int _104_maxDepth(TreeNode root) {
@@ -1652,6 +1709,31 @@ public class Solution2 {
     }
 
     public TreeNode _109_sortedListToBST(ListNode head) {
+	if (head == null)
+	    return null;
+
+	List<Integer> nums = new ArrayList<>();
+	while (head != null) {
+	    nums.add(head.val);
+	    head = head.next;
+	}
+
+	return _109_sortedListToBST(nums, 0, nums.size() - 1);
+    }
+
+    public TreeNode _109_sortedListToBST(List<Integer> nums, int l, int h) {
+	if (l <= h) {
+	    int m = l + (h - l) / 2;
+	    int val = nums.get(m);
+
+	    TreeNode tn = new TreeNode(val);
+
+	    tn.left = _109_sortedListToBST(nums, l, m - 1);
+	    tn.right = _109_sortedListToBST(nums, m + 1, h);
+
+	    return tn;
+	}
+
 	return null;
     }
 
@@ -1845,7 +1927,38 @@ public class Solution2 {
     }
 
     public List<List<String>> _131_partition(String s) {
-	return null;
+	List<List<String>> output = new ArrayList<>();
+
+	_131_partition_backtracking(output, new ArrayList<>(), s, 0);
+
+	return output;
+    }
+
+    private void _131_partition_backtracking(List<List<String>> output, List<String> tmp, String s, int begin) {
+	if (begin == s.length())
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = begin; i < s.length(); i++) {
+		String pString = s.substring(begin, i + 1);
+
+		if (_131_partition_isPalindrome(pString)) {
+		    tmp.add(pString);
+		    _131_partition_backtracking(output, tmp, s, i + 1);
+		    tmp.remove(tmp.size() - 1);
+		}
+	    }
+	}
+    }
+
+    private boolean _131_partition_isPalindrome(String pString) {
+	int l = 0;
+	int h = pString.length() - 1;
+
+	while (l < h)
+	    if (pString.charAt(l++) != pString.charAt(h--))
+		return false;
+
+	return true;
     }
 
     public int _136_singleNumber(int[] nums) {
@@ -1861,7 +1974,20 @@ public class Solution2 {
     }
 
     public int _137_singleNumber(int[] nums) {
-	return -1;
+	Arrays.sort(nums);
+
+	int i = 2; // start from third position
+	while (i < nums.length) {
+	    if (nums[i - 2] != nums[i])
+		return nums[i - 2]; // found in middle
+
+	    i = i + 3;// move to next
+	}
+
+	if (nums.length == 1)// found in begin
+	    return nums[0];
+	else
+	    return nums[nums.length - 1]; // found in tail
     }
 
     public boolean _141_hasCycle(ListNode head) {
