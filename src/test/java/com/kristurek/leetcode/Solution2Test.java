@@ -24,6 +24,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.kristurek.leetcode.Solution2.BSTIterator;
 import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
@@ -929,7 +930,22 @@ public class Solution2Test {
 
     @Test
     void _173_BSTIterator() {
-	fail();
+	TreeNode root = new TreeNode(7);
+	root.left = new TreeNode(3);
+	root.right = new TreeNode(15);
+	root.right.left = new TreeNode(9);
+	root.right.right = new TreeNode(20);
+
+	BSTIterator iterator = solution._173_BSTIterator(root);
+	assertEquals(3, iterator.next());
+	assertEquals(7, iterator.next());
+	assertTrue(iterator.hasNext());
+	assertEquals(9, iterator.next());
+	assertTrue(iterator.hasNext());
+	assertEquals(15, iterator.next());
+	assertTrue(iterator.hasNext());
+	assertEquals(20, iterator.next());
+	assertFalse(iterator.hasNext());
     }
 
     @Test
@@ -956,7 +972,8 @@ public class Solution2Test {
 
     @Test
     void _201_rangeBitwiseAnd() {
-	fail();
+	assertEquals(4, solution._201_rangeBitwiseAnd(5, 7));
+	assertEquals(0, solution._201_rangeBitwiseAnd(0, 1));
     }
 
     @Test

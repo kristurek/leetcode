@@ -2005,6 +2005,17 @@ public class Solution2 {
     }
 
     public ListNode _142_detectCycle(ListNode head) {
+	Set<ListNode> nodes = new HashSet<>();
+
+	while (head != null) {
+	    if (nodes.contains(head))
+		return head;
+	    else
+		nodes.add(head);
+
+	    head = head.next;
+	}
+
 	return null;
     }
 
@@ -2113,19 +2124,38 @@ public class Solution2 {
     }
 
     class BSTIterator {
+	private int index = -1;
+	private List<Integer> values = new ArrayList<>();
 
 	public BSTIterator(TreeNode root) {
+	    if (root != null) {
+		Deque<TreeNode> stack = new LinkedList<>();
+		TreeNode current = root;
 
+		while (!stack.isEmpty() || current != null) {
+		    if (current != null) {
+			stack.addLast(current);
+
+			current = current.left;
+		    } else {
+			current = stack.removeLast();
+
+			values.add(current.val);
+
+			current = current.right;
+		    }
+		}
+	    }
 	}
 
 	/** @return the next smallest number */
 	public int next() {
-	    return -1;
+	    return values.get(++index);
 	}
 
 	/** @return whether we have a next smallest number */
 	public boolean hasNext() {
-	    return false;
+	    return index + 1 < values.size();
 	}
     }
 
@@ -2186,11 +2216,42 @@ public class Solution2 {
     }
 
     public int _200_numIslands(char[][] grid) {
-	return -1;
+	int counter = 0;
+	for (int row = 0; row < grid.length; row++)
+	    for (int col = 0; col < grid[row].length; col++) {
+		if (grid[row][col] == '1') {
+		    counter++;
+		    _200_numIslands_expandLand(grid, row, col);
+		}
+	    }
+
+	return counter;
+    }
+
+    private void _200_numIslands_expandLand(char[][] grid, int row, int col) {
+	if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length && grid[row][col] == '1') {
+	    grid[row][col] = '0';
+
+	    _200_numIslands_expandLand(grid, row + 1, col);
+	    _200_numIslands_expandLand(grid, row - 1, col);
+	    _200_numIslands_expandLand(grid, row, col + 1);
+	    _200_numIslands_expandLand(grid, row, col - 1);
+	}
     }
 
     public int _201_rangeBitwiseAnd(int m, int n) {
-	return -1;
+	if (m == 0)
+	    return 0;
+
+	int moveFactor = 1;
+
+	while (m != n) {
+	    m >>= 1;
+	    n >>= 1;
+	    moveFactor <<= 1;
+	}
+
+	return m * moveFactor;
     }
 
     public boolean _202_isHappy(int n) {
