@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1005,12 +1004,6 @@ public class Solution2Test {
     }
 
     @Test
-    void _238_productExceptSelf() {
-	assertArrayEquals(IntStream.of(24, 12, 8, 6).toArray(),
-		solution._238_productExceptSelf(IntStream.of(1, 2, 3, 4).toArray()));
-    }
-
-    @Test
     void _217_containsDuplicate() {
 	assertFalse(solution._217_containsDuplicate(null));
 	assertFalse(solution._217_containsDuplicate(new int[] {}));
@@ -1071,6 +1064,12 @@ public class Solution2Test {
     }
 
     @Test
+    void _238_productExceptSelf() {
+	assertArrayEquals(IntStream.of(24, 12, 8, 6).toArray(),
+		solution._238_productExceptSelf(IntStream.of(1, 2, 3, 4).toArray()));
+    }
+
+    @Test
     void _283_moveZeroes() {
 	int[] nums = IntStream.of(0, 1, 0, 3, 12).toArray();
 	int[] answer = IntStream.of(1, 3, 12, 0, 0).toArray();
@@ -1091,7 +1090,20 @@ public class Solution2Test {
 
     @Test
     void _429_levelOrder() {
-	fail();
+	Node root = new Node(1, Arrays.asList(new Node(), new Node(), new Node()));
+	root.children.get(0).val = 3;
+	root.children.get(1).val = 2;
+	root.children.get(2).val = 4;
+	root.children.get(0).children = Arrays.asList(new Node(), new Node());
+	root.children.get(0).children.get(0).val = 5;
+	root.children.get(0).children.get(1).val = 6;
+
+	List<List<Integer>> answer = new ArrayList<List<Integer>>();
+	answer.add(Arrays.asList(1));
+	answer.add(Arrays.asList(3, 2, 4));
+	answer.add(Arrays.asList(5, 6));
+
+	assertEquals(answer, solution._429_levelOrder(root));
     }
 
     @Test

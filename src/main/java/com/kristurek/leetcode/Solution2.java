@@ -2417,7 +2417,23 @@ public class Solution2 {
     }
 
     public int[] _238_productExceptSelf(int[] nums) {
-	return null;
+	int length = nums.length;
+	int[] left = new int[length];
+	int[] right = new int[length];
+
+	left[0] = 1;
+	for (int i = 1; i < length; i++)
+	    left[i] = left[i - 1] * nums[i - 1];
+
+	right[length - 1] = 1;
+	for (int i = length - 2; i >= 0; i--)
+	    right[i] = right[i + 1] * nums[i + 1];
+
+	int[] product = new int[length];
+	for (int i = 0; i < length; i++)
+	    product[i] = left[i] * right[i];
+
+	return product;
     }
 
     public void _283_moveZeroes(int[] nums) {
@@ -2445,7 +2461,32 @@ public class Solution2 {
     }
 
     public List<List<Integer>> _429_levelOrder(Node root) {
-	return null;
+	List<List<Integer>> levels = new ArrayList<>();
+
+	if (root == null)
+	    return levels;
+
+	Deque<Node> queue = new LinkedList<>();
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+	    List<Integer> values = new ArrayList<>();
+
+	    while (size-- > 0) {
+		Node tn = queue.removeFirst();
+
+		values.add(tn.val);
+
+		if (tn.children != null)
+		    for (Node node : tn.children)
+			queue.addLast(node);
+	    }
+
+	    levels.add(values);
+	}
+
+	return levels;
     }
 
     public int _509_fib(int N) {
@@ -2467,7 +2508,23 @@ public class Solution2 {
     }
 
     public int _525_findMaxLength(int[] nums) {
-	return -1;
+	Map<Integer, Integer> map = new HashMap<>();
+	int maxlen = 0;
+	int count = 0;
+
+	for (int i = 0; i < nums.length; i++) {
+	    count = count + (nums[i] == 1 ? 1 : -1);
+
+	    if (count == 0)
+		maxlen = Math.max(maxlen, i + 1);
+
+	    if (map.containsKey(count))
+		maxlen = Math.max(maxlen, i - map.get(count));
+	    else
+		map.put(count, i);
+	}
+
+	return maxlen;
     }
 
     public int _543_diameterOfBinaryTree(TreeNode root) { // TODO look at python version
@@ -2512,7 +2569,22 @@ public class Solution2 {
     }
 
     public int _560_subarraySum(int[] nums, int k) {
-	return -1;
+	Map<Integer, Integer> map = new HashMap<>();
+	int sum = 0;
+	int result = 0;
+
+	map.put(0, 1); // single number is equals to k, so sum-k==0
+
+	for (int num : nums) {
+	    sum += num;
+
+	    if (map.containsKey(sum - k))
+		result += map.get(sum - k);
+
+	    map.put(sum, map.getOrDefault(sum, 0) + 1);
+	}
+
+	return result;
     }
 
     public int _561_arrayPairSum(int[] nums) {
@@ -2623,7 +2695,26 @@ public class Solution2 {
     }
 
     public boolean _678_checkValidString(String s) {
-	return false;
+	int length = s.length() - 1;
+	int open = 0;
+	int close = 0;
+
+	for (int i = 0; i <= length; i++) {
+	    if (s.charAt(i) == '(' || s.charAt(i) == '*')
+		open++;
+	    else
+		open--;
+
+	    if (s.charAt(length - i) == ')' || s.charAt(length - i) == '*')
+		close++;
+	    else
+		close--;
+
+	    if (open < 0 || close < 0)
+		return false;
+	}
+
+	return true;
     }
 
     public int _690_getImportance(List<Employee> employees, int id) {
@@ -3103,8 +3194,30 @@ public class Solution2 {
 	return commonChars;
     }
 
-    public TreeNode _1008_bstFromPreorder(int[] preorder) {
-	return null;
+    public TreeNode _1008_bstFromPreorder(int[] nums) {
+	TreeNode root = new TreeNode(nums[0]);
+
+	Deque<TreeNode> s = new LinkedList<>();
+
+	s.push(root);
+
+	for (int i = 1; i < nums.length; ++i) {
+	    TreeNode temp = null;
+
+	    while (!s.isEmpty() && nums[i] > s.peek().val)
+		temp = s.pop();
+
+	    if (temp != null) {
+		temp.right = new TreeNode(nums[i]);
+		s.push(temp.right);
+	    } else {
+		temp = s.peek();
+		temp.left = new TreeNode(nums[i]);
+		s.push(temp.left);
+	    }
+	}
+
+	return root;
     }
 
     public String _1021_removeOuterParentheses(String S) {
