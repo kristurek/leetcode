@@ -907,6 +907,18 @@ public class Solution {
     }
 
     public int _41_firstMissingPositive(int[] nums) {
+	Arrays.sort(nums);
+
+	int res = 1;
+
+	for (int num : nums)
+	    if (num == res)
+		res += 1;
+
+	return res;
+    }
+
+    public int _41_firstMissingPositive_v2(int[] nums) {
 	int start = 0;
 	int end = nums.length - 1;
 	while (start <= end) {
