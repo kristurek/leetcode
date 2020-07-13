@@ -726,6 +726,25 @@ public class SolutionTest {
     }
 
     @Test
+    void _105_buildTree() {
+	TreeNode root = new TreeNode(3);
+
+	root.left = new TreeNode(9);
+	root.right = new TreeNode(20);
+
+	root.right.left = new TreeNode(15);
+	root.right.right = new TreeNode(7);
+
+	TreeNode actual = solution._105_buildTree(new int[] { 3, 9, 20, 15, 7 }, new int[] { 9, 3, 15, 20, 7 });
+
+	assertEquals(root.val, actual.val);
+	assertEquals(root.left.val, actual.left.val);
+	assertEquals(root.right.val, actual.right.val);
+	assertEquals(root.right.left.val, actual.right.left.val);
+	assertEquals(root.right.right.val, actual.right.right.val);
+    }
+
+    @Test
     void _107_levelOrderBottom() {
 	TreeNode root = new TreeNode(1);
 
@@ -1108,9 +1127,46 @@ public class SolutionTest {
     }
 
     @Test
+    void _237_deleteNode() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+
+	solution._237_deleteNode(head.next);
+
+	assertEquals(1, head.val);
+	assertEquals(3, head.next.val);
+	assertEquals(4, head.next.next.val);
+	assertNull(head.next.next.next);
+    }
+
+    @Test
     void _238_productExceptSelf() {
 	assertArrayEquals(IntStream.of(24, 12, 8, 6).toArray(),
 		solution._238_productExceptSelf(IntStream.of(1, 2, 3, 4).toArray()));
+    }
+
+    @Test
+    void _257_binaryTreePaths() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.right = new TreeNode(5);
+
+	List<String> actual = solution._257_binaryTreePaths(root);
+	List<String> expected = Arrays.asList("1->2->5", "1->3");
+
+	assertEquals(expected, actual);
+    }
+
+    @Test
+    void _268_missingNumber() {
+	assertEquals(1, solution._268_missingNumber(new int[] { 0 }));
+	assertEquals(2, solution._268_missingNumber(new int[] { 3, 0, 1 }));
+	assertEquals(8, solution._268_missingNumber(new int[] { 9, 6, 4, 2, 3, 5, 7, 0, 1 }));
     }
 
     @Test

@@ -1795,6 +1795,28 @@ public class Solution {
 	return level;
     }
 
+    public TreeNode _105_buildTree(int[] preorder, int[] inorder) {
+	return _105_buildTree_helper(0, 0, inorder.length - 1, preorder, inorder);
+    }
+
+    public TreeNode _105_buildTree_helper(int preStart, int inStart, int inEnd, int[] preorder, int[] inorder) {
+	if (preStart > preorder.length - 1 || inStart > inEnd)
+	    return null;
+
+	TreeNode tn = new TreeNode(preorder[preStart]);
+	int inDivider = 0;
+
+	for (int i = inStart; i <= inEnd; i++)
+	    if (inorder[i] == tn.val)
+		inDivider = i;
+
+	tn.left = _105_buildTree_helper(preStart + 1, inStart, inDivider - 1, preorder, inorder);
+	// (inDivider - inStart) move by lenght of left subtree
+	tn.right = _105_buildTree_helper(preStart + 1 + (inDivider - inStart), inDivider + 1, inEnd, preorder, inorder);
+
+	return tn;
+    }
+
     public List<List<Integer>> _107_levelOrderBottom(TreeNode root) {
 	Deque<List<Integer>> values = new LinkedList<>();
 	Deque<TreeNode> queue = new ArrayDeque<>();
@@ -2553,6 +2575,17 @@ public class Solution {
 	return head;
     }
 
+    // "erase value of" current node not delete node,
+    public void _237_deleteNode(ListNode node) {
+	while (node.next != null) {
+	    node.val = node.next.val;
+	    if (node.next.next == null)
+		node.next = null;
+	    else
+		node = node.next;
+	}
+    }
+
     public int[] _238_productExceptSelf(int[] nums) {
 	int length = nums.length;
 	int[] left = new int[length];
@@ -2571,6 +2604,80 @@ public class Solution {
 	    product[i] = left[i] * right[i];
 
 	return product;
+    }
+
+    public List<String> _257_binaryTreePaths(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<String> paths = new ArrayList<>();
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	Deque<String> strStack = new LinkedList<>();
+
+	stack.addLast(root);
+	strStack.addLast("");
+
+	while (!stack.isEmpty()) {
+	    TreeNode cTn = stack.pop();
+	    String cStr = strStack.pop();
+
+	    if (cTn.left == null && cTn.right == null)
+		paths.add(cStr + cTn.val);
+
+	    if (cTn.right != null) {
+		stack.push(cTn.right);
+		strStack.push(cStr + cTn.val + "->");
+	    }
+	    if (cTn.left != null) {
+		stack.push(cTn.left);
+		strStack.push(cStr + cTn.val + "->");
+	    }
+	}
+
+	return paths;
+    }
+
+    public List<String> _257_binaryTreePaths_v2(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<String> paths = new ArrayList<>();
+
+	Queue<TreeNode> queue = new LinkedList<>();
+	Queue<String> strQueue = new LinkedList<>();
+
+	queue.add(root);
+	strQueue.add("");
+
+	while (!queue.isEmpty()) {
+	    TreeNode cTn = queue.remove();
+	    String cStr = strQueue.remove();
+
+	    if (cTn.left == null && cTn.right == null)
+		paths.add(cStr + cTn.val);
+
+	    if (cTn.left != null) {
+		queue.add(cTn.left);
+		strQueue.add(cStr + cTn.val + "->");
+	    }
+	    if (cTn.right != null) {
+		queue.add(cTn.right);
+		strQueue.add(cStr + cTn.val + "->");
+	    }
+	}
+
+	return paths;
+    }
+
+    public int _268_missingNumber(int[] nums) {
+	Arrays.sort(nums);
+
+	for (int i = 0; i < nums.length; i++)
+	    if (i != nums[i])
+		return i;
+
+	return nums.length;
     }
 
     public void _283_moveZeroes(int[] nums) {
