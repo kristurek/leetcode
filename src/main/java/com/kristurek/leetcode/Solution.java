@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
+import com.kristurek.leetcode.common.Node2;
 import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution {
@@ -2149,6 +2150,31 @@ public class Solution {
 	    return nums[nums.length - 1]; // found in tail
     }
 
+    public Node2 _138_copyRandomList(Node2 head) {
+	Map<Node2, Node2> map = new HashMap<>();
+
+	Node2 dummy = new Node2(-1);
+	Node2 currDummy = dummy;
+
+	Node2 current = head;
+
+	while (current != null) {
+	    map.put(current, new Node2(current.val));
+	    current = current.next;
+	}
+
+	current = head;
+	while (current != null) {
+	    currDummy.next = map.get(current);
+	    currDummy.next.random = map.getOrDefault(current.random, null);
+
+	    currDummy = currDummy.next;
+	    current = current.next;
+	}
+
+	return dummy.next;
+    }
+
     public boolean _141_hasCycle(ListNode head) {
 	Set<ListNode> set = new HashSet<>();
 
@@ -2469,6 +2495,23 @@ public class Solution {
 	return true;
     }
 
+    public ListNode _206_reverseList(ListNode head) {
+	ListNode prev = null;
+	ListNode curr = head;
+	ListNode next = null;
+
+	while (curr != null) {
+	    next = curr.next;
+
+	    curr.next = prev;
+
+	    prev = curr;
+	    curr = next;
+	}
+
+	return prev;
+    }
+
     public boolean _217_containsDuplicate(int[] nums) {
 	if (nums == null)
 	    return false;
@@ -2499,6 +2542,40 @@ public class Solution {
 	}
 
 	return false;
+    }
+
+    class MyStack {
+
+	private Queue<Integer> queue;
+
+	public MyStack() {
+	    queue = new LinkedList<>();
+	}
+
+	public void push(int x) {
+	    queue.add(x);
+
+	    int size = queue.size();
+
+	    while (size-- > 1)
+		queue.add(queue.remove());
+	}
+
+	public int pop() {
+	    return queue.remove();
+	}
+
+	public int top() {
+	    return queue.peek();
+	}
+
+	public boolean empty() {
+	    return queue.isEmpty();
+	}
+    }
+
+    public MyStack _225_MyStack() {
+	return new MyStack();
     }
 
     public TreeNode _226_invertTree(TreeNode root) {
@@ -2532,6 +2609,44 @@ public class Solution {
 	    n /= 2;
 
 	return n == 1;
+    }
+
+    class MyQueue {
+
+	Stack<Integer> stack;
+
+	public MyQueue() {
+	    stack = new Stack<>();
+	}
+
+	public void push(int x) {
+
+	    Stack<Integer> tmp = new Stack<>();
+
+	    while (!stack.isEmpty())
+		tmp.add(stack.pop());
+
+	    stack.push(x);
+
+	    while (!tmp.isEmpty())
+		stack.add(tmp.pop());
+	}
+
+	public int pop() {
+	    return stack.pop();
+	}
+
+	public int peek() {
+	    return stack.peek();
+	}
+
+	public boolean empty() {
+	    return stack.isEmpty();
+	}
+    }
+
+    public MyQueue _232_MyQueue() {
+	return new MyQueue();
     }
 
     public boolean _234_isPalindrome(ListNode head) {

@@ -26,6 +26,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
+import com.kristurek.leetcode.common.Node2;
 import com.kristurek.leetcode.common.TreeNode;
 
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
@@ -899,6 +900,23 @@ public class SolutionTest {
     }
 
     @Test
+    void _138_copyRandomList() {
+	Node2 head = new Node2(1);
+	head.next = new Node2(2);
+	head.next.next = new Node2(3);
+
+	head.random = head.next.next;
+
+	Node2 actual = solution._138_copyRandomList(head);
+
+	assertEquals(1, actual.val);
+	assertEquals(2, actual.next.val);
+	assertEquals(3, actual.next.next.val);
+	assertEquals(3, actual.random.val);
+	assertNull(actual.next.next.next);
+    }
+
+    @Test
     void _141_hasCycle() {
 	ListNode head = new ListNode(1);
 	head.next = new ListNode(2);
@@ -1067,6 +1085,22 @@ public class SolutionTest {
     }
 
     @Test
+    void _206_reverseList() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+
+	ListNode actual = solution._206_reverseList(head);
+
+	assertEquals(4, actual.val);
+	assertEquals(3, actual.next.val);
+	assertEquals(2, actual.next.next.val);
+	assertEquals(1, actual.next.next.next.val);
+	assertNull(actual.next.next.next.next);
+    }
+
+    @Test
     void _217_containsDuplicate() {
 	assertFalse(solution._217_containsDuplicate(null));
 	assertFalse(solution._217_containsDuplicate(new int[] {}));
@@ -1080,6 +1114,17 @@ public class SolutionTest {
 	assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1 }, 3));
 	assertTrue(solution._219_containsNearbyDuplicate(new int[] { 1, 0, 1, 1 }, 1));
 	assertFalse(solution._219_containsNearbyDuplicate(new int[] { 1, 2, 3, 1, 2, 3 }, 2));
+    }
+
+    @Test
+    void _225_myStack() {
+	Solution.MyStack stack = solution._225_MyStack();
+
+	stack.push(1);
+	stack.push(2);
+	assertEquals(2, stack.top());
+	assertEquals(2, stack.pop());
+	assertFalse(stack.empty());
     }
 
     @Test
@@ -1111,6 +1156,17 @@ public class SolutionTest {
 	assertTrue(solution._231_isPowerOfTwo(1));
 	assertTrue(solution._231_isPowerOfTwo(16));
 	assertFalse(solution._231_isPowerOfTwo(218));
+    }
+
+    @Test
+    void _232_MyQueue() {
+	Solution.MyQueue queue = solution._232_MyQueue();
+
+	queue.push(1);
+	queue.push(2);
+	assertEquals(1, queue.peek());
+	assertEquals(1, queue.pop());
+	assertFalse(queue.empty());
     }
 
     @Test
