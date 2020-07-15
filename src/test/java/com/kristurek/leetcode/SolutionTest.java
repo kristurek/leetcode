@@ -258,6 +258,19 @@ public class SolutionTest {
     }
 
     @Test
+    void _24_swapPairs() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+
+	head = solution._24_swapPairs(head);
+
+	assertEquals(2, head.val);
+	assertEquals(1, head.next.val);
+	assertEquals(3, head.next.next.val);
+    }
+
+    @Test
     void _26_removeDuplicates() {
 	int[] arr = new int[] { 1, 1, 1, 2, 2, 2 };
 
@@ -850,7 +863,7 @@ public class SolutionTest {
 
     @Test
     void _119_getRow() {
-	List<Integer> results = solution._119_getRow(4);
+	List<Integer> results = solution._119_getRow_v2(4);
 
 	assertThat(results, is(Arrays.asList(1, 4, 6, 4, 1)));
     }
@@ -936,6 +949,13 @@ public class SolutionTest {
 	head.next.next.next.next = head.next;
 
 	assertEquals(head.next, solution._142_detectCycle(head));
+    }
+
+    @Test
+    void _153_findMin() {
+	assertEquals(8, solution._153_findMin(new int[] { 8,9}));
+	assertEquals(1, solution._153_findMin(new int[] { 3, 4, 5, 1, 2 }));
+	assertEquals(0, solution._153_findMin(new int[] { 4, 5, 6, 7, 0, 1, 2 }));
     }
 
     @Test
@@ -1242,6 +1262,23 @@ public class SolutionTest {
 	solution._344_reverseString(actual);
 
 	assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void _345_reverseVowels() {
+	assertEquals("holle", solution._345_reverseVowels("hello"));
+    }
+
+    @Test
+    void _349_intersection() {
+	assertArrayEquals(new int[] { 4, 9 },
+		solution._349_intersection(new int[] { 4, 9, 5 }, new int[] { 9, 4, 9, 8, 4 }));
+    }
+
+    @Test
+    void _350_intersect() {
+	assertArrayEquals(new int[] { 9, 4 },
+		solution._350_intersect(new int[] { 4, 9, 5 }, new int[] { 9, 4, 9, 8, 4 }));
     }
 
     @Test

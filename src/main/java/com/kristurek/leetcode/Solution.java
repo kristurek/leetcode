@@ -650,6 +650,28 @@ public class Solution {
 	return head.next;
     }
 
+    public ListNode _24_swapPairs(ListNode head) {
+	if (head == null)
+	    return null;
+	else {
+	    if (head.next == null)
+		return head;
+	    else {
+		// Remember pointer to third node
+		ListNode next = head.next.next;
+
+		// Swap two pointer
+		ListNode tmp = head;
+		head = head.next;
+		head.next = tmp;
+
+		head.next.next = _24_swapPairs(next);
+
+		return head;
+	    }
+	}
+    }
+
     public int _26_removeDuplicates(int[] nums) {
 	int slow = 0;
 
@@ -2026,6 +2048,35 @@ public class Solution {
 	return rows.get(rowIndex);
     }
 
+    public List<Integer> _119_getRow_v2(int rowIndex) {
+	if (rowIndex == 0)
+	    return Arrays.asList(1);
+	if (rowIndex == 1)
+	    return Arrays.asList(1, 1);
+
+	List<Integer> secondRow = Arrays.asList(1, 1);
+
+	return _119_getRow_v2(rowIndex - 2, secondRow);
+    }
+
+    private List<Integer> _119_getRow_v2(int k, List<Integer> prevRow) {
+	if (k >= 0) {
+	    List<Integer> currRow = new ArrayList<>();
+	    for (int i = 0; i < prevRow.size() + 1; i++) {
+		if (i == 0)
+		    currRow.add(1);
+		else if (i == prevRow.size())
+		    currRow.add(1);
+		else
+		    currRow.add(prevRow.get(i - 1) + prevRow.get(i));
+	    }
+
+	    return _119_getRow_v2(k - 1, currRow);
+
+	} else
+	    return prevRow;
+    }
+
     public int _121_maxProfit(int[] prices) {
 	if (prices == null || prices.length == 0)
 	    return 0;
@@ -2202,6 +2253,23 @@ public class Solution {
 	}
 
 	return null;
+    }
+
+    public int _153_findMin(int[] nums) {
+	int l = 0;
+	int h = nums.length - 1;
+
+	while (l < h) {
+	    int m = l + (h - l) / 2;
+
+	    if (nums[m] > nums[h])// nums[m] is higher than nums[h] so range from m to h has incorrect order
+		// so result must be in this range
+		l = m + 1;
+	    else // nums[m] is lower than nums[h] so range from m to h has correct order
+		h = m;
+	}
+
+	return nums[l];
     }
 
     public MinStack _155_minStack() {
@@ -2817,6 +2885,80 @@ public class Solution {
 	    s[i] = s[j];
 	    s[j] = tmp;
 	}
+    }
+
+    public void _344_reverseString_v2(char[] s) {
+	_344_reverseString(s, 0, s.length - 1);
+    }
+
+    public void _344_reverseString(char[] s, int left, int right) {
+	if (left < right) {
+	    char tmp = s[left];
+	    s[left] = s[right];
+	    s[right] = tmp;
+
+	    _344_reverseString(s, left + 1, right - 1);
+	}
+    }
+
+    public String _345_reverseVowels(String s) {
+	if (s == null || s.isEmpty())
+	    return s;
+
+	Set<Character> vowels = new HashSet<>(Arrays.asList('A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'));
+	char[] chars = s.toCharArray();
+	int i = 0, j = s.length() - 1;
+
+	while (i < j) {
+	    if (!vowels.contains(chars[i])) {
+		i++;
+		continue;
+	    }
+
+	    if (!vowels.contains(chars[j])) {
+		j--;
+		continue;
+	    }
+
+	    char tmp = chars[i];
+	    chars[i] = chars[j];
+	    chars[j] = tmp;
+
+	    i++;
+	    j--;
+	}
+
+	return String.valueOf(chars);
+    }
+
+    public int[] _349_intersection(int[] nums1, int[] nums2) {
+	Set<Integer> set1 = IntStream.of(nums1).boxed().collect(Collectors.toSet());
+	Set<Integer> set2 = IntStream.of(nums2).boxed().collect(Collectors.toSet());
+
+	set1.retainAll(set2);
+
+	return set1.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] _350_intersect(int[] nums1, int[] nums2) {
+	Map<Integer, Integer> map = new HashMap<>();
+	List<Integer> results = new ArrayList<>();
+
+	for (int num : nums1)
+	    map.put(num, map.getOrDefault(num, 0) + 1);
+
+	for (int num : nums2) {
+	    if (map.containsKey(num)) {
+		results.add(num);
+
+		if (map.get(num) <= 1)
+		    map.remove(num);
+		else
+		    map.put(num, map.get(num) - 1);
+	    }
+	}
+
+	return results.stream().mapToInt(i -> i).toArray();
     }
 
     public List<List<Integer>> _429_levelOrder(Node root) {
