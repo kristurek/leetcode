@@ -953,7 +953,7 @@ public class SolutionTest {
 
     @Test
     void _153_findMin() {
-	assertEquals(8, solution._153_findMin(new int[] { 8,9}));
+	assertEquals(8, solution._153_findMin(new int[] { 8, 9 }));
 	assertEquals(1, solution._153_findMin(new int[] { 3, 4, 5, 1, 2 }));
 	assertEquals(0, solution._153_findMin(new int[] { 4, 5, 6, 7, 0, 1, 2 }));
     }
@@ -1172,6 +1172,23 @@ public class SolutionTest {
     }
 
     @Test
+    void _230_kthSmallest() {
+	TreeNode root = new TreeNode(3);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(5);
+
+	root.left.left = new TreeNode(1);
+
+	root.right.left = new TreeNode(4);
+	root.right.right = new TreeNode(6);
+
+	assertEquals(1, solution._230_kthSmallest(root, 1));
+	assertEquals(2, solution._230_kthSmallest(root, 2));
+	assertEquals(3, solution._230_kthSmallest(root, 3));
+    }
+
+    @Test
     void _231_isPowerOfTwo() {
 	assertTrue(solution._231_isPowerOfTwo(1));
 	assertTrue(solution._231_isPowerOfTwo(16));
@@ -1279,6 +1296,23 @@ public class SolutionTest {
     void _350_intersect() {
 	assertArrayEquals(new int[] { 9, 4 },
 		solution._350_intersect(new int[] { 4, 9, 5 }, new int[] { 9, 4, 9, 8, 4 }));
+    }
+
+    @Test
+    void _387_firstUniqChar() {
+	assertEquals(0, solution._387_firstUniqChar("hello"));
+	assertEquals(2, solution._387_firstUniqChar("loveleetcode"));
+    }
+
+    @Test
+    void _389_findTheDifference() {
+	assertEquals('e', solution._389_findTheDifference("abcd", "abced"));
+    }
+
+    @Test
+    void _392_isSubsequence() {
+	assertTrue(solution._392_isSubsequence("abc", "ahbgdc"));
+	assertFalse(solution._392_isSubsequence("axc", "ahbgdc"));
     }
 
     @Test

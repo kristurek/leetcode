@@ -2669,6 +2669,27 @@ public class Solution {
 	return root;
     }
 
+    public int _230_kthSmallest(TreeNode root, int k) {
+	List<Integer> values = new ArrayList<>();
+	Deque<TreeNode> stack = new LinkedList<>();
+	TreeNode current = root;
+
+	while (!stack.isEmpty() || current != null) {
+	    if (current != null) {
+		stack.push(current);
+		current = current.left;
+	    } else {
+		current = stack.pop();
+
+		values.add(current.val);
+
+		current = current.right;
+	    }
+	}
+
+	return values.get(k - 1);
+    }
+
     public boolean _231_isPowerOfTwo(int n) {
 	if (n <= 0)
 	    return false;
@@ -2959,6 +2980,49 @@ public class Solution {
 	}
 
 	return results.stream().mapToInt(i -> i).toArray();
+    }
+
+    public int _387_firstUniqChar(String s) {
+	if (s == null || s.isBlank())
+	    return -1;
+
+	Map<Character, Integer> map = new HashMap<>();
+
+	for (Character cChar : s.toCharArray())
+	    map.put(cChar, map.getOrDefault(cChar, 0) + 1);
+
+	for (int i = 0; i < s.length(); i++)
+	    if (map.get(s.charAt(i)) == 1)
+		return i;
+
+	return -1;
+    }
+
+    public char _389_findTheDifference(String s, String t) {
+	char[] sChars = s.toCharArray();
+	char[] tChars = t.toCharArray();
+
+	Arrays.sort(sChars);
+	Arrays.sort(tChars);
+
+	for (int i = 0; i < sChars.length; i++)
+	    if (sChars[i] != tChars[i])
+		return tChars[i];
+
+	return tChars[tChars.length - 1];
+    }
+
+    public boolean _392_isSubsequence(String s, String t) {
+	int i = 0;
+	int j = 0;
+
+	while (i < s.length() && j < t.length()) {
+	    if (s.charAt(i) == t.charAt(j))
+		i++;
+	    j++;
+	}
+
+	return i == s.length();
     }
 
     public List<List<Integer>> _429_levelOrder(Node root) {
