@@ -2137,6 +2137,66 @@ public class Solution {
 	return true;
     }
 
+    public int _129_sumNumbers(TreeNode root) {
+	if (root == null)
+	    return 0;
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	Deque<String> strStack = new LinkedList<>();
+
+	int sum = 0;
+
+	stack.push(root);
+	strStack.push(String.valueOf(root.val));
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.pop();
+	    String numbers = strStack.pop();
+
+	    if (tn.left == null && tn.right == null)
+		sum += Integer.parseInt(numbers);
+
+	    if (tn.right != null) {
+		stack.push(tn.right);
+		strStack.push(numbers + tn.right.val);
+	    }
+	    if (tn.left != null) {
+		stack.push(tn.left);
+		strStack.push(numbers + tn.left.val);
+	    }
+	}
+
+	return sum;
+    }
+
+    public void _130_solve(char[][] board) {
+	for (int row = 0; row < board.length; row++)
+	    for (int col = 0; col < board[row].length; col++) {
+		if (board[row][col] == 'O')
+		    _130_solve(board, row, col);
+	    }
+    }
+
+    private void _130_solve(char[][] board, int row, int col) {
+	if (board[row][col] == 'O' && row > 0 && row < board.length - 1 && col > 0 && col < board[row].length - 1) {
+	    if (row - 1 == 0 && board[row - 1][col] == 'O')
+		return;
+	    if (row + 1 == board.length - 1 && board[row + 1][col] == 'O')
+		return;
+	    if (col - 1 == 0 && board[row][col - 1] == 'O')
+		return;
+	    if (col + 1 == board[row].length - 1 && board[row][col + 1] == 'O')
+		return;
+
+	    board[row][col] = 'X';
+
+	    _130_solve(board, row, col + 1);
+	    _130_solve(board, row, col - 1);
+	    _130_solve(board, row + 1, col);
+	    _130_solve(board, row - 1, col);
+	}
+    }
+
     public List<List<String>> _131_partition(String s) {
 	List<List<String>> output = new ArrayList<>();
 
@@ -2170,6 +2230,33 @@ public class Solution {
 		return false;
 
 	return true;
+    }
+
+    public Node _133_cloneGraph(Node node) {
+	if (node == null)
+	    return null;
+
+	Map<Integer, Node> map = new HashMap<>(); // store new nodes
+	map.put(node.val, new Node(node.val));
+
+	Queue<Node> queue = new LinkedList<>(); // iterate by original nodes
+	queue.add(node);
+
+	while (!queue.isEmpty()) {
+	    Node current = queue.remove();
+
+	    for (Node child : current.children) {
+		if (!map.containsKey(child.val)) {
+		    queue.add(child);
+
+		    map.put(child.val, new Node(child.val));
+		}
+
+		map.get(current.val).children.add(map.get(child.val)); // add copy of child
+	    }
+	}
+
+	return map.get(node.val);
     }
 
     public int _136_singleNumber(int[] nums) {

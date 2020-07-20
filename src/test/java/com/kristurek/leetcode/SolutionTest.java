@@ -889,12 +889,65 @@ public class SolutionTest {
     }
 
     @Test
+    void _129_sumNumbers() {
+	TreeNode root = new TreeNode(4);
+	root.left = new TreeNode(9);
+	root.right = new TreeNode(0);
+	root.left.left = new TreeNode(5);
+	root.left.right = new TreeNode(1);
+
+	assertEquals(1026, solution._129_sumNumbers(root));
+    }
+
+    @Test
+    void _130_solve() {
+	char[][] actual = new char[][] { { 'X', 'X', 'X', 'X' }, { 'X', 'O', 'O', 'X' }, { 'X', 'X', 'O', 'X' },
+		{ 'X', 'O', 'X', 'X' } };
+	char[][] expected = new char[][] { { 'X', 'X', 'X', 'X' }, { 'X', 'X', 'X', 'X' }, { 'X', 'X', 'X', 'X' },
+		{ 'X', 'O', 'X', 'X' } };
+
+	solution._130_solve(actual);
+
+	assertArrayEquals(expected[0], actual[0]);
+	assertArrayEquals(expected[1], actual[1]);
+	assertArrayEquals(expected[2], actual[2]);
+	assertArrayEquals(expected[3], actual[3]);
+    }
+
+    @Test
     void _131_partition() {
 	List<List<String>> answer = new ArrayList<>();
 	answer.add(Arrays.asList("a", "a", "b"));
 	answer.add(Arrays.asList("aa", "b"));
 
 	assertThat(solution._131_partition("aab"), is(answer));
+    }
+
+    @Test
+    void _133_cloneGraph() {
+	Node n1 = new Node(1);
+	Node n2 = new Node(2);
+	Node n3 = new Node(3);
+	Node n4 = new Node(4);
+
+	n1.children.add(n2);
+	n1.children.add(n4);
+
+	n2.children.add(n1);
+	n2.children.add(n3);
+
+	n3.children.add(n2);
+	n3.children.add(n4);
+
+	n4.children.add(n1);
+	n4.children.add(n3);
+
+	Node actual = solution._133_cloneGraph(n1);
+
+	assertEquals(1, actual.val);
+	assertEquals(2, actual.children.get(0).val);
+	assertEquals(1, actual.children.get(0).children.get(0).val);
+	assertEquals(3, actual.children.get(0).children.get(1).val);
     }
 
     @Test
