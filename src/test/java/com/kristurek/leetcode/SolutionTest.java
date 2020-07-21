@@ -1005,6 +1005,66 @@ public class SolutionTest {
     }
 
     @Test
+    void _143_reorderList() {
+	ListNode head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+	head.next.next.next.next = new ListNode(5);
+
+	solution._143_reorderList(head);
+
+	assertEquals(1, head.val);
+	assertEquals(5, head.next.val);
+	assertEquals(2, head.next.next.val);
+	assertEquals(4, head.next.next.next.val);
+	assertEquals(3, head.next.next.next.next.val);
+
+	head = new ListNode(1);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(3);
+	head.next.next.next = new ListNode(4);
+
+	solution._143_reorderList(head);
+
+	assertEquals(1, head.val);
+	assertEquals(4, head.next.val);
+	assertEquals(2, head.next.next.val);
+	assertEquals(3, head.next.next.next.val);
+    }
+
+    @Test
+    void _144_preorderTraversal() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+	root.right.left = new TreeNode(6);
+	root.right.right = new TreeNode(7);
+
+	assertEquals(Arrays.asList(1, 2, 4, 5, 3, 6, 7), solution._144_preorderTraversal(root));
+    }
+
+    @Test
+    void _148_sortList() {
+	ListNode head = new ListNode(4);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(1);
+	head.next.next.next = new ListNode(3);
+
+	head = solution._148_sortList(head);
+
+	assertEquals(1, head.val);
+	assertEquals(2, head.next.val);
+	assertEquals(3, head.next.next.val);
+	assertEquals(4, head.next.next.next.val);
+	assertNull(head.next.next.next.next);
+    }
+
+    @Test
     void _153_findMin() {
 	assertEquals(8, solution._153_findMin(new int[] { 8, 9 }));
 	assertEquals(1, solution._153_findMin(new int[] { 3, 4, 5, 1, 2 }));

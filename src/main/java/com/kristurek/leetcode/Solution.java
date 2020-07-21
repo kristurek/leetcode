@@ -2342,6 +2342,172 @@ public class Solution {
 	return null;
     }
 
+    public void _143_reorderList(ListNode head) {
+	if (head == null || head.next == null)
+	    return;
+
+	// Find PRE middle element
+	ListNode preMiddle = head;
+	ListNode fast = head;
+	ListNode slow = head;
+
+	while (fast != null && fast.next != null) {
+	    preMiddle = slow;
+	    slow = slow.next;
+	    fast = fast.next.next;
+	}
+
+	if (fast != null) {
+	    preMiddle = slow;
+	    slow = slow.next;
+	}
+
+	preMiddle.next = null;
+
+	// Reverse from middle to end
+	ListNode prev = null;
+	ListNode curr = slow;
+	ListNode next = null;
+
+	while (curr != null) {
+	    next = curr.next;
+
+	    curr.next = prev;
+
+	    prev = curr;
+	    curr = next;
+	}
+
+	// Reorder one by one, like merge two lists
+
+	ListNode ln1 = head.next;
+	ListNode ln2 = prev;
+	ListNode ln = head;
+
+	while (ln1 != null || ln2 != null) {
+	    if (ln2 != null) {
+		ln.next = ln2;
+
+		ln2 = ln2.next;
+		ln = ln.next;
+	    }
+
+	    if (ln1 != null) {
+		ln.next = ln1;
+
+		ln1 = ln1.next;
+		ln = ln.next;
+	    }
+	}
+    }
+
+    public void _143_reorderList_v2(ListNode head) {
+	if (head == null)
+	    return;
+
+	Map<Integer, ListNode> map = new HashMap<>();
+
+	ListNode current = head.next;
+
+	int i = 0;
+	while (current != null) {
+	    map.put(i++, current);
+	    current = current.next;
+	}
+
+	int l = 0;
+	int h = i - 1;
+
+	current = head;
+
+	while (l < h) {
+	    current.next = map.get(h--);
+	    current = current.next;
+
+	    current.next = map.get(l++);
+	    current = current.next;
+	}
+
+	if (l == h) {
+	    current.next = map.get(l++);
+	    current = current.next;
+	}
+
+	current.next = null;
+    }
+
+    public List<Integer> _144_preorderTraversal(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<Integer> traversal = new ArrayList<>();
+	Deque<TreeNode> stack = new LinkedList<>();
+
+	stack.addLast(root);
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.removeLast();
+
+	    traversal.add(tn.val);
+
+	    if (tn.right != null)
+		stack.addLast(tn.right);
+	    if (tn.left != null)
+		stack.addLast(tn.left);
+	}
+
+	return traversal;
+    }
+
+    public ListNode _148_sortList(ListNode head) {
+	if (head == null || head.next == null)
+	    return head;
+
+	// Find middle element, divide into two lists
+	ListNode slow = head;
+	ListNode fast = head;
+	ListNode prev = null;
+
+	while (fast != null && fast.next != null) {
+	    prev = slow;
+	    slow = slow.next;
+	    fast = fast.next.next;
+	}
+
+	// Cut
+	prev.next = null;
+
+	ListNode ln1 = _148_sortList(head);
+	ListNode ln2 = _148_sortList(slow);
+
+	return _148_sortList_merge(ln1, ln2);
+    }
+
+    private ListNode _148_sortList_merge(ListNode ln1, ListNode ln2) {
+	ListNode dummy = new ListNode(-1);
+	ListNode current = dummy;
+
+	while (ln1 != null && ln2 != null) {
+	    if (ln1.val < ln2.val) {
+		current.next = ln1;
+
+		ln1 = ln1.next;
+	    } else {
+		current.next = ln2;
+
+		ln2 = ln2.next;
+	    }
+	    current = current.next;
+	}
+
+	if (ln1 != null)
+	    current.next = ln1;
+	if (ln2 != null)
+	    current.next = ln2;
+
+	return dummy.next;
+    }
+
     public int _153_findMin(int[] nums) {
 	int l = 0;
 	int h = nums.length - 1;
