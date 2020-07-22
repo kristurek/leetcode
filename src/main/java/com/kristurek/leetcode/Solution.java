@@ -24,6 +24,7 @@ import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
 import com.kristurek.leetcode.common.Node2;
+import com.kristurek.leetcode.common.Node3;
 import com.kristurek.leetcode.common.TreeNode;
 
 public class Solution {
@@ -1991,6 +1992,124 @@ public class Solution {
 	}
 
 	return false;
+    }
+
+    public List<List<Integer>> _113_pathSum(TreeNode root, int sum) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<List<Integer>> paths = new ArrayList<>();
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	Deque<List<Integer>> pathsStack = new LinkedList<>();
+
+	stack.addLast(root);
+	pathsStack.addLast(Arrays.asList(root.val));
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.removeLast();
+	    List<Integer> path = pathsStack.removeLast();
+
+	    if (tn.left == null && tn.right == null && path.stream().mapToInt(Integer::intValue).sum() == sum)
+		paths.add(path);
+
+	    if (tn.right != null) {
+		List<Integer> nPath = new ArrayList<>(path);
+		nPath.add(tn.right.val);
+		stack.addLast(tn.right);
+		pathsStack.addLast(nPath);
+	    }
+
+	    if (tn.left != null) {
+		List<Integer> nPath = new ArrayList<>(path);
+		nPath.add(tn.left.val);
+		stack.addLast(tn.left);
+		pathsStack.addLast(nPath);
+	    }
+	}
+
+	return paths;
+    }
+
+    public void _114_flatten(TreeNode root) {
+	if (root == null)
+	    return;
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	stack.addLast(root);
+
+	TreeNode previous = null;
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.removeLast();
+	    TreeNode right = tn.right;
+	    TreeNode left = tn.left;
+
+	    tn.left = null;
+	    tn.right = null;
+
+	    if (previous == null)
+		previous = tn;
+	    else {
+		previous.right = tn;
+		previous = previous.right;
+	    }
+
+	    if (right != null)
+		stack.addLast(right);
+	    if (left != null)
+		stack.addLast(left);
+	}
+    }
+
+    public Node3 _116_connect(Node3 root) {
+	if (root == null)
+	    return null;
+
+	Queue<Node3> queue = new LinkedList<>();
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+
+	    while (size-- > 0) {
+		Node3 tn = queue.remove();
+		if (size > 0)
+		    tn.next = queue.peek();
+
+		if (tn.left != null)
+		    queue.add(tn.left);
+		if (tn.right != null)
+		    queue.add(tn.right);
+	    }
+	}
+
+	return root;
+    }
+
+    public Node3 _117_connect(Node3 root) {
+	if (root == null)
+	    return null;
+
+	Queue<Node3> queue = new LinkedList<>();
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+
+	    while (size-- > 0) {
+		Node3 tn = queue.remove();
+		if (size > 0)
+		    tn.next = queue.peek();
+
+		if (tn.left != null)
+		    queue.add(tn.left);
+		if (tn.right != null)
+		    queue.add(tn.right);
+	    }
+	}
+
+	return root;
     }
 
     public List<List<Integer>> _118_generate(int numRows) {

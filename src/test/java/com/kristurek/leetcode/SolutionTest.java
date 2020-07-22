@@ -27,6 +27,7 @@ import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
 import com.kristurek.leetcode.common.Node2;
+import com.kristurek.leetcode.common.Node3;
 import com.kristurek.leetcode.common.TreeNode;
 
 @TestMethodOrder(MethodOrderer.Alphanumeric.class)
@@ -846,6 +847,84 @@ public class SolutionTest {
 	root.right.right.right.right = new TreeNode(7);
 
 	assertTrue(solution._112_hasPathSum(root, 7));
+    }
+
+    @Test
+    void _113_pathSum() {
+	TreeNode root = new TreeNode(5);
+
+	root.left = new TreeNode(4);
+	root.right = new TreeNode(8);
+
+	root.left.left = new TreeNode(11);
+
+	root.right.left = new TreeNode(13);
+	root.right.right = new TreeNode(4);
+
+	root.left.left.left = new TreeNode(7);
+	root.left.left.right = new TreeNode(2);
+
+	root.right.right.left = new TreeNode(5);
+	root.right.right.right = new TreeNode(1);
+
+	List<List<Integer>> paths = solution._113_pathSum(root, 22);
+	assertEquals(2, paths.size());
+	assertEquals(Arrays.asList(5, 4, 11, 2), paths.get(0));
+	assertEquals(Arrays.asList(5, 8, 4, 5), paths.get(1));
+    }
+
+    @Test
+    void _114_flatten() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(5);
+
+	root.left.left = new TreeNode(3);
+	root.left.right = new TreeNode(4);
+
+	root.right.right = new TreeNode(6);
+
+	solution._114_flatten(root);
+
+	assertEquals(1, root.val);
+	assertEquals(2, root.right.val);
+	assertEquals(3, root.right.right.val);
+	assertEquals(4, root.right.right.right.val);
+	assertEquals(5, root.right.right.right.right.val);
+	assertEquals(6, root.right.right.right.right.right.val);
+    }
+
+    @Test
+    void _116_connect() {
+	Node3 root = new Node3(1);
+
+	root.left = new Node3(2);
+	root.right = new Node3(3);
+
+	root = solution._116_connect(root);
+
+	assertNull(root.next);
+	assertEquals(3, root.left.next.val);
+	assertNull(root.right.next);
+    }
+
+    @Test
+    void _117_connect() {
+	Node3 root = new Node3(1);
+
+	root.left = new Node3(2);
+	root.right = new Node3(3);
+
+	root.left.left = new Node3(4);
+	root.right.right = new Node3(5);
+
+	root = solution._117_connect(root);
+
+	assertNull(root.next);
+	assertEquals(3, root.left.next.val);
+	assertNull(root.right.next);
+	assertEquals(5, root.left.left.next.val);
     }
 
     @Test
