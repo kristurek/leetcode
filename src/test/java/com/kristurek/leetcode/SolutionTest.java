@@ -948,6 +948,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _120_minimumTotal() {
+	List<List<Integer>> triangle = Arrays.asList(Arrays.asList(2), Arrays.asList(3, 4), Arrays.asList(6, 5, 7),
+		Arrays.asList(4, 1, 8, 3));
+
+	assertEquals(11, solution._120_minimumTotal(triangle));
+    }
+
+    @Test
     void _121_maxProfit() {
 	assertEquals(5, solution._121_maxProfit(new int[] { 7, 1, 5, 3, 6, 4 }));
 	assertEquals(0, solution._121_maxProfit(new int[] { 7, 6, 4, 3, 1 }));
@@ -1062,6 +1070,13 @@ public class SolutionTest {
     }
 
     @Test
+    void _139_wordBreak() {
+	assertTrue(solution._139_wordBreak("leetcode", Arrays.asList("leet", "code")));
+	assertTrue(solution._139_wordBreak("applepenapple", Arrays.asList("apple", "pen")));
+	assertFalse(solution._139_wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
+    }
+
+    @Test
     void _141_hasCycle() {
 	ListNode head = new ListNode(1);
 	head.next = new ListNode(2);
@@ -1144,6 +1159,11 @@ public class SolutionTest {
     }
 
     @Test
+    void _151_reverseWords() {
+	assertEquals("example good a", solution._151_reverseWords("a good   example"));
+    }
+
+    @Test
     void _153_findMin() {
 	assertEquals(8, solution._153_findMin(new int[] { 8, 9 }));
 	assertEquals(1, solution._153_findMin(new int[] { 3, 4, 5, 1, 2 }));
@@ -1181,6 +1201,15 @@ public class SolutionTest {
 	assertEquals(4, head3.next.val);
 	assertEquals(5, head3.next.next.val);
 	assertNull(head3.next.next.next);
+    }
+
+    @Test
+    void _165_compareVersion() {
+	assertEquals(-1, solution._165_compareVersion("0.1", "1.1"));
+	assertEquals(1, solution._165_compareVersion("1.0.1", "1"));
+	assertEquals(-1, solution._165_compareVersion("7.5.2.4", "7.5.3"));
+	assertEquals(0, solution._165_compareVersion("1.01", "1.001"));
+	assertEquals(0, solution._165_compareVersion("1.0", "1.0.0"));
     }
 
     @Test
@@ -1241,6 +1270,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _187_findRepeatedDnaSequences() {
+	List<String> actual = solution._187_findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
+	List<String> expected = Arrays.asList("AAAAACCCCC", "CCCCCAAAAA");
+
+	assertEquals(expected, actual);
+    }
+
+    @Test
     void _189_rotate() {
 	int[] nums = IntStream.of(1, 2, 3, 4, 5, 6, 7).toArray();
 	solution._189_rotate(nums, 3);
@@ -1252,6 +1289,22 @@ public class SolutionTest {
     void _198_rob() {
 	assertEquals(4, solution._198_rob(IntStream.of(1, 2, 3, 1).toArray()));
 	assertEquals(12, solution._198_rob(IntStream.of(2, 7, 9, 3, 1).toArray()));
+    }
+
+    @Test
+    void _199_rightSideView() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.left = new TreeNode(4);
+
+	List<Integer> actual = solution._199_rightSideView(root);
+
+	assertEquals(1, actual.get(0));
+	assertEquals(3, actual.get(1));
+	assertEquals(4, actual.get(2));
     }
 
     @Test
@@ -1554,6 +1607,14 @@ public class SolutionTest {
     @Test
     void _557_reverseWords() {
 	assertEquals("s'teL ekat edoCteeL tsetnoc", solution._557_reverseWords("Let's take LeetCode contest"));
+    }
+
+    @Test
+    void _559_maxDepth() {
+	Node root = new Node(1, Arrays.asList(new Node(3), new Node(2), new Node(4)));
+	root.children.get(0).children = Arrays.asList(new Node(5), new Node(6));
+
+	assertEquals(3, solution._559_maxDepth(root));
     }
 
     @Test

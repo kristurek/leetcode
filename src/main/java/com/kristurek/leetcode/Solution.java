@@ -1,5 +1,7 @@
 package com.kristurek.leetcode;
 
+import static java.util.function.Predicate.not;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2196,6 +2198,23 @@ public class Solution {
 	    return prevRow;
     }
 
+    // TODO
+    public int _120_minimumTotal(List<List<Integer>> triangle) {
+	int n = triangle.size();
+	int[] dp = new int[n];
+
+	// Copy last layer to dp[]
+	for (int i = 0; i < triangle.get(n - 1).size(); i++)
+	    dp[i] = triangle.get(n - 1).get(i);
+
+	// Start from second layer from back
+	for (int row = n - 2; row >= 0; row--)
+	    for (int col = 0; col <= row; col++)
+		dp[col] = Math.min(dp[col], dp[col + 1]) + triangle.get(row).get(col);
+
+	return dp[0];
+    }
+
     public int _121_maxProfit(int[] prices) {
 	if (prices == null || prices.length == 0)
 	    return 0;
@@ -2432,6 +2451,29 @@ public class Solution {
 	return dummy.next;
     }
 
+    // TODO
+    public boolean _139_wordBreak(String s, List<String> wordDict) {
+	if (s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0)
+	    return false;
+
+	Set<String> set = new HashSet<>(wordDict);
+
+	boolean[] dp = new boolean[s.length() + 1];
+	dp[0] = true;
+
+	for (int i = 1; i <= s.length(); i++) {
+	    String curr = s.substring(0, i);
+	    if (set.contains(curr))
+		dp[i] = true;
+	    else
+		for (int j = i - 1; j >= 0; j--)
+		    if (dp[j] && set.contains(s.substring(j, i)))
+			dp[i] = true;
+	}
+
+	return dp[s.length()];
+    }
+
     public boolean _141_hasCycle(ListNode head) {
 	Set<ListNode> set = new HashSet<>();
 
@@ -2627,6 +2669,18 @@ public class Solution {
 	return dummy.next;
     }
 
+    public String _151_reverseWords(String s) {
+	List<String> words = Stream.of(s.split(" ")).map(String::trim).filter(not(String::isBlank))
+		.collect(Collectors.toList());
+
+	Deque<String> stack = new LinkedList<>();
+
+	for (String word : words)
+	    stack.push(word);
+
+	return new ArrayList<>(stack).stream().collect(Collectors.joining(" "));
+    }
+
     public int _153_findMin(int[] nums) {
 	int l = 0;
 	int h = nums.length - 1;
@@ -2692,6 +2746,25 @@ public class Solution {
 	}
 
 	return null;
+    }
+
+    public int _165_compareVersion(String version1, String version2) {
+	String[] v1 = version1.split("\\.");
+	String[] v2 = version2.split("\\.");
+
+	int length = v1.length > v2.length ? v1.length : v2.length;
+
+	for (int i = 0; i < length; i++) {
+	    Integer n1 = i < v1.length ? Integer.parseInt(v1[i]) : 0;
+	    Integer n2 = i < v2.length ? Integer.parseInt(v2[i]) : 0;
+
+	    int compare = n1.compareTo(n2);
+
+	    if (compare != 0)
+		return compare;
+	}
+
+	return 0;
     }
 
     public int[] _167_twoSum(int[] numbers, int target) {
@@ -2788,6 +2861,20 @@ public class Solution {
 	return new BSTIterator(root);
     }
 
+    public List<String> _187_findRepeatedDnaSequences(String s) {
+	Set<String> seen = new HashSet<>();
+	Set<String> repeated = new HashSet<>();
+
+	for (int i = 0; i + 9 < s.length(); i++) {
+	    String ten = s.substring(i, i + 10);
+	    if (seen.contains(ten))
+		repeated.add(ten);
+	    else
+		seen.add(ten);
+	}
+	return new ArrayList<>(repeated);
+    }
+
     public void _189_rotate(int[] nums, int k) {
 	k = k % nums.length; // example - k=7 and nums.length=3 then k=1, remove empty loops
 
@@ -2838,6 +2925,38 @@ public class Solution {
 	}
 
 	return oneHouseBefore;
+    }
+
+    public List<Integer> _199_rightSideView(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<Integer> values = new ArrayList<>();
+	Queue<TreeNode> queue = new LinkedList<>();
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+
+	    while (size-- > 1) {
+		TreeNode tn = queue.poll();
+
+		if (tn.left != null)
+		    queue.add(tn.left);
+		if (tn.right != null)
+		    queue.add(tn.right);
+	    }
+	    TreeNode tn = queue.poll();
+
+	    values.add(tn.val);
+
+	    if (tn.left != null)
+		queue.add(tn.left);
+	    if (tn.right != null)
+		queue.add(tn.right);
+	}
+
+	return values;
     }
 
     public int _200_numIslands(char[][] grid) {
@@ -3503,6 +3622,31 @@ public class Solution {
 	sb.deleteCharAt(sb.length() - 1);
 
 	return sb.toString();
+    }
+
+    public int _559_maxDepth(Node root) {
+	if (root == null)
+	    return 0;
+
+	int levels = 0;
+
+	Queue<Node> queue = new LinkedList<>();
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    int size = queue.size();
+
+	    while (size-- > 0) {
+		Node tn = queue.remove();
+
+		if (tn.children != null)
+		    for (Node child : tn.children)
+			queue.add(child);
+	    }
+	    levels++;
+	}
+
+	return levels;
     }
 
     public int _560_subarraySum(int[] nums, int k) {
