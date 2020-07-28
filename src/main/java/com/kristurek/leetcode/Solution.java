@@ -3071,6 +3071,216 @@ public class Solution {
 	return prev;
     }
 
+    class Trie {
+
+	class TrieNode {
+
+	    private int R = 26;
+	    private boolean isEnd = false;
+	    private TrieNode[] links = new TrieNode[R];
+
+	    public TrieNode() {
+		links = new TrieNode[R];
+	    }
+
+	    public boolean containsKey(char ch) {
+		return links[ch - 'a'] != null; // ch is a..z so a=96-a=96 == index 0
+	    }
+
+	    public TrieNode get(char cChar) {
+		return links[cChar - 'a'];
+	    }
+
+	    public void put(char cChar, TrieNode node) {
+		links[cChar - 'a'] = node;
+	    }
+
+	    public void setEnd() {
+		isEnd = true;
+	    }
+
+	    public boolean isEnd() {
+		return isEnd;
+	    }
+	}
+
+	private TrieNode root;
+
+	public Trie() {
+	    root = new TrieNode();
+	}
+
+	public void insert(String word) {
+	    TrieNode node = root;
+
+	    for (char cChar : word.toCharArray()) {
+		if (!node.containsKey(cChar))
+		    node.put(cChar, new TrieNode());
+		node = node.get(cChar);
+	    }
+
+	    node.setEnd();
+	}
+
+	public boolean search(String word) {
+	    TrieNode node = searchPrefix(word);
+	    return node != null && node.isEnd();
+	}
+
+	public boolean startsWith(String prefix) {
+	    return searchPrefix(prefix) != null;
+	}
+
+	private TrieNode searchPrefix(String prefix) {
+	    TrieNode node = root;
+
+	    for (char cChar : prefix.toCharArray()) {
+		if (node.containsKey(cChar))
+		    node = node.get(cChar);
+		else
+		    return null;
+	    }
+
+	    return node;
+	}
+    }
+
+    public Trie _208_trie() {
+	return new Trie();
+    }
+
+    class WordDictionary {
+
+	class TrieNode {
+	    Map<Character, TrieNode> links = new HashMap<Character, Solution.WordDictionary.TrieNode>();
+	    boolean isEnd = false;
+
+	    public boolean contains(char cChar) {
+		return links.containsKey(cChar);
+	    }
+
+	    public void put(char cChar, TrieNode node) {
+		links.put(cChar, node);
+	    }
+
+	    public TrieNode get(char cChar) {
+		return links.get(cChar);
+	    }
+
+	    public void setEnd() {
+		isEnd = true;
+	    }
+
+	    public boolean isEnd() {
+		return isEnd;
+	    }
+	}
+
+	private TrieNode root;
+
+	public WordDictionary() {
+	    root = new TrieNode();
+	}
+
+	public void addWord(String word) {
+	    TrieNode node = root;
+	    for (char cChar : word.toCharArray()) {
+		if (!node.contains(cChar))
+		    node.put(cChar, new TrieNode());
+
+		node = node.get(cChar);
+	    }
+
+	    node.setEnd();
+	}
+
+	public boolean search(String word) {
+	    return search(word, 0, root);
+	}
+
+	private boolean search(String word, int i, TrieNode node) {
+	    if (i == word.length())
+		if (node.isEnd())
+		    return true;
+		else
+		    return false;
+
+	    char cChar = word.charAt(i);
+
+	    if (cChar == '.') {
+		for (TrieNode childNode : node.links.values()) {
+		    boolean answer = search(word, i + 1, childNode);
+		    if (answer)
+			return true;
+		}
+	    } else {
+		if (node.contains(cChar))
+		    return search(word, i + 1, node.get(cChar));
+		else
+		    return false;
+	    }
+
+	    return false;
+	}
+    }
+
+    public WordDictionary _211_wordDictionary() {
+	return new WordDictionary();
+    }
+
+    public int _213_rob(int[] nums) {
+	if (nums.length == 0)
+	    return 0;
+	if (nums.length == 1)
+	    return nums[0];
+
+	int oneHouseBefore = 0;
+	int twoHouseBefore = 0;
+
+	for (int i = 0; i < nums.length - 1; i++) {
+	    int tmp = oneHouseBefore;
+	    oneHouseBefore = Math.max(oneHouseBefore, twoHouseBefore + nums[i]);
+	    twoHouseBefore = tmp;
+	}
+
+	int max1 = oneHouseBefore;
+
+	oneHouseBefore = 0;
+	twoHouseBefore = 0;
+
+	for (int i = nums.length - 1; i > 0; i--) {
+	    int tmp = oneHouseBefore;
+	    oneHouseBefore = Math.max(oneHouseBefore, twoHouseBefore + nums[i]);
+	    twoHouseBefore = tmp;
+	}
+
+	int max2 = oneHouseBefore;
+
+	return Math.max(max1, max2);
+    }
+
+    public int _215_findKthLargest(int[] nums, int k) {
+	// Default order 1,2,3,4
+	PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+
+	for (int num : nums) {
+	    queue.offer(num);
+
+	    if (queue.size() > k)
+		queue.poll(); // Remove current lowest element
+	}
+	// After loop queue has size == k
+	// so just pool/peek lowest element and return it
+
+	return queue.peek();
+    }
+
+    public int _215_findKthLargest_v2(int[] nums, int k) {
+	Arrays.sort(nums);
+
+	return nums[nums.length - k];
+    }
+
     public boolean _217_containsDuplicate(int[] nums) {
 	if (nums == null)
 	    return false;
@@ -3158,6 +3368,20 @@ public class Solution {
 	}
 
 	return root;
+    }
+
+    public List<Integer> _229_majorityElement(int[] nums) {
+	Map<Integer, Integer> map = new HashMap<>();
+
+	for (int num : nums)
+	    map.put(num, map.getOrDefault(num, 0) + 1);
+
+	int count = nums.length / 3;
+
+	List<Integer> values = map.entrySet().stream().filter(e -> e.getValue() > count).map(e -> e.getKey())
+		.collect(Collectors.toList());
+
+	return values;
     }
 
     public int _230_kthSmallest(TreeNode root, int k) {

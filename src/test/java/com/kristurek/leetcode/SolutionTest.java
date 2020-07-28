@@ -23,6 +23,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.kristurek.leetcode.Solution.Trie;
+import com.kristurek.leetcode.Solution.WordDictionary;
 import com.kristurek.leetcode.common.Employee;
 import com.kristurek.leetcode.common.ListNode;
 import com.kristurek.leetcode.common.Node;
@@ -1366,6 +1368,43 @@ public class SolutionTest {
     }
 
     @Test
+    void _208_trie() {
+	Trie trie = solution._208_trie();
+
+	trie.insert("apple");
+	assertTrue(trie.search("apple"));
+	assertFalse(trie.search("app"));
+	assertTrue(trie.startsWith("app"));
+	trie.insert("app");
+	assertTrue(trie.search("app"));
+    }
+
+    @Test
+    void _211_wordDictionary() {
+	WordDictionary wordDictionary = solution._211_wordDictionary();
+
+	wordDictionary.addWord("bad");
+	wordDictionary.addWord("dad");
+	wordDictionary.addWord("mad");
+	assertFalse(wordDictionary.search("pad"));
+	assertTrue(wordDictionary.search("bad"));
+	assertTrue(wordDictionary.search(".ad"));
+	assertTrue(wordDictionary.search("..."));
+    }
+
+    @Test
+    void _213_rob() {
+	assertEquals(3, solution._213_rob(new int[] { 2, 3, 2 }));
+	assertEquals(4, solution._213_rob(new int[] { 1, 2, 3, 1 }));
+    }
+
+    @Test
+    void _215_findKthLargest() {
+	assertEquals(5, solution._215_findKthLargest(new int[] { 3, 2, 1, 5, 6, 4 }, 2));
+	assertEquals(4, solution._215_findKthLargest(new int[] { 3, 2, 3, 1, 2, 4, 5, 5, 6 }, 4));
+    }
+
+    @Test
     void _217_containsDuplicate() {
 	assertFalse(solution._217_containsDuplicate(null));
 	assertFalse(solution._217_containsDuplicate(new int[] {}));
@@ -1414,6 +1453,12 @@ public class SolutionTest {
 	assertEquals(6, root.left.right.val);
 	assertEquals(5, root.right.left.val);
 	assertEquals(4, root.right.right.val);
+    }
+
+    @Test
+    void _229_majorityElement() {
+	assertEquals(Arrays.asList(3), solution._229_majorityElement(new int[] { 3, 2, 3 }));
+	assertEquals(Arrays.asList(1, 2), solution._229_majorityElement(new int[] { 1, 1, 1, 3, 3, 2, 2, 2 }));
     }
 
     @Test
