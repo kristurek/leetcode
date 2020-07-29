@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -3281,6 +3283,54 @@ public class Solution {
 	return nums[nums.length - k];
     }
 
+    public List<List<Integer>> _216_combinationSum3(int k, int n) {
+	int[] nums = IntStream.range(1, 10).toArray();
+
+	List<List<Integer>> output = new ArrayList<>();
+
+	_216_combinationSum3_backtracking(output, new ArrayList<>(), k, n, nums, 0);
+
+	return output;
+    }
+
+    private void _216_combinationSum3_backtracking(List<List<Integer>> output, List<Integer> tmp, int length, int sum,
+	    int[] nums, int begin) {
+	if (tmp.size() == length && tmp.stream().mapToInt(Integer::intValue).sum() == sum)
+	    output.add(new ArrayList<>(tmp));
+	else {
+	    for (int i = begin; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_216_combinationSum3_backtracking(output, tmp, length, sum, nums, i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public List<List<Integer>> _216_combinationSum3_v2(int k, int n) {
+	int[] nums = IntStream.range(1, 10).toArray();
+
+	List<List<Integer>> output = new ArrayList<>();
+
+	_216_combinationSum3_backtracking_v2(output, new ArrayList<>(), k, n, nums, 0);
+
+	return output;
+    }
+
+    private void _216_combinationSum3_backtracking_v2(List<List<Integer>> output, List<Integer> tmp, int length,
+	    int remain, int[] nums, int begin) {
+	if (tmp.size() == length && remain == 0)
+	    output.add(new ArrayList<>(tmp));
+	else if (remain < 0)
+	    ;
+	else {
+	    for (int i = begin; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_216_combinationSum3_backtracking_v2(output, tmp, length, remain - nums[i], nums, i + 1);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
     public boolean _217_containsDuplicate(int[] nums) {
 	if (nums == null)
 	    return false;
@@ -3589,6 +3639,44 @@ public class Solution {
 	return paths;
     }
 
+    public int[] _260_singleNumber(int[] nums) {
+	Map<Integer, Integer> map = new HashMap<>();
+
+	for (int num : nums)
+	    map.put(num, map.getOrDefault(num, 0) + 1);
+
+	return map.entrySet().stream().filter(e -> e.getValue() == 1).map(e -> e.getKey()).mapToInt(Integer::intValue)
+		.toArray();
+    }
+
+    public int[] _260_singleNumber_v2(int[] nums) {
+	Map<Integer, Integer> map = new HashMap<>();
+
+	for (int num : nums)
+	    map.put(num, map.getOrDefault(num, 0) + 1);
+
+	List<Integer> values = new ArrayList<>();
+
+	for (int key : map.keySet())
+	    if (map.get(key) == 1)
+		values.add(key);
+
+	return values.stream().mapToInt(i -> i).toArray();
+    }
+
+    public int _264_nthUglyNumber(int n) {
+	TreeSet<Long> ans = new TreeSet<>();
+	ans.add(1L);
+	while (n-- > 1) {
+	    long first = ans.pollFirst();
+	    ans.add(first * 2);
+	    ans.add(first * 3);
+	    ans.add(first * 5);
+	}
+
+	return ans.first().intValue();
+    }
+
     public int _268_missingNumber(int[] nums) {
 	Arrays.sort(nums);
 
@@ -3613,6 +3701,37 @@ public class Solution {
 
 	while (slow < nums.length)
 	    nums[slow++] = 0;
+    }
+
+    class PeekingIterator implements Iterator<Integer> {
+
+	private Iterator<Integer> iterator;
+	private Integer peek;
+
+	public PeekingIterator(Iterator<Integer> iterator) {
+	    this.iterator = iterator;
+	    this.peek = iterator.hasNext() ? iterator.next() : null;
+	}
+
+	public Integer peek() {
+	    return peek;
+	}
+
+	@Override
+	public Integer next() {
+	    Integer tmp = peek;
+	    peek = iterator.hasNext() ? iterator.next() : null;
+	    return tmp;
+	}
+
+	@Override
+	public boolean hasNext() {
+	    return peek != null;
+	}
+    }
+
+    public PeekingIterator _284_PeekingIterator(Iterator<Integer> iterator) {
+	return new PeekingIterator(iterator);
     }
 
     public void _344_reverseString(char[] s) {

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.kristurek.leetcode.Solution.PeekingIterator;
 import com.kristurek.leetcode.Solution.Trie;
 import com.kristurek.leetcode.Solution.WordDictionary;
 import com.kristurek.leetcode.common.Employee;
@@ -1405,6 +1406,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _216_combinationSum3() {
+	List<List<Integer>> actual = solution._216_combinationSum3(3, 7);
+
+	assertEquals(1, actual.size());
+	assertEquals(Arrays.asList(1, 2, 4), actual.get(0));
+    }
+
+    @Test
     void _217_containsDuplicate() {
 	assertFalse(solution._217_containsDuplicate(null));
 	assertFalse(solution._217_containsDuplicate(new int[] {}));
@@ -1546,6 +1555,11 @@ public class SolutionTest {
     }
 
     @Test
+    void _260_singleNumber() {
+	assertArrayEquals(new int[] { 3, 5 }, solution._260_singleNumber(new int[] { 1, 2, 1, 3, 2, 5 }));
+    }
+
+    @Test
     void _268_missingNumber() {
 	assertEquals(1, solution._268_missingNumber(new int[] { 0 }));
 	assertEquals(2, solution._268_missingNumber(new int[] { 3, 0, 1 }));
@@ -1559,6 +1573,24 @@ public class SolutionTest {
 	solution._283_moveZeroes(nums);
 
 	assertArrayEquals(answer, nums);
+    }
+
+    @Test
+    void _284_PeekingIterator() {
+	List<Integer> nums = Arrays.asList(1, 2, 3);
+	PeekingIterator iterator = solution._284_PeekingIterator(nums.iterator());
+
+	assertTrue(iterator.hasNext());
+	assertEquals(1, iterator.peek());
+	assertEquals(1, iterator.next());
+
+	assertEquals(2, iterator.peek());
+	assertEquals(2, iterator.next());
+
+	assertEquals(3, iterator.next());
+	assertFalse(iterator.hasNext());
+	assertNull(iterator.peek());
+
     }
 
     @Test
