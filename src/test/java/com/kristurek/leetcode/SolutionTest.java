@@ -1560,6 +1560,11 @@ public class SolutionTest {
     }
 
     @Test
+    void _264_nthUglyNumber() {
+	assertEquals(12, solution._264_nthUglyNumber(10));
+    }
+
+    @Test
     void _268_missingNumber() {
 	assertEquals(1, solution._268_missingNumber(new int[] { 0 }));
 	assertEquals(2, solution._268_missingNumber(new int[] { 3, 0, 1 }));
@@ -1590,7 +1595,24 @@ public class SolutionTest {
 	assertEquals(3, iterator.next());
 	assertFalse(iterator.hasNext());
 	assertNull(iterator.peek());
+    }
 
+    @Test
+    void _287_findDuplicate() {
+	assertEquals(2, solution._287_findDuplicate(new int[] { 1, 3, 4, 2, 2 }));
+    }
+
+    @Test
+    void _313_nthSuperUglyNumber() {
+	assertEquals(1, solution._313_nthSuperUglyNumber_v2(12, new int[] { 1 }));
+	assertEquals(32, solution._313_nthSuperUglyNumber_v2(12, new int[] { 2, 7, 13, 19 }));
+    }
+
+    @Test
+    void _318_maxProduct() {
+	assertEquals(16, solution._318_maxProduct(new String[] { "abcw", "baz", "foo", "bar", "xtfn", "abcdef" }));
+	assertEquals(4, solution._318_maxProduct(new String[] { "a", "ab", "abc", "d", "cd", "bcd", "abcd" }));
+	assertEquals(0, solution._318_maxProduct(new String[] { "a", "aa", "aaa", "aaaa" }));
     }
 
     @Test

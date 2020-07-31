@@ -3734,6 +3734,84 @@ public class Solution {
 	return new PeekingIterator(iterator);
     }
 
+    public int _287_findDuplicate(int[] nums) {
+	Set<Integer> set = new HashSet<>();
+
+	for (int num : nums)
+	    if (!set.contains(num))
+		set.add(num);
+	    else
+		return num;
+
+	return -1;
+    }
+
+    public int _304_sumRegion(int[][] matrix, int row1, int col1, int row2, int col2) {
+	int sum = 0;
+	for (int col = col1; col <= col2; col++) {
+	    for (int row = row1; row <= row2; row++) {
+		sum += matrix[row][col];
+	    }
+	}
+
+	return sum;
+    }
+
+    public int _313_nthSuperUglyNumber(int n, int[] primes) {
+	TreeSet<Long> ans = new TreeSet<>();
+
+	ans.add(1L);
+
+	while (n-- > 1) {
+	    long first = ans.pollFirst();
+	    for (int prime : primes)
+		ans.add(first * prime);
+	}
+
+	return ans.first().intValue();
+    }
+
+    // Time Limit Exceeded on LeetCode
+    public int _313_nthSuperUglyNumber_v2(int n, int[] primes) {
+	Map<Integer, Integer> primesMap = new LinkedHashMap<>();
+	for (int prime : primes)
+	    primesMap.put(prime, 0); // initial indexes
+
+	LinkedList<Integer> uglyNums = new LinkedList<>();
+	uglyNums.add(1);
+
+	while (n-- > 1) {
+
+	    int minValue = Integer.MAX_VALUE;
+	    for (Map.Entry<Integer, Integer> e : primesMap.entrySet())
+		minValue = Math.min(minValue, uglyNums.get(e.getValue()) * e.getKey());
+
+	    uglyNums.add(minValue);
+
+	    for (Map.Entry<Integer, Integer> e : primesMap.entrySet())
+		if (minValue == uglyNums.get(e.getValue()) * e.getKey())
+		    primesMap.put(e.getKey(), e.getValue() + 1);
+	}
+
+	return uglyNums.getLast();
+    }
+
+    public int _318_maxProduct(String[] words) {
+	Map<String, Set<Integer>> map = new HashMap<>();
+
+	for (String word : words)
+	    map.put(word, new HashSet<>(word.chars().boxed().collect(Collectors.toList())));
+
+	int max = 0;
+
+	for (int i = 0; i < words.length; i++)
+	    for (int j = i + 1; j < words.length; j++)
+		if (Collections.disjoint(map.get(words[i]), map.get(words[j])))
+		    max = Math.max(max, words[i].length() * words[j].length());
+
+	return max;
+    }
+
     public void _344_reverseString(char[] s) {
 	for (int i = 0, j = s.length - 1; i < j; i++, j--) {
 	    char tmp = s[i];
