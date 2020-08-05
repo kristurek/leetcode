@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -3224,6 +3225,38 @@ public class Solution {
 
 	    return false;
 	}
+
+	public boolean search_v2(String w) {
+	    Queue<Object[]> queue = new LinkedList<>();
+
+	    queue.add(new Object[] { w, root });
+
+	    while (!queue.isEmpty()) {
+		Object[] obj = queue.remove();
+
+		String word = (String) obj[0];
+		TrieNode node = (TrieNode) obj[1];
+
+		int i = 0;
+		for (; i < word.length(); i++) {
+		    if (word.charAt(i) == '.') {
+			for (TrieNode link : node.links.values())
+			    queue.add(new Object[] { word.substring(i + 1, word.length()), link });
+			break;
+		    } else {
+			if (node.contains(word.charAt(i)))
+			    node = node.get(word.charAt(i));
+			else
+			    break;
+		    }
+		}
+
+		if (i == word.length() && node.isEnd())
+		    return true;
+	    }
+
+	    return false;
+	}
     }
 
     public WordDictionary _211_wordDictionary() {
@@ -3812,6 +3845,154 @@ public class Solution {
 	return max;
     }
 
+    // FIXME Time Limit Exceeded
+    public int _322_coinChange(int[] coins, int amount) {
+	if (amount == 0)
+	    return 0;
+
+	List<Integer> output = new ArrayList<>();
+
+	_322_coinChange_backracking(output, new ArrayList<>(), coins, amount);
+
+	return output.size() == 0 ? -1 : output.size();
+    }
+
+    private void _322_coinChange_backracking(List<Integer> output, List<Integer> tmp, int[] coins, int remain) {
+	if (remain == 0) {
+	    if (output.size() == 0 || tmp.size() < output.size()) {
+		output.clear();
+		output.addAll(tmp);
+	    }
+	} else if (remain > 0) {
+	    for (int i = 0; i < coins.length; i++) {
+		tmp.add(coins[i]);
+		_322_coinChange_backracking(output, tmp, coins, remain - coins[i]);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    public void _324_wiggleSort(int[] nums) {
+	_324_wiggleSort_quickSort(nums, 0, nums.length - 1, false);
+
+	int[] arr = Arrays.copyOf(nums, nums.length);
+
+	int j = nums.length - 1;
+	for (int i = 1; i < nums.length; i = i + 2)
+	    nums[i] = arr[j--];
+	for (int i = 0; i < nums.length; i = i + 2)
+	    nums[i] = arr[j--];
+    }
+
+    private void _324_wiggleSort_quickSort(int[] nums, int left, int right, boolean reverse) {
+	if (left < right) {
+	    int splitPoint = _324_wiggleSort_parttitions(nums, left, right, reverse);
+
+	    _324_wiggleSort_quickSort(nums, left, splitPoint - 1, reverse);
+	    _324_wiggleSort_quickSort(nums, splitPoint + 1, right, reverse);
+	}
+    }
+
+    private int _324_wiggleSort_parttitions(int[] nums, int left, int right, boolean reverse) {
+	int pivot = nums[right];
+	int lowestIndex = left - 1;
+
+	for (int currentIndex = left; currentIndex < right; currentIndex++) {
+	    if (!reverse && nums[currentIndex] < pivot) {
+		lowestIndex++;
+
+		int tmp = nums[currentIndex];
+		nums[currentIndex] = nums[lowestIndex];
+		nums[lowestIndex] = tmp;
+	    }
+	    if (reverse && nums[currentIndex] > pivot) {
+		lowestIndex++;
+
+		int tmp = nums[currentIndex];
+		nums[currentIndex] = nums[lowestIndex];
+		nums[lowestIndex] = tmp;
+	    }
+	}
+
+	lowestIndex++;
+
+	int tmp = nums[right];
+	nums[right] = nums[lowestIndex];
+	nums[lowestIndex] = tmp;
+
+	return lowestIndex;
+    }
+
+    public ListNode _328_oddEvenList(ListNode head) {
+	ListNode dummyOdd = new ListNode(-1);
+	ListNode currentOdd = dummyOdd;
+
+	ListNode dummyEven = new ListNode(-1);
+	ListNode currentEven = dummyEven;
+
+	int i = 1;
+	while (head != null) {
+	    if (i++ % 2 == 0) {
+		currentEven.next = head;
+		currentEven = currentEven.next;
+	    } else {
+		currentOdd.next = head;
+		currentOdd = currentOdd.next;
+	    }
+
+	    head = head.next;
+	}
+
+	currentOdd.next = dummyEven.next;
+	currentEven.next = null;
+
+	return dummyOdd.next;
+    }
+
+    public boolean _331_isValidSerialization(String preorder) {
+	if (preorder == null || preorder.length() == 0)
+	    return false;
+
+	int degree = -1; // root has no indegree, for compensate init with -1
+
+	for (String str : preorder.split(",")) {
+	    degree++; // all nodes have 1 indegree (root compensated)
+
+	    if (degree > 0) // total degree should never exceeds 0
+		return false;
+
+	    if (!str.equals("#")) // only non-leaf node has 2 outdegree
+		degree -= 2;
+	}
+
+	return degree == 0;
+    }
+
+    public boolean _334_increasingTriplet(int[] nums) {
+	int firstNum = Integer.MAX_VALUE;
+	int secondNum = Integer.MAX_VALUE;
+
+	for (int num : nums)
+	    if (num <= firstNum)
+		firstNum = num;
+	    else if (num <= secondNum)
+		secondNum = num;
+	    else
+		return true;
+
+	return false;
+    }
+
+    public boolean _342_isPowerOfFour(int num) {
+	if (num == 0)
+	    return false;
+
+	while (num % 4 == 0)
+	    num = num / 4;
+
+	return num == 1;
+    }
+
     public void _344_reverseString(char[] s) {
 	for (int i = 0, j = s.length - 1; i < j; i++, j--) {
 	    char tmp = s[i];
@@ -3892,6 +4073,205 @@ public class Solution {
 	}
 
 	return results.stream().mapToInt(i -> i).toArray();
+    }
+
+    class Twitter {
+
+	private int timeStamp = 0;
+
+	class Tweet {
+	    int tweetId;
+	    int time;
+
+	    Tweet next;
+
+	    public Tweet(int tweetId, int time) {
+		super();
+		this.tweetId = tweetId;
+		this.time = time;
+	    }
+	}
+
+	class User {
+	    int userId;
+	    Set<Integer> followers;
+	    Tweet head;
+
+	    public User(int userId) {
+		super();
+		this.userId = userId;
+
+		followers = new HashSet<Integer>();
+		followers.add(userId);
+	    }
+
+	    void follow(int userId) {
+		followers.add(userId);
+	    }
+
+	    void unfollow(int userId) {
+		if (followers.contains(userId))
+		    followers.remove(userId);
+	    }
+
+	    void postTweet(int tweetId) {
+		Tweet tweet = new Tweet(tweetId, ++timeStamp);
+
+		tweet.next = head;
+		head = tweet;
+	    }
+	}
+
+	private Map<Integer, User> users;
+
+	public Twitter() {
+	    users = new HashMap<>();
+	}
+
+	public void postTweet(int userId, int tweetId) {
+	    if (!users.containsKey(userId))
+		users.put(userId, new User(userId));
+
+	    users.get(userId).postTweet(tweetId);
+	}
+
+	/**
+	 * Retrieve the 10 most recent tweet ids in the user's news feed. Each item in
+	 * the news feed must be posted by users who the user followed or by the user
+	 * herself. Tweets must be ordered from most recent to least recent.
+	 */
+	public List<Integer> getNewsFeed(int userId) {
+	    List<Integer> tweetsId = new ArrayList<>();
+
+	    if (!users.containsKey(userId))
+		return tweetsId;
+
+	    Queue<Tweet> queue = new PriorityQueue<>((a, b) -> b.time - a.time);
+
+	    for (int follower : users.get(userId).followers) {
+		if (users.get(follower).head != null)
+		    queue.add(users.get(follower).head);
+	    }
+
+	    int n = 10;
+	    while (!queue.isEmpty() && n-- > 0) {
+		Tweet tweet = queue.poll();
+
+		if (tweet.next != null)
+		    queue.add(tweet.next);
+
+		tweetsId.add(tweet.tweetId);
+	    }
+
+	    return tweetsId;
+	}
+
+	public void follow(int followerId, int followeeId) {
+	    if (!users.containsKey(followerId))
+		users.put(followerId, new User(followerId));
+
+	    if (!users.containsKey(followeeId))
+		users.put(followeeId, new User(followeeId));
+
+	    users.get(followerId).follow(followeeId);
+	}
+
+	public void unfollow(int followerId, int followeeId) {
+	    if (followeeId == followerId || !users.containsKey(followerId))
+		return;
+
+	    users.get(followerId).unfollow(followeeId);
+	}
+    }
+
+    public Twitter _355_twitter() {
+	return new Twitter();
+    }
+
+    public List<List<Integer>> _373_kSmallestPairs(int[] nums1, int[] nums2, int k) {
+	Queue<Integer[]> queue = new PriorityQueue<Integer[]>((a, b) -> ((a[0] + a[1]) - (b[0] + b[1])));
+
+	for (int i = 0; i < k && i < nums1.length; i++)
+	    for (int j = 0; j < k && j < nums2.length; j++)
+		queue.add(new Integer[] { nums1[i], nums2[j] });
+
+	List<List<Integer>> results = new ArrayList<>();
+	while (k-- > 0 && !queue.isEmpty())
+	    results.add(Arrays.asList(queue.poll()));
+
+	return results;
+    }
+
+    // FIXME Time Limit Exceeded
+    public int _377_combinationSum4(int[] nums, int target) {
+	counter_377_combinationSum4_backtracking = 0;
+
+	_377_combinationSum4_backtracking(new ArrayList<>(), nums, target);
+
+	return counter_377_combinationSum4_backtracking;
+    }
+
+    private int counter_377_combinationSum4_backtracking;
+
+    private void _377_combinationSum4_backtracking(List<Integer> tmp, int[] nums, int remain) {
+	if (remain == 0)
+	    counter_377_combinationSum4_backtracking++;
+	else if (remain > 0) {
+	    for (int i = 0; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_377_combinationSum4_backtracking(tmp, nums, remain - nums[i]);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    class RandomizedSet {
+
+	Random random = new Random();
+	Map<Integer, Integer> locations = new HashMap<>();
+	LinkedList<Integer> values = new LinkedList<>();
+
+	public RandomizedSet() {
+
+	}
+
+	public boolean insert(int val) {
+	    if (locations.containsKey(val))
+		return false;
+
+	    values.add(val);
+	    locations.put(val, values.size() - 1);
+
+	    return true;
+	}
+
+	public boolean remove(int val) {
+	    if (!locations.containsKey(val))
+		return false;
+
+	    int location = locations.get(val);
+
+	    // if last element in list, just remove
+	    if (location == values.size() - 1) {
+		locations.remove(val);
+		values.remove(location);
+	    } else {
+		values.set(location, values.get(values.size() - 1));
+		values.remove(values.size() - 1);
+		locations.remove(val);
+		locations.put(values.get(location), location);
+	    }
+
+	    return true;
+	}
+
+	public int getRandom() {
+	    return values.get(random.nextInt(values.size()));
+	}
+    }
+
+    public RandomizedSet _380_randomizedSet() {
+	return new RandomizedSet();
     }
 
     public int _387_firstUniqChar(String s) {
@@ -3982,6 +4362,29 @@ public class Solution {
 	}
 
 	return f2;
+    }
+
+    public boolean _520_detectCapitalUse(String word) {
+	if (word.length() == 1)
+	    return true;
+
+	boolean firstCapital = Character.isUpperCase(word.charAt(0));
+	boolean lastCapital = Character.isUpperCase(word.charAt(word.length() - 1));
+
+	int countCapital = 0;
+
+	for (int i = 1; i < word.length() - 1; i++)
+	    if (Character.isUpperCase(word.charAt(i)))
+		countCapital++;
+
+	if (firstCapital && lastCapital)
+	    return countCapital == word.length() - 2;
+	else if (firstCapital && !lastCapital)
+	    return countCapital == 0;
+	else if (!firstCapital)
+	    return countCapital == 0 && !lastCapital;
+	else
+	    return false;
     }
 
     public int _525_findMaxLength(int[] nums) {
@@ -4347,6 +4750,91 @@ public class Solution {
 
 	private int getHash(int value) {
 	    return value * 31 % SIZE;
+	}
+    }
+
+    class MyHashSet_v2 {
+
+	class HashEntry {
+	    public HashEntry(int key) {
+		this.val = key;
+	    }
+
+	    int val;
+	    HashEntry next;
+	}
+
+	static final int SIZE = 128 * 1024;
+	private HashEntry[] buckets;
+
+	public MyHashSet_v2() {
+	    buckets = new HashEntry[SIZE];
+	}
+
+	public void add(int key) {
+	    int hash = generateHash(key);
+
+	    HashEntry bucket = buckets[hash];
+
+	    if (bucket == null)
+		buckets[hash] = new HashEntry(key);
+	    else {
+		HashEntry previous = null;
+
+		while (bucket != null) {
+		    if (bucket.val == key)
+			return;
+		    else {
+			previous = bucket;
+			bucket = bucket.next;
+		    }
+		}
+		previous.next = new HashEntry(key);
+	    }
+	}
+
+	public void remove(int key) {
+	    if (contains(key)) {
+		int hash = generateHash(key);
+		HashEntry bucket = buckets[hash];
+
+		if (bucket.val == key)
+		    buckets[hash] = buckets[hash].next;
+		else {
+		    while (bucket.next != null) {
+			if (bucket.next.val == key) {
+			    bucket = bucket.next.next;
+			    break;
+			}
+
+			bucket = bucket.next;
+		    }
+		}
+	    }
+	}
+
+	public boolean contains(int key) {
+	    int hash = generateHash(key);
+
+	    HashEntry bucket = buckets[hash];
+
+	    if (bucket != null) {
+		if (bucket.val == key)
+		    return true;
+		else {
+		    while (bucket.next != null) {
+			bucket = bucket.next;
+			if (bucket.val == key)
+			    return true;
+		    }
+		    return false;
+		}
+	    } else
+		return false;
+	}
+
+	private int generateHash(int value) {
+	    return value % SIZE;
 	}
     }
 

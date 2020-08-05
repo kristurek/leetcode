@@ -1,6 +1,7 @@
 package com.kristurek.leetcode;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
@@ -1616,6 +1617,49 @@ public class SolutionTest {
     }
 
     @Test
+    void _322_coinChange() {
+	assertEquals(3, solution._322_coinChange(new int[] { 1, 2, 5 }, 11));
+	assertEquals(-1, solution._322_coinChange(new int[] { 2 }, 3));
+    }
+
+    @Test
+    void _324_wiggleSort() {
+	int[] actual = new int[] { 1, 5, 1, 1, 6, 4 };
+	int[] expected = new int[] { 1, 6, 1, 5, 1, 4 };
+
+	solution._324_wiggleSort(actual);
+
+	assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void _328_oddEvenList() {
+	ListNode head = new ListNode(3);
+	head.next = new ListNode(2);
+	head.next.next = new ListNode(1);
+	head.next.next.next = new ListNode(0);
+
+	head = solution._328_oddEvenList(head);
+
+	assertEquals(3, head.val);
+	assertEquals(1, head.next.val);
+	assertEquals(2, head.next.next.val);
+	assertEquals(0, head.next.next.next.val);
+    }
+
+    @Test
+    void _334_increasingTriplet() {
+	assertTrue(solution._334_increasingTriplet(new int[] { 1, 0, 2, 0, 3 }));
+    }
+
+    @Test
+    void _342_isPowerOfFour() {
+	assertTrue(solution._342_isPowerOfFour(4));
+	assertTrue(solution._342_isPowerOfFour(16));
+	assertFalse(solution._342_isPowerOfFour(5));
+    }
+
+    @Test
     void _344_reverseString() {
 	char[] actual = new char[] { 'h', 'e', 'l', 'l', 'o' };
 	char[] expected = new char[] { 'o', 'l', 'l', 'e', 'h' };
@@ -1640,6 +1684,77 @@ public class SolutionTest {
     void _350_intersect() {
 	assertArrayEquals(new int[] { 9, 4 },
 		solution._350_intersect(new int[] { 4, 9, 5 }, new int[] { 9, 4, 9, 8, 4 }));
+    }
+
+    @Test
+    void _355_twitter() {
+	Solution.Twitter twitter = solution._355_twitter();
+
+	// User 1 posts a new tweet (id = 5).
+	twitter.postTweet(1, 5);
+
+	// User 1's news feed should return a list with 1 tweet id -> [5].
+	assertEquals(1, twitter.getNewsFeed(1).size());
+
+	// User 1 follows user 2.
+	twitter.follow(1, 2);
+
+	// User 2 posts a new tweet (id = 6).
+	twitter.postTweet(2, 6);
+
+	// User 1's news feed should return a list with 2 tweet ids -> [6, 5].
+	// Tweet id 6 should precede tweet id 5 because it is posted after tweet id 5.
+	List<Integer> newsFeed = twitter.getNewsFeed(1);
+	assertEquals(2, newsFeed.size());
+
+	// User 1 unfollows user 2.
+	twitter.unfollow(1, 2);
+
+	// User 1's news feed should return a list with 1 tweet id -> [5],
+	// since user 1 is no longer following user 2.
+	newsFeed = twitter.getNewsFeed(1);
+	assertEquals(1, newsFeed.size());
+    }
+
+    @Test
+    void _373_kSmallestPairs() {
+	List<List<Integer>> answer = solution._373_kSmallestPairs(new int[] { 1, 7, 11 }, new int[] { 2, 4, 6 }, 3);
+
+	assertEquals(3, answer.size());
+	assertEquals(Arrays.asList(1, 2), answer.get(0));
+	assertEquals(Arrays.asList(1, 4), answer.get(1));
+	assertEquals(Arrays.asList(1, 6), answer.get(2));
+    }
+
+    @Test
+    void _377_combinationSum4() {
+	assertEquals(7, solution._377_combinationSum4(new int[] { 1, 2, 3 }, 4));
+    }
+
+    @Test
+    void _380_randomizedSet() {
+	Solution.RandomizedSet randomSet = solution._380_randomizedSet();
+
+	// Inserts 1 to the set. Returns true as 1 was inserted successfully.
+	assertTrue(randomSet.insert(1));
+
+	// Returns false as 2 does not exist in the set.
+	assertFalse(randomSet.remove(2));
+
+	// Inserts 2 to the set, returns true. Set now contains [1,2].
+	assertTrue(randomSet.insert(2));
+
+	// getRandom should return either 1 or 2 randomly.
+	assertThat(randomSet.getRandom(), anyOf(is(1), is(2)));
+
+	// Removes 1 from the set, returns true. Set now contains [2].
+	assertTrue(randomSet.remove(1));
+
+	// 2 was already in the set, so return false.
+	assertFalse(randomSet.insert(2));
+
+	// Since 2 is the only number in the set, getRandom always return 2.
+	assertThat(randomSet.getRandom(), anyOf(is(2)));
     }
 
     @Test
@@ -1684,6 +1799,16 @@ public class SolutionTest {
 	assertEquals(1, solution._509_fib(2));
 	assertEquals(2, solution._509_fib(3));
 	assertEquals(3, solution._509_fib(4));
+    }
+
+    @Test
+    void _520_detectCapitalUse() {
+	assertTrue(solution._520_detectCapitalUse("USA"));
+	assertTrue(solution._520_detectCapitalUse("Usa"));
+	assertTrue(solution._520_detectCapitalUse("U"));
+	assertTrue(solution._520_detectCapitalUse("u"));
+	assertFalse(solution._520_detectCapitalUse("FlaG"));
+	assertFalse(solution._520_detectCapitalUse("FlAg"));
     }
 
     @Test
