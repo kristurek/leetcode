@@ -1432,6 +1432,39 @@ public class Solution {
 	}
     }
 
+    public boolean _79_exist(char[][] board, String word) {
+	char[] w = word.toCharArray();
+
+	for (int row = 0; row < board.length; row++)
+	    for (int col = 0; col < board[row].length; col++)
+		if (_79_exist_search(row, col, board, w, 0))
+		    return true;
+
+	return false;
+    }
+
+    private boolean _79_exist_search(int row, int col, char[][] board, char[] w, int i) {
+	if (i == w.length)
+	    return true;
+	if (row < 0 || row >= board.length || col < 0 || col >= board[row].length)
+	    return false;
+
+	if (board[row][col] == w[i]) {
+	    char tmp = board[row][col];
+	    board[row][col] = '*';
+
+	    boolean isFound = _79_exist_search(row + 1, col, board, w, i + 1)
+		    || _79_exist_search(row - 1, col, board, w, i + 1)
+		    || _79_exist_search(row, col + 1, board, w, i + 1)
+		    || _79_exist_search(row, col - 1, board, w, i + 1);
+
+	    board[row][col] = tmp;
+
+	    return isFound;
+	} else
+	    return false;
+    }
+
     public int _80_removeDuplicates(int[] nums) {
 	int slow = 1;
 	int count = 1;
@@ -2621,6 +2654,103 @@ public class Solution {
 	}
 
 	return traversal;
+    }
+
+    class LRUCache {
+
+	class Node {
+	    public Node(int key, int val) {
+		this.key = key;
+		this.val = val;
+	    }
+
+	    int val;
+	    int key;
+	    Node next;
+	    Node previous;
+	}
+
+	int maxCapacity;
+	Map<Integer, Node> map;
+	Node head;
+	Node tail;
+
+	public LRUCache(int capacity) {
+	    maxCapacity = capacity;
+	    map = new HashMap<>();
+
+	    head = new Node(0, 0);
+	    tail = new Node(0, 0);
+
+	    head.next = tail;
+	    tail.previous = head;
+	}
+
+	public int get(int key) {
+	    if (map.containsKey(key)) {
+		Node node = map.get(key);
+		updateNode(node);
+
+		return node.val;
+	    } else
+		return -1;
+	}
+
+	public void put(int key, int value) {
+	    if (map.size() < maxCapacity)
+		if (!map.containsKey(key)) {
+		    Node node = new Node(key, value);
+
+		    addNode(node);
+		    map.put(key, node);
+		} else {
+		    Node node = map.get(key);
+		    node.val = value;
+
+		    updateNode(node);
+		}
+	    else {
+		if (!map.containsKey(key)) {
+		    Node node = new Node(key, value);
+
+		    map.remove(tail.previous.key);
+		    removeNode(tail.previous);
+
+		    addNode(node);
+		    map.put(key, node);
+		} else {
+		    Node node = map.get(key);
+		    node.val = value;
+
+		    updateNode(node);
+		}
+	    }
+	}
+
+	private void updateNode(Node node) {
+	    removeNode(node);
+	    addNode(node);
+	}
+
+	private void removeNode(Node node) {
+	    Node before = node.previous;
+	    Node after = node.next;
+
+	    before.next = after;
+	    after.previous = before;
+	}
+
+	private void addNode(Node node) {
+	    Node after = head.next;
+	    head.next = node;
+	    node.previous = head;
+	    node.next = after;
+	    after.previous = node;
+	}
+    }
+
+    public LRUCache _146_lruCache(int capacity) {
+	return new LRUCache(capacity);
     }
 
     public ListNode _148_sortList(ListNode head) {
@@ -4405,6 +4535,37 @@ public class Solution {
 	}
 
 	return maxlen;
+    }
+
+    public class Codec {
+
+	private Map<Integer, String> map = new HashMap<>();
+	private String url = "http://tinyurl.com/";
+
+	public String encode(String longUrl) {
+	    map.put(longUrl.hashCode(), longUrl);
+
+	    return url + longUrl.hashCode();
+	}
+
+	public String decode(String shortUrl) {
+	    String hash = shortUrl.substring(url.length(), shortUrl.length());
+
+	    return map.getOrDefault(Integer.valueOf(hash), null);
+	}
+    }
+
+    public Codec _535_codec() {
+	return new Codec();
+    }
+
+    public int _540_singleNonDuplicate(int[] nums) {
+	for (int i = 1; i < nums.length; i = i + 2) {
+	    if (nums[i - 1] != nums[i])
+		return nums[i - 1];
+	}
+
+	return nums[nums.length - 1];
     }
 
     public int _543_diameterOfBinaryTree(TreeNode root) { // TODO look at python version

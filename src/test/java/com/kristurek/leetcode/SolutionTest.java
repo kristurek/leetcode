@@ -522,6 +522,16 @@ public class SolutionTest {
     }
 
     @Test
+    void _79_exist_search() {
+	assertTrue(solution._79_exist(new char[][] { new char[] { 'A', 'B', 'C', 'E' },
+		new char[] { 'S', 'F', 'C', 'S' }, new char[] { 'A', 'D', 'E', 'E' } }, "ABCCED"));
+	assertTrue(solution._79_exist(new char[][] { new char[] { 'A', 'B', 'C', 'E' },
+		new char[] { 'S', 'F', 'C', 'S' }, new char[] { 'A', 'D', 'E', 'E' } }, "SEE"));
+	assertFalse(solution._79_exist(new char[][] { new char[] { 'A', 'B', 'C', 'E' },
+		new char[] { 'S', 'F', 'C', 'S' }, new char[] { 'A', 'D', 'E', 'E' } }, "ABAB"));
+    }
+
+    @Test
     void _80_removeDuplicates() {
 	int[] nums = { 1, 1, 1, 2, 2, 3 };
 	int length = solution._80_removeDuplicates(nums);
@@ -1144,6 +1154,21 @@ public class SolutionTest {
 	root.right.right = new TreeNode(7);
 
 	assertEquals(Arrays.asList(1, 2, 4, 5, 3, 6, 7), solution._144_preorderTraversal(root));
+    }
+
+    @Test
+    void _146_lruCache() {
+	Solution.LRUCache cache = solution._146_lruCache(2);
+
+	cache.put(1, 1);
+	cache.put(2, 2);
+	assertEquals(1, cache.get(1));
+	cache.put(3, 3); // evicts key 2
+	assertEquals(-1, cache.get(2)); // returns -1 (not found)
+	cache.put(4, 4); // evicts key 1
+	assertEquals(-1, cache.get(1)); // returns -1 (not found)
+	assertEquals(3, cache.get(3)); // returns 3
+	assertEquals(4, cache.get(4)); // returns 4
     }
 
     @Test
@@ -1815,6 +1840,22 @@ public class SolutionTest {
     void _525_findMaxLength() {
 	assertThat(solution._525_findMaxLength(IntStream.of(0, 1).toArray()), is(equalTo(2)));
 	assertThat(solution._525_findMaxLength(IntStream.of(0, 1, 0).toArray()), is(equalTo(2)));
+    }
+
+    @Test
+    void _535_codec() {
+	Solution.Codec codec = solution._535_codec();
+
+	String url = "https://leetcode.com/problems/design-tinyurl";
+	String encodeUrl = codec.encode(url);
+	String decodeUrl = codec.decode(encodeUrl);
+
+	assertEquals(url, decodeUrl);
+    }
+
+    @Test
+    void _540_singleNonDuplicate() {
+	assertEquals(2, solution._540_singleNonDuplicate(new int[] { 1, 1, 2, 3, 3, 4, 4, 8, 8 }));
     }
 
     @Test
