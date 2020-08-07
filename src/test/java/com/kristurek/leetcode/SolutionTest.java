@@ -480,6 +480,18 @@ public class SolutionTest {
     }
 
     @Test
+    void _73_setZeroes() {
+	int[][] actual = new int[][] { { 1, 1, 1 }, { 1, 0, 1 }, { 1, 1, 1 } };
+	int[][] expected = new int[][] { { 1, 0, 1 }, { 0, 0, 0 }, { 1, 0, 1 } };
+
+	solution._73_setZeroes(actual);
+
+	assertArrayEquals(expected[0], actual[0]);
+	assertArrayEquals(expected[1], actual[1]);
+	assertArrayEquals(expected[2], actual[2]);
+    }
+
+    @Test
     void _74_searchMatrix() {
 	assertTrue(solution._74_searchMatrix(new int[][] { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } }, 7));
     }
@@ -1230,6 +1242,12 @@ public class SolutionTest {
 	assertEquals(4, head3.next.val);
 	assertEquals(5, head3.next.next.val);
 	assertNull(head3.next.next.next);
+    }
+
+    @Test
+    void _162_findPeakElement() {
+	assertEquals(2, solution._162_findPeakElement(new int[] { 1, 2, 3, 1 }));
+	assertEquals(5, solution._162_findPeakElement(new int[] { 1, 2, 1, 3, 5, 6, 4 }));
     }
 
     @Test
@@ -2148,6 +2166,24 @@ public class SolutionTest {
 	assertEquals(3, solution._961_repeatedNTimes(new int[] { 1, 2, 3, 3 }));
 	assertEquals(2, solution._961_repeatedNTimes(new int[] { 2, 1, 2, 5, 3, 2 }));
 	assertEquals(5, solution._961_repeatedNTimes(new int[] { 5, 1, 5, 2, 5, 3, 5, 4 }));
+    }
+
+    @Test
+    void _987_verticalTraversal() {
+	TreeNode root = new TreeNode(3);
+	root.left = new TreeNode(9);
+	root.right = new TreeNode(20);
+	root.right.left = new TreeNode(15);
+	root.right.right = new TreeNode(7);
+
+	List<List<Integer>> answer = solution._987_verticalTraversal(root);
+
+	assertEquals(4, answer.size());
+
+	assertEquals(Arrays.asList(9), answer.get(0));
+	assertEquals(Arrays.asList(3, 15), answer.get(1));
+	assertEquals(Arrays.asList(20), answer.get(2));
+	assertEquals(Arrays.asList(7), answer.get(3));
     }
 
     @Test

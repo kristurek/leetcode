@@ -20,6 +20,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1332,6 +1333,23 @@ public class Solution {
 	    sb.append("/").append(stack.pollLast());
 
 	return sb.toString();
+    }
+
+    public void _73_setZeroes(int[][] matrix) {
+	Set<Integer> rows = new HashSet<>();
+	Set<Integer> cols = new HashSet<>();
+
+	for (int row = 0; row < matrix.length; row++)
+	    for (int col = 0; col < matrix[row].length; col++)
+		if (matrix[row][col] == 0) {
+		    rows.add(row);
+		    cols.add(col);
+		}
+
+	for (int row = 0; row < matrix.length; row++)
+	    for (int col = 0; col < matrix[row].length; col++)
+		if (rows.contains(row) || cols.contains(col))
+		    matrix[row][col] = 0;
     }
 
     public boolean _74_searchMatrix(int[][] matrix, int target) {
@@ -2879,6 +2897,22 @@ public class Solution {
 	}
 
 	return null;
+    }
+
+    public int _162_findPeakElement(int[] nums) {
+	int l = 0;
+	int h = nums.length - 1;
+
+	while (l < h) {
+	    int m = l + (h - l) / 2;
+
+	    if (nums[m] < nums[m + 1])
+		l = m + 1;
+	    else
+		h = m;
+	}
+
+	return l;
     }
 
     public int _165_compareVersion(String version1, String version2) {
@@ -5320,6 +5354,56 @@ public class Solution {
 	}
 
 	return B;
+    }
+
+    public List<List<Integer>> _987_verticalTraversal(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	Map<Integer, List<Integer>> map = new TreeMap<>();
+
+	Queue<TreeNode> nodes = new LinkedList<>();
+	Queue<Integer> indexes = new LinkedList<>();
+
+	nodes.add(root);
+	indexes.add(0);
+
+	while (!nodes.isEmpty()) {
+
+	    int size = nodes.size();
+	    Map<Integer, List<Integer>> tmp = new HashMap<>();
+
+	    while (size-- > 0) {
+
+		TreeNode node = nodes.remove();
+		Integer index = indexes.remove();
+
+		List<Integer> listNodes = tmp.getOrDefault(index, new ArrayList<>());
+		listNodes.add(node.val);
+
+		tmp.put(index, listNodes);
+
+		if (node.left != null) {
+		    nodes.add(node.left);
+		    indexes.add(index - 1);
+		}
+
+		if (node.right != null) {
+		    nodes.add(node.right);
+		    indexes.add(index + 1);
+		}
+	    }
+
+	    tmp.forEach((k, v) -> {
+		List<Integer> listNodes = map.getOrDefault(k, new ArrayList<>());
+		Collections.sort(v);
+		listNodes.addAll(v);
+
+		map.put(k, listNodes);
+	    });
+	}
+
+	return new ArrayList<>(map.values());
     }
 
     public List<String> _1002_commonChars(String[] A) {
