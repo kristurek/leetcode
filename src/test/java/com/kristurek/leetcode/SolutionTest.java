@@ -1317,6 +1317,13 @@ public class SolutionTest {
     }
 
     @Test
+    void _179_largestNumber() {
+	assertEquals("0", solution._179_largestNumber(new int[] { 0, 0 }));
+	assertEquals("210", solution._179_largestNumber(new int[] { 10, 2 }));
+	assertEquals("9534330", solution._179_largestNumber(new int[] { 3, 30, 34, 5, 9 }));
+    }
+
+    @Test
     void _187_findRepeatedDnaSequences() {
 	List<String> actual = solution._187_findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT");
 	List<String> expected = Arrays.asList("AAAAACCCCC", "CCCCCAAAAA");
@@ -1506,6 +1513,13 @@ public class SolutionTest {
 	assertEquals(6, root.left.right.val);
 	assertEquals(5, root.right.left.val);
 	assertEquals(4, root.right.right.val);
+    }
+
+    @Test
+    void _227_calculate() {
+	assertEquals(7, solution._227_calculate("3+2*2"));
+	assertEquals(1, solution._227_calculate("3/2"));
+	assertEquals(5, solution._227_calculate("3+5/2"));
     }
 
     @Test
@@ -2184,6 +2198,14 @@ public class SolutionTest {
 	assertEquals(Arrays.asList(3, 15), answer.get(1));
 	assertEquals(Arrays.asList(20), answer.get(2));
 	assertEquals(Arrays.asList(7), answer.get(3));
+    }
+
+    @Test
+    void _994_orangesRotting() {
+	assertEquals(4, solution._994_orangesRotting(new int[][] { { 2, 1, 1 }, { 1, 1, 0 }, { 0, 1, 1 } }));
+	assertEquals(-1, solution._994_orangesRotting(new int[][] { { 2, 1, 1 }, { 0, 1, 1 }, { 1, 0, 1 } }));
+	assertEquals(0, solution._994_orangesRotting(new int[][] { { 0, 2 } }));
+	assertEquals(1, solution._994_orangesRotting(new int[][] { { 1, 2 } }));
     }
 
     @Test

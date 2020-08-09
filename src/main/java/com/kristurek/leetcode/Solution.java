@@ -3028,6 +3028,24 @@ public class Solution {
 	return new BSTIterator(root);
     }
 
+    public String _179_largestNumber(int[] nums) {
+	List<String> list = IntStream.of(nums).mapToObj(i -> String.valueOf(i)).collect(Collectors.toList());
+
+	Collections.sort(list, (a, b) -> {
+	    String order1 = a + b;
+	    String order2 = b + a;
+
+	    // return Integer(order2) - Integer.valueOf(order1); // NumberFormatExeption for
+	    // big numbers
+	    return order2.compareTo(order1);
+	});
+
+	if (list.get(0).equals("0"))
+	    return "0";
+
+	return list.stream().collect(Collectors.joining());
+    }
+
     public List<String> _187_findRepeatedDnaSequences(String s) {
 	Set<String> seen = new HashSet<>();
 	Set<String> repeated = new HashSet<>();
@@ -3615,6 +3633,44 @@ public class Solution {
 	}
 
 	return root;
+    }
+
+    public int _227_calculate(String s) {
+	s += "+";
+
+	Deque<Integer> stack = new LinkedList<>();
+	char previousOperation = '+';
+	int num = 0;
+
+	for (char cChar : s.toCharArray()) {
+	    if (Character.isDigit(cChar))
+		num = num * 10 + (cChar - '0');
+	    else if (!Character.isWhitespace(cChar)) {
+		switch (previousOperation) {
+		case '+':
+		    stack.push(num);
+		    break;
+		case '-':
+		    stack.push(-num);
+		    break;
+		case '*':
+		    stack.push(stack.pop() * num);
+		    break;
+		case '/':
+		    stack.push(stack.pop() / num);
+		    break;
+		}
+
+		num = 0;
+		previousOperation = cChar;
+	    }
+	}
+	int sum = 0;
+	for (int n : stack)
+	    sum += n;
+
+	return sum;
+	// return stack.stream().mapToInt(i -> i).sum();
     }
 
     public List<Integer> _229_majorityElement(int[] nums) {
@@ -4508,6 +4564,40 @@ public class Solution {
 	}
 
 	return levels;
+    }
+
+    // TODO
+    public int _437_pathSum(TreeNode root, int sum) {
+	if (root == null)
+	    return 0;
+
+	Map<Integer, Integer> map = new HashMap<>(); // key - sum, values - count paths
+
+	map.put(0, 1); // if currentSum == targetSum (if node.val == targetSum), map.get(sum - target)
+		       // return 1
+
+	return _437_pathSum_findPathSum(root, 0, sum, map);
+    }
+
+    private int _437_pathSum_findPathSum(TreeNode currentNode, int currentSum, int targetSum,
+	    Map<Integer, Integer> map) {
+	if (currentNode == null)
+	    return 0;
+
+	currentSum += currentNode.val;
+
+	// get the number of valid path, ended by the current node
+	int numPathToCurr = map.getOrDefault(currentSum - targetSum, 0);
+	// update the map with the current sum, so the map is good to be passed to the
+	// next recursion
+	map.put(currentSum, map.getOrDefault(currentSum, 0) + 1);
+	// add the 3 parts discussed in 8. together
+	int res = numPathToCurr + _437_pathSum_findPathSum(currentNode.left, currentSum, targetSum, map)
+		+ _437_pathSum_findPathSum(currentNode.right, currentSum, targetSum, map);
+	// restore the map, as the recursion goes from the bottom to the top
+	map.put(currentSum, map.get(currentSum) - 1);
+
+	return res;
     }
 
     public int _509_fib(int N) {
@@ -5404,6 +5494,61 @@ public class Solution {
 	}
 
 	return new ArrayList<>(map.values());
+    }
+
+    public int _994_orangesRotting(int[][] grid) {
+	int count_fresh = 0;
+	int count_minutes = 0;
+
+	Queue<int[]> queue = new LinkedList<>();
+
+	for (int row = 0; row < grid.length; row++)
+	    for (int col = 0; col < grid[row].length; col++) {
+		if (grid[row][col] == 2)
+		    queue.add(new int[] { row, col });
+		if (grid[row][col] == 1)
+		    count_fresh++;
+	    }
+
+	if (count_fresh == 0)
+	    return 0;
+
+	while (!queue.isEmpty()) {
+	    count_minutes++;
+	    int size = queue.size();
+
+	    while (size-- > 0) {
+		int[] pos = queue.poll();
+		int row = pos[0];
+		int col = pos[1];
+
+		if (row > 0 && (grid[row - 1][col] == 1)) {
+		    grid[row - 1][col] = 0;
+		    queue.add(new int[] { row - 1, col });
+		    count_fresh--;
+		}
+
+		if (row < grid.length - 1 && grid[row + 1][col] == 1) {
+		    grid[row + 1][col] = 0;
+		    queue.add(new int[] { row + 1, col });
+		    count_fresh--;
+		}
+
+		if (col > 0 && grid[row][col - 1] == 1) {
+		    grid[row][col - 1] = 0;
+		    queue.add(new int[] { row, col - 1 });
+		    count_fresh--;
+		}
+
+		if (col < grid[row].length - 1 && grid[row][col + 1] == 1) {
+		    grid[row][col + 1] = 0;
+		    queue.add(new int[] { row, col + 1 });
+		    count_fresh--;
+		}
+	    }
+	}
+
+	return count_fresh != 0 ? -1 : count_minutes - 1;
     }
 
     public List<String> _1002_commonChars(String[] A) {
