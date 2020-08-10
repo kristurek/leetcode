@@ -2969,12 +2969,14 @@ public class Solution {
     }
 
     public int _171_titleToNumber(String s) {
-	int num = 0;
+	int number = 0;
 
-	for (char sChar : s.toCharArray())
-	    num = num * 26 + sChar - 64; // 64 below 'A' 65
+	for (char chr : s.toCharArray()) {
+	    int tmp = chr - 'A' + 1;
+	    number = number * 26 + tmp; // BA -> 0*26 + 2 -> 2*26 +1
+	}
 
-	return num;
+	return number;
     }
 
     public int _172_trailingZeroes(int n) {
@@ -3673,6 +3675,35 @@ public class Solution {
 	// return stack.stream().mapToInt(i -> i).sum();
     }
 
+    public List<String> _228_summaryRanges(int[] nums) {
+	if (nums.length == 0)
+	    return new ArrayList<>();
+
+	List<Integer> tmp = new ArrayList<>();
+	List<String> results = new ArrayList<>();
+
+	tmp.add(nums[0]);
+
+	for (int i = 1; i < nums.length; i++) {
+	    if (nums[i] - tmp.get(tmp.size() - 1) != 1) {
+		if (tmp.size() > 1)
+		    results.add(tmp.get(0) + "->" + tmp.get(tmp.size() - 1));
+		else
+		    results.add("" + tmp.get(0));
+		tmp.clear();
+	    }
+	    tmp.add(nums[i]);
+	}
+
+	if (tmp.size() > 0)
+	    if (tmp.size() > 1)
+		results.add(tmp.get(0) + "->" + tmp.get(tmp.size() - 1));
+	    else
+		results.add("" + tmp.get(0));
+
+	return results;
+    }
+
     public List<Integer> _229_majorityElement(int[] nums) {
 	Map<Integer, Integer> map = new HashMap<>();
 
@@ -3797,6 +3828,43 @@ public class Solution {
 	return head;
     }
 
+    public TreeNode _236_lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+	Deque<TreeNode> stack = new LinkedList<>();
+	Map<TreeNode, TreeNode> parents = new HashMap<>();
+
+	stack.push(root);
+	parents.put(root, null);
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.pop();
+
+	    if (tn.right != null) {
+		stack.push(tn.right);
+		parents.put(tn.right, tn);
+	    }
+	    if (tn.left != null) {
+		stack.push(tn.left);
+		parents.put(tn.left, tn);
+	    }
+	}
+
+	Set<TreeNode> ancestors = new HashSet<>();
+
+	while (p != null) {
+	    ancestors.add(p);
+
+	    p = parents.get(p);
+	}
+
+	while (q != null) {
+	    if (ancestors.contains(q))
+		return q;
+	    q = parents.get(q);
+	}
+
+	return null;
+    }
+
     // "erase value of" current node not delete node,
     public void _237_deleteNode(ListNode node) {
 	while (node.next != null) {
@@ -3826,6 +3894,24 @@ public class Solution {
 	    product[i] = left[i] * right[i];
 
 	return product;
+    }
+
+    public boolean _240_searchMatrix(int[][] matrix, int target) {
+	if (matrix == null || matrix.length < 1 || matrix[0].length < 1)
+	    return false;
+
+	int row = 0;
+	int col = matrix[row].length - 1;
+
+	while (row < matrix.length && col >= 0)
+	    if (target == matrix[row][col])
+		return true;
+	    else if (target > matrix[row][col])
+		row++;
+	    else if (target < matrix[row][col])
+		col--;
+
+	return false;
     }
 
     public List<String> _257_binaryTreePaths(TreeNode root) {

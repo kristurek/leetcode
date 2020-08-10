@@ -1523,6 +1523,17 @@ public class SolutionTest {
     }
 
     @Test
+    void _228_summaryRanges() {
+	List<String> actual = solution._228_summaryRanges(new int[] { 0, 1, 2, 4, 5, 7 });
+	List<String> expected = Arrays.asList("0->2", "4->5", "7");
+	assertEquals(expected, actual);
+
+	actual = solution._228_summaryRanges(new int[] { 0, 2, 3, 4, 6, 8, 9 });
+	expected = Arrays.asList("0", "2->4", "6", "8->9");
+	assertEquals(expected, actual);
+    }
+
+    @Test
     void _229_majorityElement() {
 	assertEquals(Arrays.asList(3), solution._229_majorityElement(new int[] { 3, 2, 3 }));
 	assertEquals(Arrays.asList(1, 2), solution._229_majorityElement(new int[] { 1, 1, 1, 3, 3, 2, 2, 2 }));
@@ -1577,6 +1588,18 @@ public class SolutionTest {
     }
 
     @Test
+    void _236_lowestCommonAncestor() {
+	TreeNode root = new TreeNode(1);
+
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+
+	root.left.right = new TreeNode(5);
+
+	assertEquals(root, solution._236_lowestCommonAncestor(root, root.left.right, root.right));
+    }
+
+    @Test
     void _237_deleteNode() {
 	ListNode head = new ListNode(1);
 	head.next = new ListNode(2);
@@ -1595,6 +1618,15 @@ public class SolutionTest {
     void _238_productExceptSelf() {
 	assertArrayEquals(IntStream.of(24, 12, 8, 6).toArray(),
 		solution._238_productExceptSelf(IntStream.of(1, 2, 3, 4).toArray()));
+    }
+
+    @Test
+    void _240_searchMatrix() {
+	int[][] matrix = new int[][] { { 1, 4, 7, 11, 15 }, { 2, 5, 8, 12, 19 }, { 3, 6, 9, 16, 22 },
+		{ 10, 13, 14, 17, 24 }, { 18, 21, 23, 26, 30 } };
+
+	assertTrue(solution._240_searchMatrix(matrix, 5));
+	assertFalse(solution._240_searchMatrix(matrix, 28));
     }
 
     @Test
