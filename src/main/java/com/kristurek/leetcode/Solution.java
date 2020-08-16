@@ -4026,6 +4026,26 @@ public class Solution {
 	return nums.length;
     }
 
+    public int _274_hIndex(int[] citations) {
+	int n = citations.length;
+	int[] counts = new int[n + 1];
+
+	for (int i = 0; i < n; i++)
+	    if (citations[i] > n)
+		counts[n]++;
+	    else
+		counts[citations[i]]++;
+
+	int count = 0;
+	for (int i = n; i >= 0; i--) {
+	    count += counts[i];
+	    if (count >= i)
+		return i;
+	}
+
+	return 0;
+    }
+
     public void _283_moveZeroes(int[] nums) {
 	if (nums == null || nums.length == 0)
 	    return;
@@ -4623,6 +4643,67 @@ public class Solution {
 	return i == s.length();
     }
 
+    public int _409_longestPalindrome(String s) {
+	Map<Character, Integer> map = new HashMap<>();
+
+	for (char chr : s.toCharArray())
+	    map.put(chr, map.getOrDefault(chr, 0) + 1);
+
+	int sum = 0;
+	boolean odd = false;
+	for (int val : map.values()) {
+	    if (val % 2 == 0)
+		sum += val;
+	    else {
+		sum += val - 1;
+		odd = true;
+	    }
+	}
+
+	return sum + (odd ? 1 : 0);
+//	int sum = map.entrySet().stream().filter(e -> e.getValue() % 2 == 0).mapToInt(e -> e.getValue()).sum();
+//
+//	sum += map.entrySet().stream().filter(e -> e.getValue() % 2 != 0 && e.getValue() > 1)
+//		.mapToInt(e -> e.getValue() - 1).sum();
+//	sum += map.entrySet().stream().filter(e -> e.getValue() % 2 != 0).count() > 0 ? 1 : 0;
+//
+//	return sum;
+    }
+
+    // FIXME
+    public int _409_longestPalindromeV2(String s) {
+	Set<Integer> output = new HashSet<>();
+
+	_409_longestPalindrome(output, new ArrayList<Character>(), 0, s.toCharArray());
+
+	return output.stream().mapToInt(i -> i).max().getAsInt();
+    }
+
+    private void _409_longestPalindrome(Set<Integer> output, List<Character> tmp, int from, char[] chars) {
+	if (_409_longestPalindrome_isPalindrome(tmp))
+	    output.add(tmp.size());
+
+	for (int i = from; i < chars.length; i++) {
+	    tmp.add(chars[i]);
+	    _409_longestPalindrome(output, tmp, i + 1, chars);
+	    tmp.remove(tmp.size() - 1);
+	}
+    }
+
+    private boolean _409_longestPalindrome_isPalindrome(List<Character> tmp) {
+	int i = 0;
+	int j = tmp.size() - 1;
+
+	while (i < j) {
+	    if (!tmp.get(i).equals(tmp.get(j)))
+		return false;
+	    i++;
+	    j--;
+	}
+
+	return true;
+    }
+
     public List<List<Integer>> _429_levelOrder(Node root) {
 	List<List<Integer>> levels = new ArrayList<>();
 
@@ -4650,6 +4731,42 @@ public class Solution {
 	}
 
 	return levels;
+    }
+
+    public int _435_eraseOverlapIntervals(int[][] intervals) {
+	if (intervals.length == 0)
+	    return 0;
+
+	Arrays.sort(intervals, (o1, o2) -> o1[1] - o2[1]);
+
+	int counter = 0;
+	int endBefore = intervals[0][1];
+
+	for (int i = 1; i < intervals.length; i++) {
+	    if (endBefore > intervals[i][0])
+		counter++;
+	    else
+		endBefore = intervals[i][1];
+	}
+
+	return counter;
+    }
+
+    public int _435_eraseOverlapIntervalsV2(int[][] intervals) {
+	if (intervals.length == 0)
+	    return 0;
+
+	Arrays.sort(intervals, (o1, o2) -> o1[1] - o2[1]);
+
+	int counter = 0;
+
+	for (int fast = 1, slow = 0; fast < intervals.length; fast++)
+	    if (intervals[slow][1] > intervals[fast][0])
+		counter++;
+	    else
+		slow = fast;
+
+	return counter;
     }
 
     // TODO
@@ -5837,6 +5954,75 @@ public class Solution {
 		counter += word.length();
 	}
 	return counter;
+    }
+
+    class CombinationIterator {
+
+	private Queue<String> combinations;
+
+	public CombinationIterator(String characters, int combinationLength) {
+	    combinations = new LinkedList<>();
+
+	    preprocessing(new StringBuilder(), 0, combinationLength, characters.toCharArray());
+
+	}
+
+	private void preprocessing(StringBuilder sb, int from, int length, char[] chars) {
+	    if (sb.length() == length)
+		combinations.add(sb.toString());
+	    else {
+		for (int i = from; i < chars.length; i++) {
+		    sb.append(chars[i]);
+		    preprocessing(sb, i + 1, length, chars);
+		    sb.deleteCharAt(sb.length() - 1);
+		}
+	    }
+	}
+
+	public String next() {
+	    return combinations.poll();
+	}
+
+	public boolean hasNext() {
+	    return !combinations.isEmpty();
+	}
+    }
+
+    class CombinationIteratorV2 {
+
+	private List<String> combinations;
+	private int index;
+
+	public CombinationIteratorV2(String characters, int combinationLength) {
+	    combinations = new ArrayList<>();
+	    index = -1;
+
+	    preprocessing(new StringBuilder(), 0, combinationLength, characters.toCharArray());
+	}
+
+	private void preprocessing(StringBuilder sb, int from, int length, char[] chars) {
+	    if (sb.length() == length)
+		combinations.add(sb.toString());
+	    else {
+		for (int i = from; i < chars.length; i++) {
+		    sb.append(chars[i]);
+		    preprocessing(sb, i + 1, length, chars);
+		    sb.deleteCharAt(sb.length() - 1);
+		}
+	    }
+	}
+
+	public String next() {
+	    return index + 1 < combinations.size() ? combinations.get(++index) : null;
+	}
+
+	public boolean hasNext() {
+	    return index + 1 < combinations.size();
+	}
+    }
+
+    public CombinationIterator _1286_CombinationIterator(String characters, int combinationLength) {
+	return new CombinationIterator(characters, combinationLength);
     }
 
     public int _1360_daysBetweenDates(String sDate1, String sDate2) {

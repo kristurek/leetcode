@@ -24,6 +24,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.kristurek.leetcode.Solution.CombinationIterator;
 import com.kristurek.leetcode.Solution.PeekingIterator;
 import com.kristurek.leetcode.Solution.Trie;
 import com.kristurek.leetcode.Solution.WordDictionary;
@@ -1662,6 +1663,11 @@ public class SolutionTest {
     }
 
     @Test
+    void _274_hIndex() {
+	assertEquals(3, solution._274_hIndex(new int[] { 3, 0, 6, 1, 5 }));
+    }
+
+    @Test
     void _283_moveZeroes() {
 	int[] nums = IntStream.of(0, 1, 0, 3, 12).toArray();
 	int[] answer = IntStream.of(1, 3, 12, 0, 0).toArray();
@@ -1864,6 +1870,12 @@ public class SolutionTest {
     }
 
     @Test
+    void _409_longestPalindrome() {
+	assertEquals(7, solution._409_longestPalindrome("abccccdd"));
+	assertEquals(3, solution._409_longestPalindrome("ccc"));
+    }
+
+    @Test
     void _429_levelOrder() {
 	Node root = new Node(1, Arrays.asList(new Node(), new Node(), new Node()));
 	root.children.get(0).val = 3;
@@ -1879,6 +1891,15 @@ public class SolutionTest {
 	answer.add(Arrays.asList(5, 6));
 
 	assertEquals(answer, solution._429_levelOrder(root));
+    }
+
+    @Test
+    void _435_eraseOverlapIntervals() {
+	assertEquals(2,
+		solution._435_eraseOverlapIntervals(new int[][] { { 0, 2 }, { 1, 3 }, { 2, 4 }, { 3, 5 }, { 4, 6 } }));
+	assertEquals(1, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 2, 3 }, { 3, 4 }, { 1, 3 } }));
+	assertEquals(2, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 1, 2 }, { 1, 2 } }));
+	assertEquals(0, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 2, 3 } }));
     }
 
     @Test
@@ -2351,6 +2372,20 @@ public class SolutionTest {
 		"qaeowuwqsqffvibrtxnjnzvzuuonrkwpysyxvkijemmpdmtnqxwekbpfzs",
 		"qqxpxpmemkldghbmbyxpkwgkaykaerhmwwjonrhcsubchs" },
 		"usdruypficfbpfbivlrhutcgvyjenlxzeovdyjtgvvfdjzcmikjraspdfp"));
+    }
+
+    @Test
+    void _1286_CombinationIterator() {
+	CombinationIterator iterator = solution._1286_CombinationIterator("abc", 2);
+
+	assertTrue(iterator.hasNext());
+	assertEquals("ab", iterator.next());
+	assertTrue(iterator.hasNext());
+	assertEquals("ac", iterator.next());
+	assertTrue(iterator.hasNext());
+	assertEquals("bc", iterator.next());
+	assertFalse(iterator.hasNext());
+	assertNull(iterator.next());
     }
 
     @Test
