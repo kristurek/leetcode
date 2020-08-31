@@ -1870,9 +1870,25 @@ public class SolutionTest {
     }
 
     @Test
+    void _404_sumOfLeftLeaves() {
+	TreeNode root = new TreeNode(1);
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+
+	assertEquals(4, solution._404_sumOfLeftLeaves(root));
+    }
+
+    @Test
     void _409_longestPalindrome() {
 	assertEquals(7, solution._409_longestPalindrome("abccccdd"));
 	assertEquals(3, solution._409_longestPalindrome("ccc"));
+    }
+
+    @Test
+    void _412_fizzBuzz() {
+	assertEquals(Arrays.asList("1", "2", "Fizz", "4", "Buzz", "Fizz", "7"), solution._412_fizzBuzz(7));
     }
 
     @Test
@@ -1900,6 +1916,46 @@ public class SolutionTest {
 	assertEquals(1, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 2, 3 }, { 3, 4 }, { 1, 3 } }));
 	assertEquals(2, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 1, 2 }, { 1, 2 } }));
 	assertEquals(0, solution._435_eraseOverlapIntervals(new int[][] { { 1, 2 }, { 2, 3 } }));
+    }
+
+    @Test
+    void _450_deleteNode() {
+	TreeNode root = new TreeNode(5);
+	root.left = new TreeNode(3);
+	root.right = new TreeNode(6);
+	root.left.left = new TreeNode(2);
+	root.left.right = new TreeNode(4);
+	root.right.right = new TreeNode(7);
+
+	root = solution._450_deleteNode(root, 3);
+
+	assertEquals(5, root.val);
+	assertEquals(4, root.left.val);
+	assertEquals(6, root.right.val);
+	assertEquals(2, root.left.left.val);
+	assertEquals(7, root.right.right.val);
+    }
+
+    @Test
+    void _467_findRightInterval() {
+	assertArrayEquals(new int[] { -1 }, solution._467_findRightInterval(new int[][] { { 1, 2 } }));
+	assertArrayEquals(new int[] { -1, 0, 1 },
+		solution._467_findRightInterval(new int[][] { { 3, 4 }, { 2, 3 }, { 1, 2 } }));
+	assertArrayEquals(new int[] { -1, 2, -1 },
+		solution._467_findRightInterval(new int[][] { { 1, 4 }, { 2, 3 }, { 3, 4 } }));
+    }
+
+    @Test
+    void _497_Solution() {
+	Solution._497_Solution sol = solution._497_solution(new int[][] { { -2, -2, -1, -1 }, { 1, 0, 3, 0 } });
+
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
+//	System.out.println(Arrays.toString(sol.pick()));
     }
 
     @Test
@@ -2143,6 +2199,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _824_toGoatLatin() {
+	assertEquals("Imaa peaksmaaa oatGmaaaa atinLmaaaaa", solution._824_toGoatLatin("I speak Goat Latin"));
+	assertEquals(
+		"heTmaa uickqmaaa rownbmaaaa oxfmaaaaa umpedjmaaaaaa overmaaaaaaa hetmaaaaaaaa azylmaaaaaaaaa ogdmaaaaaaaaaa",
+		solution._824_toGoatLatin("The quick brown fox jumped over the lazy dog"));
+    }
+
+    @Test
     void _832_flipAndInvertImage() {
 	assertArrayEquals(new int[][] { { 1, 0, 0 } }, solution._832_flipAndInvertImage(new int[][] { { 1, 1, 0 } }));
 	assertArrayEquals(new int[][] { { 1, 0, 0 }, { 0, 1, 0 }, { 1, 1, 1 } },
@@ -2236,6 +2300,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _967_numsSameConsecDiff() {
+	assertArrayEquals(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, solution._967_numsSameConsecDiffV2(1, 0));
+	assertArrayEquals(new int[] { 181, 292, 707, 818, 929 }, solution._967_numsSameConsecDiffV2(3, 7));
+	assertArrayEquals(new int[] { 10, 12, 21, 23, 32, 34, 43, 45, 54, 56, 65, 67, 76, 78, 87, 89, 98 },
+		solution._967_numsSameConsecDiffV2(2, 1));
+    }
+
+    @Test
     void _987_verticalTraversal() {
 	TreeNode root = new TreeNode(3);
 	root.left = new TreeNode(9);
@@ -2296,6 +2368,24 @@ public class SolutionTest {
     }
 
     @Test
+    void _1032_streamChecker() {
+	Solution.StreamChecker streamChecker = solution._1032_streamChecker(new String[] { "cd", "f", "kl" });
+
+	assertFalse(streamChecker.query('a'));
+	assertFalse(streamChecker.query('b'));
+	assertFalse(streamChecker.query('c'));
+	assertTrue(streamChecker.query('d'));
+	assertFalse(streamChecker.query('e'));
+	assertTrue(streamChecker.query('f'));
+	assertFalse(streamChecker.query('g'));
+	assertFalse(streamChecker.query('h'));
+	assertFalse(streamChecker.query('i'));
+	assertFalse(streamChecker.query('j'));
+	assertFalse(streamChecker.query('k'));
+	assertTrue(streamChecker.query('l'));
+    }
+
+    @Test
     void _1046_lastStoneWeight() {
 	assertThat(solution._1046_lastStoneWeight(IntStream.of(2, 7, 4, 1, 8, 1).toArray()), is(equalTo(1)));
     }
@@ -2332,6 +2422,12 @@ public class SolutionTest {
     @Test
     void _1108_defangIPaddr() {
 	assertEquals("192[.]168[.]1[.]1", solution._1108_defangIPaddr("192.168.1.1"));
+    }
+
+    @Test
+    void _1103_distributeCandies() {
+	assertArrayEquals(new int[] { 1, 2, 3, 1 }, solution._1103_distributeCandies(7, 4));
+	assertArrayEquals(new int[] { 5, 2, 3 }, solution._1103_distributeCandies(10, 3));
     }
 
     @Test

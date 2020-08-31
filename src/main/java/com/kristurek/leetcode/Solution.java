@@ -2561,6 +2561,53 @@ public class Solution {
 	if (head == null || head.next == null)
 	    return;
 
+	ListNode slow = head.next;
+	ListNode fast = head.next.next;
+	ListNode previous = head;
+
+	// Find middle position
+	while (fast != null && fast.next != null) {
+	    previous = slow;
+	    slow = slow.next;
+	    fast = fast.next.next;
+	}
+
+	previous.next = null;
+
+	// Reverse from middle to end
+	ListNode prev = null;
+	ListNode curr = slow;
+	ListNode next = null;
+
+	while (curr != null) {
+	    next = curr.next;
+
+	    curr.next = prev;
+
+	    prev = curr;
+	    curr = next;
+	}
+
+	ListNode current = head;
+	ListNode middle = prev;
+
+	while (current != null && current.next != null) {
+	    ListNode tmp = current.next;
+
+	    current.next = middle;
+
+	    middle = middle.next;
+	    current.next.next = tmp;
+	    current = tmp;
+	}
+
+	current.next = middle;
+    }
+
+    public void _143_reorderListV3(ListNode head) {
+	if (head == null || head.next == null)
+	    return;
+
 	// Find PRE middle element
 	ListNode preMiddle = head;
 	ListNode fast = head;
@@ -4643,6 +4690,31 @@ public class Solution {
 	return i == s.length();
     }
 
+    public int _404_sumOfLeftLeaves(TreeNode root) {
+	if (root == null)
+	    return 0;
+
+	Stack<TreeNode> stack = new Stack<>();
+	int sum = 0;
+
+	stack.push(root);
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.pop();
+
+	    if (tn.right != null)
+		stack.push(tn.right);
+	    if (tn.left != null) {
+		stack.push(tn.left);
+
+		if (tn.left.left == null && tn.left.right == null)
+		    sum += tn.left.val;
+	    }
+	}
+
+	return sum;
+    }
+
     public int _409_longestPalindrome(String s) {
 	Map<Character, Integer> map = new HashMap<>();
 
@@ -4702,6 +4774,25 @@ public class Solution {
 	}
 
 	return true;
+    }
+
+    public List<String> _412_fizzBuzz(int n) {
+	List<String> results = new ArrayList<>();
+
+	for (int i = 1; i <= n; i++) {
+	    if (i % 3 != 0 && i % 5 != 0)
+		results.add(String.valueOf(i));
+	    else if (i % 3 == 0 && i % 5 == 0)
+		results.add("FizzBuzz");
+	    else {
+		if (i % 3 == 0)
+		    results.add("Fizz");
+		if (i % 5 == 0)
+		    results.add("Buzz");
+	    }
+	}
+
+	return results;
     }
 
     public List<List<Integer>> _429_levelOrder(Node root) {
@@ -4801,6 +4892,109 @@ public class Solution {
 	map.put(currentSum, map.get(currentSum) - 1);
 
 	return res;
+    }
+
+    public TreeNode _450_deleteNode(TreeNode root, int key) {
+	TreeNode prev = null;
+	TreeNode curr = root;
+
+	while (curr != null && curr.val != key) {
+	    prev = curr;
+	    curr = key < curr.val ? curr.left : curr.right;
+	}
+
+	if (curr == null)
+	    return root;
+
+	if (prev == null)
+	    return _450_deleteNode(root);
+
+	if (prev.left == curr)
+	    prev.left = _450_deleteNode(curr);
+	else
+	    prev.right = _450_deleteNode(curr);
+
+	return root;
+    }
+
+    private TreeNode _450_deleteNode(TreeNode root) {
+	if (root == null)
+	    return null;
+
+	if (root.left == null)
+	    return root.right;
+
+	if (root.right == null)
+	    return root.left;
+
+	TreeNode curr = root.right;
+	TreeNode pre = null;
+
+	while (curr.left != null) {
+	    pre = curr;
+	    curr = curr.left;
+	}
+
+	curr.left = root.left;
+
+	if (root.right != curr) {
+	    pre.left = curr.right;
+	    curr.right = root.right;
+	}
+
+	return curr;
+    }
+
+    public int[] _467_findRightInterval(int[][] intervals) {
+	int[] results = new int[intervals.length];
+
+	TreeMap<Integer, Integer> map = new TreeMap<>();
+
+	for (int i = 0; i < intervals.length; i++)
+	    map.put(intervals[i][0], i); // add start interval and index
+
+	for (int i = 0; i < intervals.length; i++) {
+	    Map.Entry<Integer, Integer> entry = map.ceilingEntry(intervals[i][1]); // find end>=start
+
+	    results[i] = entry != null ? entry.getValue() : -1;
+	}
+
+	return results;
+    }
+
+    class _497_Solution {
+	int[][] rects;
+	int sum;
+	TreeMap<Integer, Integer> map;
+	Random random;
+
+	public _497_Solution(int[][] rects) {
+	    this.rects = rects;
+
+	    random = new Random();
+	    map = new TreeMap<>();
+
+	    sum = 0;
+	    for (int i = 0; i < rects.length; i++) {
+		sum += (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
+
+		map.put(sum, i);
+	    }
+	}
+
+	public int[] pick() {
+	    int key = map.ceilingKey(random.nextInt(sum) + 1);
+
+	    int[] rect = rects[map.get(key)];
+
+	    int left = rect[0], right = rect[2], bot = rect[1], top = rect[3];
+
+	    return new int[] { left + random.nextInt(right - left + 1), bot + random.nextInt(top - bot + 1) };
+	}
+    }
+
+    public _497_Solution _497_solution(int[][] rects) {
+	return new _497_Solution(rects);
     }
 
     public int _509_fib(int N) {
@@ -5438,6 +5632,31 @@ public class Solution {
 	return values;
     }
 
+    public String _824_toGoatLatin(String S) {
+	Set<Character> vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'));
+
+	StringBuilder sb = new StringBuilder();
+	String[] words = S.split(" ");
+
+	for (int i = 0; i < words.length; i++) {
+	    if (!vowels.contains(words[i].charAt(0)))
+		sb.append(words[i].substring(1, words[i].length())).append(words[i].substring(0, 1));
+
+	    if (vowels.contains(words[i].charAt(0)))
+		sb.append(words[i]);
+
+	    sb.append("ma");
+	    for (int j = 0; j < i + 1; j++)
+		sb.append("a");
+
+	    sb.append(" ");
+	}
+
+	sb.deleteCharAt(sb.length() - 1);
+
+	return sb.toString();
+    }
+
     public int[][] _832_flipAndInvertImage(int[][] A) {
 	int rLength = A.length;
 	int cLength = A[0].length;
@@ -5510,6 +5729,25 @@ public class Solution {
 		B[j--] = A[k];
 
 	return B;
+    }
+
+    public int[] _905_sortArrayByParity_V2(int[] A) {
+	for (int i = 0, j = A.length - 1; i < j;) {
+	    if (A[i] % 2 == 0) {
+		i++;
+		continue;
+	    }
+	    if (A[j] % 2 != 0) {
+		j--;
+		continue;
+	    }
+
+	    int tmp = A[i];
+	    A[i] = A[j];
+	    A[j] = tmp;
+	}
+
+	return A;
     }
 
     public int[] _922_sortArrayByParityII(int[] A) {
@@ -5628,6 +5866,81 @@ public class Solution {
 	    map.put(a, map.getOrDefault(a, 0) + 1);
 
 	return map.entrySet().stream().filter(entry -> entry.getValue() == n).findFirst().get().getKey();
+    }
+
+    public int[] _967_numsSameConsecDiff(int N, int K) {
+	List<Integer> nums = new ArrayList<>();
+
+	if (N == 0)
+	    return new int[0];
+	if (N == 1)
+	    nums.add(0);
+
+	_967_numsSameConsecDiff_dfs(N, K, nums, 0);
+
+	return nums.stream().mapToInt(i -> i).toArray();
+    }
+
+    private void _967_numsSameConsecDiff_dfs(int n, int k, List<Integer> nums, int number) {
+	if (n == 0)
+	    nums.add(number);
+	else {
+	    for (int i = 0; i < 10; i++) {
+		if (number == 0 && i == 0)
+		    continue;
+		else if (number == 0 && i != 0)
+		    _967_numsSameConsecDiff_dfs(n - 1, k, nums, i);
+		else {
+		    if (Math.abs((number % 10) - i) == k)
+			_967_numsSameConsecDiff_dfs(n - 1, k, nums, number * 10 + i);
+		}
+	    }
+	}
+    }
+
+    // FIXME TimeLimitExceeded
+    public int[] _967_numsSameConsecDiffV2(int N, int K) {
+	List<Integer> output = new ArrayList<>();
+	int[] nums = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+	_967_numsSameConsecDiff_backtracking(output, new ArrayList<>(), nums, N, K);
+
+	return output.stream().mapToInt(i -> i).toArray();
+    }
+
+    private void _967_numsSameConsecDiff_backtracking(List<Integer> output, List<Integer> tmp, int[] nums, int n,
+	    int k) {
+	if (tmp.size() == n) {
+	    if (_967_numsSameConsecDiff_check(n, k, tmp) == false)
+		return;
+
+	    output.add(_967_numsSameConsecDiff_convert(tmp));
+	} else {
+	    for (int i = 0; i < nums.length; i++) {
+		tmp.add(nums[i]);
+		_967_numsSameConsecDiff_backtracking(output, tmp, nums, n, k);
+		tmp.remove(tmp.size() - 1);
+	    }
+	}
+    }
+
+    private int _967_numsSameConsecDiff_convert(List<Integer> nums) {
+	int number = 0;
+	for (int num : nums)
+	    number = number * 10 + num;
+
+	return number;
+    }
+
+    private boolean _967_numsSameConsecDiff_check(int n, int k, List<Integer> nums) {
+	if (nums.get(0) == 0 && nums.size() != 1)
+	    return false;
+
+	for (int i = 0, j = 1; j < nums.size(); i++, j++)
+	    if (Math.abs(nums.get(i) - nums.get(j)) != k)
+		return false;
+
+	return true;
     }
 
     public int[] _977_sortedSquares(int[] A) {
@@ -5823,6 +6136,90 @@ public class Solution {
 	return sb.toString();
     }
 
+    class StreamChecker {
+
+	class Node {
+	    Map<Character, Node> links;
+	    boolean isEnd;
+
+	    public Node() {
+		super();
+
+		links = new HashMap<Character, Node>();
+		isEnd = false;
+	    }
+
+	    public boolean contains(char cChar) {
+		return links.containsKey(cChar);
+	    }
+
+	    public void put(char cChar, Node node) {
+		links.put(cChar, node);
+	    }
+
+	    public Node get(char cChar) {
+		return links.get(cChar);
+	    }
+
+	    public void setEnd() {
+		isEnd = true;
+	    }
+
+	    public boolean isEnd() {
+		return isEnd;
+	    }
+
+	    @Override
+	    public String toString() {
+		return "Node [links=" + links + ", isEnd=" + isEnd + "]";
+	    }
+
+	}
+
+	private Node root;
+	private List<Character> queries;
+
+	public StreamChecker(String[] words) {
+	    root = new Node();
+	    queries = new ArrayList<>();
+
+	    for (String word : words) {
+		Node node = root;
+
+		for (int i = word.length() - 1; i >= 0; i--) {
+		    if (!node.contains(word.charAt(i)))
+			node.put(word.charAt(i), new Node());
+
+		    node = node.get(word.charAt(i));
+		}
+
+		node.setEnd();
+	    }
+	}
+
+	public boolean query(char letter) {
+	    queries.add(letter);
+	    Node node = root;
+
+	    for (int i = queries.size() - 1; i >= 0 && node != null; i--) {
+		char c = queries.get(i);
+
+		if (node.contains(c)) {
+		    node = node.get(c);
+		    if (node.isEnd())
+			return true;
+		} else
+		    break;
+	    }
+
+	    return false;
+	}
+    }
+
+    public StreamChecker _1032_streamChecker(String[] words) {
+	return new StreamChecker(words);
+    }
+
     public int _1046_lastStoneWeight(int[] stones) {
 	PriorityQueue<Integer> queue = new PriorityQueue<>((v1, v2) -> v2 - v1);
 
@@ -5890,6 +6287,26 @@ public class Solution {
 		if (i < arr.length)
 		    arr[i] = 0;
 	    }
+    }
+
+    public int[] _1103_distributeCandies(int candies, int num_people) {
+	int[] distributeCandies = new int[num_people];
+	int count = 1;
+
+	while (candies > 0) {
+	    for (int i = 0; i < distributeCandies.length; i++) {
+		if (count <= candies) {
+		    distributeCandies[i] += count;
+		    candies -= count;
+		    count++;
+		} else {
+		    distributeCandies[i] += candies;
+		    candies = 0;
+		}
+	    }
+	}
+
+	return distributeCandies;
     }
 
     public String _1108_defangIPaddr(String address) {
