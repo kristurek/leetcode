@@ -1482,6 +1482,15 @@ public class SolutionTest {
     }
 
     @Test
+    void _220_containsNearbyAlmostDuplicate() {
+	assertTrue(solution._220_containsNearbyAlmostDuplicate(new int[] { 1, 2, 3, 1 }, 3, 0));
+	assertTrue(solution._220_containsNearbyAlmostDuplicate(new int[] { 1, 0, 1, 1 }, 1, 2));
+	assertFalse(solution._220_containsNearbyAlmostDuplicate(new int[] { 1, 5, 9, 1, 5, 9 }, 2, 3));
+	// assertTrue(solution._220_containsNearbyAlmostDuplicate(new int[] { 7, 1, 3 },
+	// 2, 3));
+    }
+
+    @Test
     void _225_myStack() {
 	Solution.MyStack stack = solution._225_MyStack();
 
@@ -1696,6 +1705,16 @@ public class SolutionTest {
     @Test
     void _287_findDuplicate() {
 	assertEquals(2, solution._287_findDuplicate(new int[] { 1, 3, 4, 2, 2 }));
+    }
+
+    @Test
+    void _290_wordPattern() {
+	assertTrue(solution._290_wordPattern("abba", "dog cat cat dog"));
+	assertFalse(solution._290_wordPattern("abba", "dog cat cat fish"));
+	assertFalse(solution._290_wordPattern("aaaa", "dog cat cat dog"));
+	assertTrue(solution._290_wordPattern(
+		"ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccdd",
+		"s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s s t t"));
     }
 
     @Test
@@ -1937,6 +1956,13 @@ public class SolutionTest {
     }
 
     @Test
+    void _459_repeatedSubstringPattern() {
+	assertTrue(solution._459_repeatedSubstringPattern("abab"));
+	assertFalse(solution._459_repeatedSubstringPattern("aba"));
+	assertTrue(solution._459_repeatedSubstringPattern("abcabcabcabc"));
+    }
+
+    @Test
     void _467_findRightInterval() {
 	assertArrayEquals(new int[] { -1 }, solution._467_findRightInterval(new int[][] { { 1, 2 } }));
 	assertArrayEquals(new int[] { -1, 0, 1 },
@@ -2160,6 +2186,14 @@ public class SolutionTest {
     }
 
     @Test
+    void _763_partitionLabels() {
+	List<Integer> actual = solution._763_partitionLabels("ababcbacadefegdehijhklij");
+	List<Integer> expected = Arrays.asList(9, 7, 8);
+
+	assertEquals(expected, actual);
+    }
+
+    @Test
     void _771_numJewelsInStones() {
 	assertEquals(3, solution._771_numJewelsInStones("aA", "aAAbbbb"));
     }
@@ -2293,6 +2327,12 @@ public class SolutionTest {
     }
 
     @Test
+    void _949_largestTimeFromDigits() {
+	assertEquals("23:41", solution._949_largestTimeFromDigits(new int[] { 1, 2, 3, 4 }));
+	assertEquals("", solution._949_largestTimeFromDigits(new int[] { 5, 5, 5, 5 }));
+    }
+
+    @Test
     void _961_repeatedNTimes() {
 	assertEquals(3, solution._961_repeatedNTimes(new int[] { 1, 2, 3, 3 }));
 	assertEquals(2, solution._961_repeatedNTimes(new int[] { 2, 1, 2, 5, 3, 2 }));
@@ -2365,6 +2405,19 @@ public class SolutionTest {
 	assertEquals("()()()()(())", solution._1021_removeOuterParentheses("(()())(())(()(()))"));
 	assertEquals("()()()", solution._1021_removeOuterParentheses("(()())(())"));
 	assertEquals("", solution._1021_removeOuterParentheses("()()"));
+    }
+
+    @Test
+    void _1022_sumRootToLeaf() {
+	TreeNode root = new TreeNode(1);
+	root.left = new TreeNode(0);
+	root.right = new TreeNode(1);
+	root.left.left = new TreeNode(0);
+	root.left.right = new TreeNode(1);
+	root.right.left = new TreeNode(0);
+	root.right.right = new TreeNode(1);
+
+	assertEquals(22, solution._1022_sumRootToLeaf(root));
     }
 
     @Test
@@ -2482,6 +2535,27 @@ public class SolutionTest {
 	assertEquals("bc", iterator.next());
 	assertFalse(iterator.hasNext());
 	assertNull(iterator.next());
+    }
+
+    @Test
+    void _1305_getAllElements() {
+	TreeNode root1 = new TreeNode(8);
+	root1.left = new TreeNode(5);
+	root1.right = new TreeNode(10);
+	root1.left.left = new TreeNode(1);
+	root1.left.right = new TreeNode(7);
+	root1.right.right = new TreeNode(12);
+
+	TreeNode root2 = new TreeNode(1);
+	root2.left = new TreeNode(15);
+	root2.right = new TreeNode(8);
+	root2.left.right = new TreeNode(71);
+	root2.left.right.left = new TreeNode(2);
+
+	List<Integer> actual = solution._1305_getAllElements(root1, root2);
+	List<Integer> expected = Arrays.asList(1, 1, 2, 5, 7, 8, 8, 10, 12, 15, 71);
+
+	assertEquals(expected, actual);
     }
 
     @Test

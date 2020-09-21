@@ -3627,6 +3627,26 @@ public class Solution {
 	return false;
     }
 
+    // FIXME
+    public boolean _220_containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+	TreeMap<Integer, Integer> map = new TreeMap<>();
+
+	for (int i = 0; i < nums.length; i++)
+	    map.put(i, nums[i]);
+
+	for (int i = 0; i < nums.length; i++) {
+	    int j = map.floorKey(Math.abs(i - k));
+
+	    if (i == j)
+		continue;
+
+	    if (Math.abs(nums[i] - nums[j]) <= t && Math.abs(i - j) <= k)
+		return true;
+	}
+
+	return false;
+    }
+
     class MyStack {
 
 	private Queue<Integer> queue;
@@ -4152,6 +4172,31 @@ public class Solution {
 	return -1;
     }
 
+    public boolean _290_wordPattern(String pattern, String str) {
+	Map<Character, Integer> mapP = new HashMap<>();
+	Map<String, Integer> mapW = new HashMap<>();
+	String[] words = str.split(" ");
+
+	if (pattern.length() != words.length)
+	    return false;
+
+	for (int i = 0; i < words.length; i++) {
+	    char c = pattern.charAt(i);
+	    String w = words[i];
+
+	    if (!mapP.containsKey(c))
+		mapP.put(c, i);
+
+	    if (!mapW.containsKey(w))
+		mapW.put(w, i);
+
+	    if (!mapP.get(c).equals(mapW.get(w)))
+		return false;
+	}
+
+	return true;
+    }
+   
     public int _304_sumRegion(int[][] matrix, int row1, int col1, int row2, int col2) {
 	int sum = 0;
 	for (int col = col1; col <= col2; col++) {
@@ -4945,6 +4990,10 @@ public class Solution {
 	return curr;
     }
 
+    public boolean _459_repeatedSubstringPattern(String s) {
+	return (s + s).substring(1, 2 * s.length() - 1).contains(s);
+    }
+
     public int[] _467_findRightInterval(int[][] intervals) {
 	int[] results = new int[intervals.length];
 
@@ -5559,6 +5608,29 @@ public class Solution {
 	return values;
     }
 
+    public List<Integer> _763_partitionLabels(String S) {
+	Map<Character, Integer> map = new HashMap<>();
+
+	for (int i = 0; i < S.length(); i++)
+	    map.put(S.charAt(i), i);
+
+	List<Integer> sizes = new ArrayList<>();
+	int begin = 0;
+	int last = 0;
+
+	for (int i = 0; i < S.length(); i++) {
+	    // why max? -> max position for current char and previous char
+	    last = Math.max(last, map.get(S.charAt(i)));
+
+	    if (i == last) {
+		sizes.add(last - begin + 1);
+		begin = last + 1;
+	    }
+	}
+
+	return sizes;
+    }
+
     public int _771_numJewelsInStones(String J, String S) {
 	Map<Character, Integer> map = new HashMap<>();
 
@@ -5857,6 +5929,44 @@ public class Solution {
 	return count;
     }
 
+    private int _949_largestTimeFromDigits_max_time = -1;
+
+    public String _949_largestTimeFromDigits(int[] A) {
+	_949_largestTimeFromDigits_max_time = -1;
+
+	_949_largestTimeFromDigits_backtracking(new ArrayList<>(), A, new boolean[A.length]);
+
+	if (_949_largestTimeFromDigits_max_time == -1)
+	    return "";
+	else
+	    return String.format("%02d:%02d", _949_largestTimeFromDigits_max_time / 60,
+		    _949_largestTimeFromDigits_max_time % 60);
+    }
+
+    private void _949_largestTimeFromDigits_backtracking(List<Integer> tmp, int[] nums, boolean[] used) {
+	if (tmp.size() == nums.length)
+	    _949_largestTimeFromDigits_build_time(tmp);
+	else
+	    for (int i = 0; i < nums.length; i++) {
+		if (used[i])
+		    continue;
+
+		tmp.add(nums[i]);
+		used[i] = true;
+		_949_largestTimeFromDigits_backtracking(tmp, nums, used);
+		tmp.remove(tmp.size() - 1);
+		used[i] = false;
+	    }
+    }
+
+    protected void _949_largestTimeFromDigits_build_time(List<Integer> perm) {
+	int hour = perm.get(0) * 10 + perm.get(1);
+	int minute = perm.get(2) * 10 + perm.get(3);
+
+	if (hour < 24 && minute < 60)
+	    _949_largestTimeFromDigits_max_time = Math.max(_949_largestTimeFromDigits_max_time, hour * 60 + minute);
+    }
+
     public int _961_repeatedNTimes(int[] A) {
 	int n = A.length / 2;
 
@@ -6134,6 +6244,38 @@ public class Solution {
 	}
 
 	return sb.toString();
+    }
+
+    public int _1022_sumRootToLeaf(TreeNode root) {
+	if (root == null)
+	    return 0;
+
+	Deque<TreeNode> stack = new LinkedList<>();
+	Deque<String> stackSum = new LinkedList<>();
+
+	int sum = 0;
+
+	stack.push(root);
+	stackSum.push(String.valueOf(root.val));
+
+	while (!stack.isEmpty()) {
+	    TreeNode tn = stack.pop();
+	    String sSum = stackSum.pop();
+
+	    if (tn.left == null && tn.right == null)
+		sum += Integer.parseInt(sSum, 2);
+
+	    if (tn.right != null) {
+		stack.push(tn.right);
+		stackSum.push(sSum + String.valueOf(tn.right.val));
+	    }
+	    if (tn.left != null) {
+		stack.push(tn.left);
+		stackSum.push(sSum + String.valueOf(tn.left.val));
+	    }
+	}
+
+	return sum;
     }
 
     class StreamChecker {
@@ -6440,6 +6582,41 @@ public class Solution {
 
     public CombinationIterator _1286_CombinationIterator(String characters, int combinationLength) {
 	return new CombinationIterator(characters, combinationLength);
+    }
+
+    public List<Integer> _1305_getAllElements(TreeNode root1, TreeNode root2) {
+	List<Integer> list1 = _1305_getAllElements(root1);
+	List<Integer> list2 = _1305_getAllElements(root2);
+
+	list1.addAll(list2);
+
+	Collections.sort(list1);
+
+	return list1;
+    }
+
+    private List<Integer> _1305_getAllElements(TreeNode root) {
+	if (root == null)
+	    return new ArrayList<>();
+
+	List<Integer> nums = new ArrayList<>();
+
+	Queue<TreeNode> queue = new LinkedList<>();
+
+	queue.add(root);
+
+	while (!queue.isEmpty()) {
+	    TreeNode tn = queue.poll();
+
+	    nums.add(tn.val);
+
+	    if (tn.right != null)
+		queue.add(tn.right);
+	    if (tn.left != null)
+		queue.add(tn.left);
+	}
+
+	return nums;
     }
 
     public int _1360_daysBetweenDates(String sDate1, String sDate2) {
