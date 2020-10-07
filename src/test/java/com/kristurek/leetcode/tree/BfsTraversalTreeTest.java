@@ -12,37 +12,37 @@ import com.kristurek.leetcode.common.TreeNode;
 
 public class BfsTraversalTreeTest {
 
-	@Test
-	void traverseIterative() {
-		TreeNode root = new TreeNode(1);
+    @Test
+    void traverseIterative() {
+	TreeNode root = new TreeNode(1);
 
-		root.left = new TreeNode(2);
-		root.right = new TreeNode(3);
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
 
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(6);
-		root.right.right = new TreeNode(7);
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+	root.right.left = new TreeNode(6);
+	root.right.right = new TreeNode(7);
 
-		List<Integer> values = BfsTraversalTree.traverseIterative(root);
+	List<Integer> values = BfsTraversalTree.traverseIterative(root);
 
-		assertThat(values, is(Arrays.asList(1, 2, 3, 4, 5, 6, 7)));
-	}
+	assertThat(values, is(Arrays.asList(1, 2, 3, 4, 5, 6, 7)));
+    }
 
-	@Test
-	void traverseRecursive() {
-		TreeNode root = new TreeNode(1);
+    @Test
+    void traverseRecursive() {
+	TreeNode root = new TreeNode(1);
 
-		root.left = new TreeNode(2);
-		root.right = new TreeNode(3);
+	root.left = new TreeNode(2);
+	root.right = new TreeNode(3);
 
-		root.left.left = new TreeNode(4);
-		root.left.right = new TreeNode(5);
-		root.right.left = new TreeNode(6);
-		root.right.right = new TreeNode(7);
+	root.left.left = new TreeNode(4);
+	root.left.right = new TreeNode(5);
+	root.right.left = new TreeNode(6);
+	root.right.right = new TreeNode(7);
 
-		List<Integer> values = BfsTraversalTree.traverseRecursive(root);
+	List<Integer> values = BfsTraversalTree.traverseRecursive(root);
 
-		assertThat(values, is(Arrays.asList(1, 2, 3, 4, 5, 6, 7)));
-	}
+	assertThat(values, is(Arrays.asList(1, 2, 3, 4, 5, 6, 7)));
+    }
 }

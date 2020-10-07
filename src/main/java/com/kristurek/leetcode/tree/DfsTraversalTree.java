@@ -10,19 +10,19 @@ public class DfsTraversalTree {
 
 	public static List<Integer> traversePreOrder(TreeNode root) {
 		List<Integer> values = new LinkedList<Integer>();
-		Deque<TreeNode> queue = new LinkedList<>();
+		Deque<TreeNode> stack = new LinkedList<>();
 
-		queue.addLast(root);
+		stack.push(root);
 
-		while (!queue.isEmpty()) {
-			TreeNode tn = queue.removeLast();
+		while (!stack.isEmpty()) {
+			TreeNode tn = stack.pop();
 
 			values.add(tn.val);
 
 			if (tn.right != null)
-				queue.addLast(tn.right);
+				stack.push(tn.right);
 			if (tn.left != null)
-				queue.addLast(tn.left);
+				stack.push(tn.left);
 		}
 
 		return values;
@@ -30,16 +30,16 @@ public class DfsTraversalTree {
 
 	public static List<Integer> traverseInOrder(TreeNode root) {
 		List<Integer> values = new LinkedList<Integer>();
-		Deque<TreeNode> queue = new LinkedList<>();
+		Deque<TreeNode> stack = new LinkedList<>();
 
 		TreeNode current = root;
 
-		while (!queue.isEmpty() || current != null) {
+		while (!stack.isEmpty() || current != null) {
 			if (current != null) {
-				queue.addLast(current);
+				stack.push(current);
 				current = current.left;
 			} else {
-				current = queue.removeLast();
+				current = stack.pop();
 				values.add(current.val);
 				current = current.right;
 			}
@@ -53,20 +53,20 @@ public class DfsTraversalTree {
 		Deque<TreeNode> s1 = new LinkedList<>();
 		Deque<TreeNode> s2 = new LinkedList<>();
 
-		s1.addFirst(root);
+		s1.push(root);
 
 		while (!s1.isEmpty()) {
-			TreeNode temp = s1.removeFirst();
-			s2.addFirst(temp);
+			TreeNode temp = s1.pop();
+			s2.push(temp);
 
 			if (temp.left != null)
-				s1.addFirst(temp.left);
+				s1.push(temp.left);
 			if (temp.right != null)
-				s1.addFirst(temp.right);
+				s1.push(temp.right);
 		}
 
 		while (!s2.isEmpty()) {
-			TreeNode temp = s2.removeFirst();
+			TreeNode temp = s2.pop();
 			values.add(temp.val);
 		}
 

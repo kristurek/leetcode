@@ -225,6 +225,34 @@ public class Solution {
     }
 
     public String _12_intToRoman(int num) {
+	Map<Integer, String> map = new LinkedHashMap<Integer, String>();
+	map.put(1000, "M");
+	map.put(900, "CM");
+	map.put(500, "D");
+	map.put(400, "CD");
+	map.put(100, "C");
+	map.put(90, "XC");
+	map.put(50, "L");
+	map.put(40, "XL");
+	map.put(10, "X");
+	map.put(9, "IX");
+	map.put(5, "V");
+	map.put(4, "IV");
+	map.put(1, "I");
+
+	StringBuilder sb = new StringBuilder();
+
+	for (Map.Entry<Integer, String> entry : map.entrySet()) {
+	    while (num / entry.getKey() > 0) {
+		sb.append(entry.getValue());
+		num = num - entry.getKey();
+	    }
+	}
+
+	return sb.toString();
+    }
+
+    public String _12_intToRoman_v2(int num) {
 	Map<Integer, String> map = new LinkedHashMap<>(); // remember order
 	map.put(1000, "M");
 	map.put(900, "CM");
@@ -252,7 +280,7 @@ public class Solution {
 	return roman.toString();
     }
 
-    public String _12_intToRoman_v2(int num) {
+    public String _12_intToRoman_v3(int num) {
 	Map<Integer, String> map = new LinkedHashMap<>();
 	map.put(1000, "M");
 	map.put(900, "CM");
@@ -323,6 +351,18 @@ public class Solution {
 	}
     }
 
+    public int _13_romanToInt_v2(String s) {
+	int number = 0;
+
+	for (int slow = 0, fast = 1; fast < s.length(); slow++, fast++)
+	    if (_13_romanToInt_convert(s.charAt(slow)) < _13_romanToInt_convert(s.charAt(fast)))
+		number -= _13_romanToInt_convert(s.charAt(slow));
+	    else
+		number += _13_romanToInt_convert(s.charAt(slow));
+
+	return number + _13_romanToInt_convert(s.charAt(s.length() - 1));
+    }
+
     public String _14_longestCommonPrefix(String[] strs) {
 	if (strs == null)
 	    return null;
@@ -334,6 +374,19 @@ public class Solution {
 	for (String str : strs)
 	    while (str.indexOf(longestPrefix) != 0)
 		longestPrefix = longestPrefix.substring(0, longestPrefix.length() - 1);
+
+	return longestPrefix;
+    }
+
+    public String _14_longestCommonPrefix_V2(String[] strs) {
+	String longestPrefix = strs[0];
+
+	for (int i = longestPrefix.length() - 1; i >= 0; i--)
+	    for (String str : strs)
+		if (i >= str.length() || str.charAt(i) != longestPrefix.charAt(i)) {
+		    longestPrefix = longestPrefix.substring(0, i);
+		    break;
+		}
 
 	return longestPrefix;
     }
@@ -658,6 +711,36 @@ public class Solution {
     }
 
     public ListNode _24_swapPairs(ListNode head) {
+	if (head == null || head.next == null)
+	    return head;
+
+	ListNode dummy = new ListNode(-1);
+	ListNode current = dummy;
+
+	ListNode slow = head;
+	ListNode fast = head.next;
+
+	while (fast != null) {
+	    ListNode next = fast.next;
+	    slow.next = null;
+	    fast.next = null;
+
+	    current.next = fast;
+	    current = current.next;
+	    current.next = slow;
+	    current = current.next;
+
+	    slow = next;
+	    fast = next != null ? next.next : null;
+	}
+
+	if (slow != null)
+	    current.next = slow;
+
+	return dummy.next;
+    }
+
+    public ListNode _24_swapPairs_V2(ListNode head) {
 	if (head == null)
 	    return null;
 	else {
@@ -1335,6 +1418,31 @@ public class Solution {
 	return sb.toString();
     }
 
+    public String _71_simplifyPath_v2(String path) {
+	StringBuilder sb = new StringBuilder();
+	String[] cmds = path.split("/");
+
+	Deque<String> stack = new LinkedList<>();
+	for (String cmd : cmds) {
+	    if (cmd.equals("/") || cmd.equals("") || cmd.equals("."))
+		continue;
+	    else if (cmd.equals("..")) {
+		if (!stack.isEmpty())
+		    stack.pop();
+	    } else
+		stack.push(cmd);
+
+	}
+
+	if (stack.isEmpty())
+	    sb.append("/");
+	else
+	    while (!stack.isEmpty())
+		sb.append("/" + stack.pollLast());
+
+	return sb.toString();
+    }
+
     public void _73_setZeroes(int[][] matrix) {
 	Set<Integer> rows = new HashSet<>();
 	Set<Integer> cols = new HashSet<>();
@@ -1353,6 +1461,29 @@ public class Solution {
     }
 
     public boolean _74_searchMatrix(int[][] matrix, int target) {
+	if (matrix == null || matrix.length == 0)
+	    return false;
+
+	int l = 0;
+	int h = matrix.length * matrix[0].length - 1;
+
+	while (l <= h) {
+	    int m = l + (h - l) / 2;
+	    int col = m % matrix[0].length;
+	    int row = m / matrix[0].length;
+
+	    if (target < matrix[row][col])
+		h = m - 1;
+	    else if (target > matrix[row][col])
+		l = m + 1;
+	    else
+		return true;
+	}
+
+	return false;
+    }
+
+    public boolean _74_searchMatrix_v2(int[][] matrix, int target) {
 	if (matrix == null || matrix.length == 0)
 	    return false;
 
@@ -1674,44 +1805,39 @@ public class Solution {
 	if (root == null)
 	    return new ArrayList<>();
 
-	List<Integer> traversal = new ArrayList<>();
+	List<Integer> values = new ArrayList<>();
 	Deque<TreeNode> stack = new LinkedList<>();
 	TreeNode current = root;
 
-	while (!stack.isEmpty() || current != null) {
+	while (!stack.isEmpty() || current != null)
 	    if (current != null) {
-		stack.addLast(current);
+		stack.push(current);
 		current = current.left;
 	    } else {
-		current = stack.removeLast();
-		traversal.add(current.val);
+		current = stack.pop();
+		values.add(current.val);
 		current = current.right;
 	    }
-	}
 
-	return traversal;
+	return values;
     }
 
     public boolean _98_isValidBST(TreeNode root) {
-	if (root == null)
-	    return true;
-
 	Deque<TreeNode> stack = new LinkedList<>();
 	TreeNode current = root;
 	TreeNode previous = null;
 
 	while (!stack.isEmpty() || current != null) {
 	    if (current != null) {
-		stack.addLast(current);
-
+		stack.push(current);
 		current = current.left;
 	    } else {
-		current = stack.removeLast();
+		current = stack.pop();
 
-		if (previous != null && current.val < previous.val)
+		if (previous != null && previous.val >= current.val)
 		    return false;
-		previous = current;
 
+		previous = current;
 		current = current.right;
 	    }
 	}
@@ -1725,35 +1851,32 @@ public class Solution {
 	if (p == null || q == null)
 	    return false;
 
-	Deque<TreeNode> queue1 = new ArrayDeque<>();
-	Deque<TreeNode> queue2 = new ArrayDeque<>();
+	Deque<TreeNode> queue1 = new LinkedList<>();
+	Deque<TreeNode> queue2 = new LinkedList<>();
 
-	queue1.addLast(p);
-	queue2.addLast(q);
+	queue1.add(p);
+	queue2.add(q);
 
 	while (!queue1.isEmpty() && !queue2.isEmpty()) {
-	    TreeNode tn1 = queue1.removeFirst();
-	    TreeNode tn2 = queue2.removeFirst();
+	    TreeNode tn1 = queue1.poll();
+	    TreeNode tn2 = queue2.poll();
 
-	    if (tn1.left != null && tn2.left == null)
+	    if (tn1.left != null && tn2.left == null || tn1.left == null && tn2.left != null)
 		return false;
-	    if (tn1.left == null && tn2.left != null)
-		return false;
-	    if (tn1.right != null && tn2.right == null)
-		return false;
-	    if (tn1.right == null && tn2.right != null)
+	    if (tn1.right != null && tn2.right == null || tn1.right == null && tn2.right != null)
 		return false;
 	    if (tn1.val != tn2.val)
 		return false;
 
 	    if (tn1.left != null)
-		queue1.addLast(tn1.left);
+		queue1.add(tn1.left);
 	    if (tn1.right != null)
-		queue1.addLast(tn1.right);
+		queue1.add(tn1.right);
+
 	    if (tn2.left != null)
-		queue2.addLast(tn2.left);
+		queue2.add(tn2.left);
 	    if (tn2.right != null)
-		queue2.addLast(tn2.right);
+		queue2.add(tn2.right);
 	}
 
 	return queue1.isEmpty() && queue2.isEmpty();
@@ -1780,6 +1903,36 @@ public class Solution {
 	    queue.addLast(tn2.right);
 	    queue.addLast(tn1.right);
 	    queue.addLast(tn2.left);
+	}
+
+	return true;
+    }
+
+    public boolean _101_isSymmetric_v2(TreeNode root) {
+	if (root == null)
+	    return true;
+
+	Deque<TreeNode> queue1 = new LinkedList<>();
+	Deque<TreeNode> queue2 = new LinkedList<>();
+
+	queue1.add(root.left);
+	queue2.add(root.right);
+
+	while (!queue1.isEmpty() && !queue2.isEmpty()) {
+	    TreeNode tn1 = queue1.poll();
+	    TreeNode tn2 = queue2.poll();
+
+	    if (tn1 == null && tn2 == null)
+		continue;
+	    if (tn1 == null || tn2 == null)
+		return false;
+	    if (tn1.val != tn2.val)
+		return false;
+
+	    queue1.add(tn1.left);
+	    queue2.add(tn2.right);
+	    queue1.add(tn1.right);
+	    queue2.add(tn2.left);
 	}
 
 	return true;
@@ -4196,7 +4349,7 @@ public class Solution {
 
 	return true;
     }
-   
+
     public int _304_sumRegion(int[][] matrix, int row1, int col1, int row2, int col2) {
 	int sum = 0;
 	for (int col = col1; col <= col2; col++) {

@@ -20,7 +20,7 @@ public class QuickSort {
 	int lowerIndex = left - 1;// index of values lower than pivot
 
 	for (int currentIndex = left; currentIndex < right; currentIndex++) { // currentIndex < right --> right is pivot
-	    if (nums[currentIndex] < pivot) {
+	    if (nums[currentIndex] < pivot) {// increase order , > decrease
 		lowerIndex++;
 
 		int tmp = nums[currentIndex];
