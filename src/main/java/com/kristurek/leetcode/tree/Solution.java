@@ -15,16 +15,16 @@ public class Solution {
 
 	public List<Integer> _94_inorderTraversal(TreeNode root) {
 		List<Integer> results = new ArrayList<Integer>();
-		Deque<TreeNode> queue = new LinkedList<TreeNode>();
+		Deque<TreeNode> stack = new LinkedList<TreeNode>();
 
 		TreeNode current = root;
 
-		while (!queue.isEmpty() || current != null) {
+		while (!stack.isEmpty() || current != null) {
 			if (current != null) {
-				queue.addLast(current);
+				stack.push(current);
 				current = current.left;
 			} else {
-				current = queue.removeLast();
+				current = stack.pop();
 				results.add(current.val);
 				current = current.right;
 			}

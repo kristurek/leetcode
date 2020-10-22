@@ -13,15 +13,15 @@ class BSTIterator {
 	private int index = -1;
 
 	public BSTIterator(TreeNode root) {
-		Deque<TreeNode> que = new LinkedList<>();
+		Deque<TreeNode> stack = new LinkedList<>();
 		TreeNode current = root;
 
-		while (current != null || !que.isEmpty()) {
+		while (current != null || !stack.isEmpty()) {
 			if (current != null) {
-				que.addLast(current);
+				stack.push(current);
 				current = current.left;
 			} else {
-				current = que.removeLast();
+				current = stack.pop();
 				values.add(current.val);
 				current = current.right;
 			}

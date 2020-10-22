@@ -2634,6 +2634,35 @@ public class Solution {
     }
 
     public Node2 _138_copyRandomList(Node2 head) {
+	if (head == null)
+	    return head;
+
+	Map<Node2, Node2> map = new HashMap<>();
+
+	Deque<Node2> stack = new LinkedList<>();
+	stack.push(head);
+
+	Node2 current = head;
+
+	while (current != null) {
+	    map.put(current, new Node2(current.val));
+	    current = current.next;
+	}
+
+	while (!stack.isEmpty()) {
+	    Node2 node = stack.pop();
+
+	    map.get(node).next = map.getOrDefault(node.next, null);
+	    map.get(node).random = map.getOrDefault(node.random, null);
+
+	    if (node.next != null)
+		stack.push(node.next);
+	}
+
+	return map.get(head);
+    }
+
+    public Node2 _138_copyRandomList_v2(Node2 head) {
 	Map<Node2, Node2> map = new HashMap<>();
 
 	Node2 dummy = new Node2(-1);
@@ -2679,6 +2708,25 @@ public class Solution {
 	}
 
 	return dp[s.length()];
+    }
+
+    // TODO TimeLimitEx
+    public boolean _139_wordBreak_v2(String target, List<String> wordDict) {
+	List<String> output = new ArrayList<>();
+
+	wordBreak_backtracking(output, target, "", wordDict);
+
+	return output.size() > 0;
+    }
+
+    private void wordBreak_backtracking(List<String> output, String target, String tmp, List<String> wordDict) {
+	if (tmp.length() > target.length())
+	    return;
+	else if (tmp.toString().equals(target))
+	    output.add(tmp.toString());
+	else
+	    for (int i = 0; i < wordDict.size(); i++)
+		wordBreak_backtracking(output, target, tmp + wordDict.get(i), wordDict);
     }
 
     public boolean _141_hasCycle(ListNode head) {
@@ -2743,6 +2791,52 @@ public class Solution {
 
 	ListNode current = head;
 	ListNode middle = prev;
+
+	while (current != null && current.next != null) {
+	    ListNode tmp = current.next;
+
+	    current.next = middle;
+
+	    middle = middle.next;
+	    current.next.next = tmp;
+	    current = tmp;
+	}
+
+	current.next = middle;
+    }
+
+    // 1 2 3 4 5
+    // 1 2
+    // 5 4 3
+    // 1 5 2 4 3
+    public void _143_reorderList_v4(ListNode head) {
+	if (head == null || head.next == null)
+	    return;
+
+	ListNode slow = head;
+	ListNode fast = head.next.next;
+
+	while (fast != null && fast.next != null) {
+	    slow = slow.next;
+	    fast = fast.next.next;
+	}
+
+	ListNode current = slow.next;
+	slow.next = null;
+	ListNode previous = null;
+	ListNode next = null;
+
+	while (current != null) {
+	    next = current.next;
+
+	    current.next = previous;
+
+	    previous = current;
+	    current = next;
+	}
+
+	current = head;
+	ListNode middle = previous;
 
 	while (current != null && current.next != null) {
 	    ListNode tmp = current.next;
@@ -5554,6 +5648,99 @@ public class Solution {
 	return new MyHashSet();
     }
 
+    class MyHashSet_v3 {
+
+	class HashEntry {
+	    int key;
+	    HashEntry next;
+
+	    public HashEntry(int key) {
+		super();
+		this.key = key;
+	    }
+
+	    @Override
+	    public String toString() {
+		return "HashEntry [key=" + key + "]";
+	    }
+	}
+
+	HashEntry[] buckets;
+
+	public MyHashSet_v3() {
+	    this(128);
+	}
+
+	public MyHashSet_v3(int size) {
+	    super();
+	    this.buckets = new HashEntry[size];
+	}
+
+	private int getHash(int key) {
+	    return key % buckets.length;
+	}
+
+	public void put(int value) {
+	    int hash = getHash(value);
+
+	    HashEntry entry = buckets[hash];
+
+	    if (entry == null)
+		buckets[hash] = new HashEntry(value);
+	    else
+		while (entry != null)
+		    if (entry.key == value) {
+			entry.key = value;
+			break;
+		    } else if (entry.next == null) {
+			entry.next = new HashEntry(value);
+			break;
+		    } else
+			entry = entry.next;
+	}
+
+	public boolean contains(int value) {
+	    int hash = getHash(value);
+
+	    HashEntry entry = buckets[hash];
+
+	    if (entry == null)
+		return false;
+
+	    while (entry != null)
+		if (entry.key == value)
+		    return true;
+		else
+		    entry = entry.next;
+
+	    return false;
+	}
+
+	public void remove(int value) {
+	    int hash = getHash(value);
+
+	    HashEntry entry = buckets[hash];
+	    if (entry == null)
+		return;
+
+	    if (entry.key == value)
+		buckets[hash] = entry.next;
+	    else {
+		HashEntry previous = entry;
+		HashEntry current = entry.next;
+
+		while (current != null)
+		    if (current.key == value)
+			previous.next = current.next;
+		    else {
+			previous = current;
+			current = current.next;
+		    }
+	    }
+	}
+
+    }
+
     class MyHashSet {
 
 	private final static int SIZE = 128 * 1024; // FIXME Time Limit Exceeded on small SIZE 128
@@ -5592,8 +5779,10 @@ public class Solution {
 		    } else {
 			if (hashEntry.next != null)
 			    hashEntry = hashEntry.next;
-			else
+			else {
 			    hashEntry.next = new HashEntry(value);
+			    break; // TEST THIS
+			}
 		    }
 		}
 	    }

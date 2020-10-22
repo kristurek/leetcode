@@ -1,16 +1,16 @@
 package com.kristurek.leetcode.singleton;
 
 public enum SingletonEnum {
-	INSTANCE;
+    INSTANCE;
 
-	int value;
+    int value;
 
-	int getValue() {
-		return value;
-	}
+    int getValue() {
+	return value;
+    }
 
-	void setValue(int val) {
-		value = val;
-	}
+    void setValue(int val) {
+	value = val;
+    }
 
 }
